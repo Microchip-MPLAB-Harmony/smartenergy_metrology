@@ -1,0 +1,13 @@
+package:
+  format-version: "1.0.0"
+  name: "replaceme"
+  type: "api"
+  status: "beta"
+  required: false
+  version: "1.0.0"
+
+  dependencies:
+    - name: "csp"
+      type: "package"
+      version: "3.14.0"
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Module name="replaceme" id="5ec142b4-4aed-4044-90b6-7f01cfe85251" version="1.0.0">
+    <ConfigRoot path="config/module.py"/>
+</Module>
