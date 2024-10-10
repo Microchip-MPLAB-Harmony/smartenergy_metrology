@@ -1,13 +1,18 @@
 package:
   format-version: "1.0.0"
-  name: "replaceme"
+  name: "smartenergy_metrology"
+  version: "v1.0.0"
   type: "api"
-  status: "beta"
+  status: "production"
   required: false
-  version: "1.0.0"
 
   dependencies:
     - name: "csp"
       type: "package"
-      version: "3.14.0"
-
+      version: "v3.19.1"
+    - name: "core"
+      type: "package"
+      version: "v3.13.5"
+    - name: "gfx"
+      type: "package"
+      version: "v3.13.0"
