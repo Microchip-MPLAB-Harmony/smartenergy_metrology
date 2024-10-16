@@ -157,23 +157,44 @@ def updateConfigCreepI(symbol, event):
     m = int(m * 2**20)
     symbol.setValue(m)
 
-def updateConfigFeatCtrl0(symbol, event):
+def updateConfigFeatCtrl(symbol, event):
     pA = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I1") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V1")
     pB = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I2") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V2")
     pC = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I3") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V3")
-    reg = symbol.getValue()
-    reg = reg & 0xFFFFF8FF
-    reg = reg | (pC << 10) | (pB << 9) | (pA << 8)
-    symbol.setValue(reg)
-
-def updateConfigFeatCtrl1(symbol, event):
+    
     pEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_P_EN")
     qEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_Q_EN")
     iEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_I_EN")
+
+    iAHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IA")
+    vAHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_VA")
+    iBHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IB")
+    vBHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_VB")
+    iCHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IC")
+    vCHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_VC")
+    iNHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IN")
+    
     reg = symbol.getValue()
-    reg = reg & 0xFFFFFFF8
-    reg = reg | (pEn << 2) | (qEn << 1) | iEn
+    reg = reg & 0x00FF18FF
+    reg = reg | (iNHarmDis << 30) | (vCHarmDis << 29) | (iCHarmDis << 28) | (vBHarmDis << 27) | (iBHarmDis << 26) | (vAHarmDis << 25) | (iAHarmDis << 24)
+    reg = reg | (pEn << 15) | (qEn << 14) | (iEn << 13) | (pC << 10) | (pB << 9) | (pA << 8)
     symbol.setValue(reg)
+
+def updateConfigHarmonicCtrl(symbol, event):
+    harmonicCtrl = symbol.getValue()
+    harmonicId = event["id"]
+    harmonicValue = event["value"]
+    harmonicPos = int("".join(filter(lambda x: x.isdigit(), harmonicId))) - 1
+
+    if harmonicValue == 0:
+        harmonicCtrl &= ~(1 << harmonicPos)
+    else:
+        harmonicCtrl |= (1 << harmonicPos)
+
+    if harmonicCtrl > 0:
+        harmonicCtrl |= (1 << 31)
+    
+    symbol.setValue(harmonicCtrl)
 
 def updateConfigPulseXCtrl(symbol, event):
     pulseId = event["id"]
@@ -258,6 +279,9 @@ def instantiateComponent(metComponentCommon):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
 
+    featCtrlDependencies = []
+    harmDependencies = []
+
     Database.clearSymbolValue("core", "IPC1_INTERRUPT_ENABLE")
     Database.setSymbolValue("core", "IPC1_INTERRUPT_ENABLE", True)
     Database.clearSymbolValue("core", "IPC1_INTERRUPT_HANDLER")
@@ -269,11 +293,11 @@ def instantiateComponent(metComponentCommon):
 
     if ("MTC" in str(Variables.get("__PROCESSOR"))):
         enablePhase3 = 1
-        featCtrl0Value = 0x00000700
+        featCtrlValue = 0x00000700
         at2427Value = 0x07010101
     else:
         enablePhase3 = 0
-        featCtrl0Value = 0x00000300
+        featCtrlValue = 0x30000300
         at2427Value = 0x07000001
 
     drvMetRegBaseAddress = metComponentCommon.createHexSymbol("DRV_MET_BASE_ADDRESS", None)
@@ -411,31 +435,39 @@ def instantiateComponent(metComponentCommon):
     drvMetConfI1.setLabel("Enable Channel I1")
     drvMetConfI1.setDefaultValue(1)
     drvMetConfI1.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_I1")
 
     drvMetConfV1 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_V1", drvMetConfChannels)
     drvMetConfV1.setLabel("Enable Channel V1")
     drvMetConfV1.setDefaultValue(1)
     drvMetConfV1.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_V1")
 
     drvMetConfI2 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_I2", drvMetConfChannels)
     drvMetConfI2.setLabel("Enable Channel I2")
     drvMetConfI2.setDefaultValue(1)
     drvMetConfI2.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_I2")
 
     drvMetConfV2 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_V2", drvMetConfChannels)
     drvMetConfV2.setLabel("Enable Channel V2")
     drvMetConfV2.setDefaultValue(1)
     drvMetConfV2.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_V2")
 
     drvMetConfI3 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_I3", drvMetConfChannels)
     drvMetConfI3.setLabel("Enable Channel I3")
+    drvMetConfI3.setVisible(enablePhase3)
     drvMetConfI3.setDefaultValue(enablePhase3)
     drvMetConfI3.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_I3")
 
     drvMetConfV3 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_V3", drvMetConfChannels)
     drvMetConfV3.setLabel("Enable Channel V3")
+    drvMetConfV3.setVisible(enablePhase3)
     drvMetConfV3.setDefaultValue(enablePhase3)
     drvMetConfV3.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_V3")
 
     drvMetConfByfDef = metComponentCommon.createMenuSymbol("DRV_MET_CONF_BY_DEFAULT", None)
     drvMetConfByfDef.setLabel("Configuration")
@@ -503,6 +535,7 @@ def instantiateComponent(metComponentCommon):
     drvMetConfCreepPEn.setLabel("Active Power Creep Threshold Enable")
     drvMetConfCreepPEn.setDefaultValue(0)
     drvMetConfCreepPEn.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_CREEP_P_EN")
 
     drvMetConfCreepP = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_P", drvMetConfCreepPEn)
     drvMetConfCreepP.setLabel("Creep Active Energy (Wh)")
@@ -515,6 +548,7 @@ def instantiateComponent(metComponentCommon):
     drvMetConfCreepQEn.setLabel("Reactive Power Creep Threshold Enable")
     drvMetConfCreepQEn.setDefaultValue(0)
     drvMetConfCreepQEn.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_CREEP_Q_EN")
 
     drvMetConfCreepQ = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_Q", drvMetConfCreepQEn)
     drvMetConfCreepQ.setLabel("Creep Reactive Energy (VARh)")
@@ -527,6 +561,7 @@ def instantiateComponent(metComponentCommon):
     drvMetConfCreepIEn.setLabel("Current Creep Threshold Enable")
     drvMetConfCreepIEn.setDefaultValue(0)
     drvMetConfCreepIEn.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_CREEP_I_EN")
 
     drvMetConfCreepI = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_I", drvMetConfCreepIEn)
     drvMetConfCreepI.setLabel("Creep Current (mA)")
@@ -680,6 +715,73 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP2Width.setHelp(srv_met_helpkeyword)
 
     #####################################################################################################################################
+    # HARMONICS PARAMS
+
+    drvMetConfHarmonics = metComponentCommon.createMenuSymbol("DRV_MET_CONF_HARMONICS", None)
+    drvMetConfHarmonics.setLabel("Harmonics Analysis")
+    drvMetConfHarmonics.setHelp(srv_met_helpkeyword)
+
+    drvMetConfHarmonicsChannel = metComponentCommon.createMenuSymbol("DRV_MET_CONF_HARMONICS_CHANNELS", drvMetConfHarmonics)
+    drvMetConfHarmonicsChannel.setLabel("Enable Channels")
+    drvMetConfHarmonicsChannel.setHelp(srv_met_helpkeyword)
+
+    drvMetConfHarmonicsChannelIA = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_IA", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelIA.setLabel("Enable IA")
+    drvMetConfHarmonicsChannelIA.setDefaultValue(1)
+    drvMetConfHarmonicsChannelIA.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_IA")
+
+    drvMetConfHarmonicsChannelVA = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_VA", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelVA.setLabel("Enable VA")
+    drvMetConfHarmonicsChannelVA.setDefaultValue(1)
+    drvMetConfHarmonicsChannelVA.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_VA")
+
+    drvMetConfHarmonicsChannelIB = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_IB", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelIB.setLabel("Enable IB")
+    drvMetConfHarmonicsChannelIB.setDefaultValue(1)
+    drvMetConfHarmonicsChannelIB.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_IB")
+
+    drvMetConfHarmonicsChannelVB = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_VB", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelVB.setLabel("Enable VB")
+    drvMetConfHarmonicsChannelVB.setDefaultValue(1)
+    drvMetConfHarmonicsChannelVB.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_VB")
+
+    drvMetConfHarmonicsChannelIC = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_IC", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelIC.setLabel("Enable IC")
+    drvMetConfHarmonicsChannelIC.setVisible(enablePhase3)
+    drvMetConfHarmonicsChannelIC.setDefaultValue(enablePhase3)
+    drvMetConfHarmonicsChannelIC.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_IC")
+
+    drvMetConfHarmonicsChannelVC = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_VC", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelVC.setLabel("Enable VC")
+    drvMetConfHarmonicsChannelVC.setVisible(enablePhase3)
+    drvMetConfHarmonicsChannelVC.setDefaultValue(enablePhase3)
+    drvMetConfHarmonicsChannelVC.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_VC")
+
+    drvMetConfHarmonicsChannelIN = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_IN", drvMetConfHarmonicsChannel)
+    drvMetConfHarmonicsChannelIN.setLabel("Enable IN")
+    drvMetConfHarmonicsChannelIN.setDefaultValue(1)
+    drvMetConfHarmonicsChannelIN.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_IN")
+
+    drvMetConfHarmonicsOrder = metComponentCommon.createMenuSymbol("DRV_MET_CONF_HARMONICS_ORDER", drvMetConfHarmonics)
+    drvMetConfHarmonicsOrder.setLabel("Enable Harmonics Order")
+    drvMetConfHarmonicsOrder.setHelp(srv_met_helpkeyword)
+
+    for x in range(31):
+        symbolName = "DRV_MET_CONF_HARM{}".format(x+1)
+        drvMetConfHarm = metComponentCommon.createBooleanSymbol(symbolName, drvMetConfHarmonicsOrder)
+        drvMetConfHarm.setLabel("Enable Harmonic {}".format(x+1))
+        drvMetConfHarm.setDefaultValue(0)
+        drvMetConfHarm.setHelp(srv_met_helpkeyword)
+        harmDependencies.append(symbolName)
+
+    #####################################################################################################################################
     # METROLOGY REGISTERS
 
     drvMetRegWaveformCapture = metComponentCommon.createHexSymbol("DRV_MET_CONF_WAVEFORM_CAPTURE", None)
@@ -773,31 +875,31 @@ def instantiateComponent(metComponentCommon):
     drvMetRegCreepI.setReadOnly(True)
     drvMetRegCreepI.setDependencies(updateConfigCreepI, ["DRV_MET_CONF_CREEP_I", "DRV_MET_CONF_F", "DRV_MET_CONF_TR", "DRV_MET_CONF_RL", "DRV_MET_CONF_GAIN"])
 
-    drvMetRegFEATCTRL0 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL0", None)
-    drvMetRegFEATCTRL0.setLabel("FEATURE_CTRL0")
-    drvMetRegFEATCTRL0.setVisible(False)
-    drvMetRegFEATCTRL0.setDefaultValue(featCtrl0Value)
-    drvMetRegFEATCTRL0.setReadOnly(True)
-    drvMetRegFEATCTRL0.setDependencies(updateConfigFeatCtrl0, ["DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
+    drvMetRegFEATCTRL = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL", None)
+    drvMetRegFEATCTRL.setLabel("FEATURE_CTRL")
+    drvMetRegFEATCTRL.setVisible(False)
+    drvMetRegFEATCTRL.setDefaultValue(featCtrlValue)
+    drvMetRegFEATCTRL.setReadOnly(True)
+    drvMetRegFEATCTRL.setDependencies(updateConfigFeatCtrl, featCtrlDependencies)
 
-    drvMetRegFEATCTRL1 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL1", None)
-    drvMetRegFEATCTRL1.setLabel("FEATURE_CTRL1")
-    drvMetRegFEATCTRL1.setVisible(False)
-    drvMetRegFEATCTRL1.setDefaultValue(0)
-    drvMetRegFEATCTRL1.setReadOnly(True)
-    drvMetRegFEATCTRL1.setDependencies(updateConfigFeatCtrl1, ["DRV_MET_CONF_CREEP_P_EN", "DRV_MET_CONF_CREEP_Q_EN", "DRV_MET_CONF_CREEP_I_EN"])
+    drvMetRegHARMONICCTRL = metComponentCommon.createHexSymbol("DRV_MET_HARMONIC_CTRL", None)
+    drvMetRegHARMONICCTRL.setLabel("HARMONIC_CTRL")
+    drvMetRegHARMONICCTRL.setVisible(False)
+    drvMetRegHARMONICCTRL.setDefaultValue(0)
+    drvMetRegHARMONICCTRL.setReadOnly(True)
+    drvMetRegHARMONICCTRL.setDependencies(updateConfigHarmonicCtrl, harmDependencies)
 
     drvMetRegPulse0Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_0", None)
     drvMetRegPulse0Ctrl.setLabel("PULSE0_CTRL")
     drvMetRegPulse0Ctrl.setVisible(False)
-    drvMetRegPulse0Ctrl.setDefaultValue(0x81009100)
+    drvMetRegPulse0Ctrl.setDefaultValue(0x810001D0)
     drvMetRegPulse0Ctrl.setReadOnly(True)
     drvMetRegPulse0Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P0", "DRV_MET_CONF_DET_P0", "DRV_MET_CONF_POL_P0", "DRV_MET_CONF_TYP_P0", "DRV_MET_CONF_WID_P0"])
 
     drvMetRegPulse1Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_1", None)
     drvMetRegPulse1Ctrl.setLabel("PULSE1_CTRL")
     drvMetRegPulse1Ctrl.setVisible(False)
-    drvMetRegPulse1Ctrl.setDefaultValue(0x81029100)
+    drvMetRegPulse1Ctrl.setDefaultValue(0x810201D0)
     drvMetRegPulse1Ctrl.setReadOnly(True)
     drvMetRegPulse1Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P1", "DRV_MET_CONF_DET_P1", "DRV_MET_CONF_POL_P1", "DRV_MET_CONF_TYP_P1", "DRV_MET_CONF_WID_P1"])
 
