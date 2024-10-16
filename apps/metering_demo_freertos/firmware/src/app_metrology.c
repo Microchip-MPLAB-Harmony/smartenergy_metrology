@@ -76,8 +76,8 @@ extern DRV_METROLOGY_INIT drvMetrologyInitData;
 const char * _met_control_desc[] =
 {
   "00 STATE_CTRL",
-  "01 FEATURE_CTRL0",
-  "02 FEATURE_CTRL1",
+  "01 FEATURE_CTRL",
+  "02 HARMONIC_CTRL",
   "03 METER_TYPE",
   "04 M",
   "05 N_MAX",
@@ -165,9 +165,9 @@ const char * _met_status_desc[] =
   "22 RESERVED_S22",
   "23 RESERVED_S23",
   "24 RESERVED_S24",
-  "25 RESERVED_S25",
-  "26 RESERVED_S26",
-  "27 RESERVED_S27",
+  "25 PULSE0_COUNTER",
+  "26 PULSE1_COUNTER",
+  "27 PULSE2_COUNTER",
   "28 RESERVED_S28",
   "29 RESERVED_S29",
   "30 ZC_N_VA",
@@ -672,18 +672,82 @@ bool APP_METROLOGY_GetAccumulatorRegister(ACCUMULATOR_REG_ID regId, uint64_t * r
     return true;
 }
 
-bool APP_METROLOGY_GetHarmonicsRegister(HARMONICS_REG_ID regId, uint32_t * regValue, char *regName)
+void APP_METROLOGY_CaptureHarmonicData(void)
 {
-    uint32_t *pData;
+    (void) memcpy((uint8_t *)&app_metrologyData.harmonicsData, 
+            (uint8_t *)app_metrologyData.pMetHarData, sizeof(DRV_METROLOGY_REGS_HARMONICS));
+    
+}
 
-    if (regId >= HARMONICS_REG_NUM)
+bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint8_t harmonicNum, uint32_t *regValue, char *regName)
+{
+    if (harmonicNum >= 31)
     {
         return false;
     }
-
-    pData = (uint32_t *)app_metrologyData.pMetHarData;
-    pData += regId;
-    *regValue = *pData;
+    
+    switch(regId)
+    {
+        case HARMONICS_I_A_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.I_A_m_R[harmonicNum];
+            break;
+            
+        case HARMONICS_I_B_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.I_B_m_R[harmonicNum];
+            break;
+            
+        case HARMONICS_I_C_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.I_C_m_R[harmonicNum];
+            break;
+            
+        case HARMONICS_I_N_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.I_N_m_R[harmonicNum];
+            break;
+            
+        case HARMONICS_V_A_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.V_A_m_R[harmonicNum];
+            break;
+            
+        case HARMONICS_V_B_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.V_B_m_R[harmonicNum];
+            break;
+            
+        case HARMONICS_V_C_m_R_ID:
+            *regValue = app_metrologyData.harmonicsData.V_C_m_R[harmonicNum];
+            break;
+           
+        case HARMONICS_I_A_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.I_A_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_I_B_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.I_B_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_I_C_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.I_C_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_I_N_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.I_N_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_V_A_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.V_A_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_V_B_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.V_B_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_V_C_m_I_ID:
+            *regValue = app_metrologyData.harmonicsData.V_C_m_I[harmonicNum];
+            break;
+            
+        case HARMONICS_REG_NUM:
+        default:
+            break;
+    }
 
     if (regName)
     {
@@ -818,7 +882,7 @@ void APP_METROLOGY_SetLowPowerMode (void)
 
 bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase)
 {
-    uint32_t regValue = app_metrologyData.pMetControl->FEATURE_CTRL0;
+    uint32_t regValue = app_metrologyData.pMetControl->FEATURE_CTRL;
 
     if (regValue & phase)
     {

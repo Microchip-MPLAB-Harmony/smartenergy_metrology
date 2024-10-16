@@ -109,6 +109,8 @@ void SEFC0_WriteProtectionSet(uint32_t mode);
 uint32_t SEFC0_WriteProtectionGet(void);
 
 
+uint32_t SEFC0_FlashPanelBaseAddrGet(void);
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus // Provide C++ Compatibility
 }

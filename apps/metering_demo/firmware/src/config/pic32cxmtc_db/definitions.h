@@ -58,10 +58,10 @@
 #include "peripheral/supc/plib_supc.h"
 #include "driver/memory/drv_memory.h"
 #include "bsp/bsp.h"
-#include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/tc/plib_tc0.h"
-#include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
+#include "peripheral/rtc/plib_rtc.h"
 #include "driver/sst26/drv_sst26.h"
+#include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
 #include "peripheral/sefc/plib_sefc0.h"
 #include "system/time/sys_time.h"
 #include "peripheral/sefc/plib_sefc1.h"
@@ -219,6 +219,8 @@ Remarks:
 
 typedef struct
 {
+    SYS_MODULE_OBJ sysCommand;
+
     SYS_MODULE_OBJ  drvSST26;
     SYS_MODULE_OBJ  sysTime;
     SYS_MODULE_OBJ  drvMemory0;
