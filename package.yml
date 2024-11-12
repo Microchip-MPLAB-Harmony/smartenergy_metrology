@@ -1,18 +1,15 @@
 package:
   format-version: "1.0.0"
   name: "smartenergy_metrology"
-  version: "v1.0.0"
+  version: "v1.0.0-E1"
   type: "api"
   status: "production"
   required: false
 
   dependencies:
-    - name: "csp"
-      type: "package"
-      version: "v3.19.1"
     - name: "core"
       type: "package"
-      version: "v3.13.5"
+      version: "v3.14.0-E1"
     - name: "gfx"
       type: "package"
-      version: "v3.13.0"
+      version: "v3.15.3"

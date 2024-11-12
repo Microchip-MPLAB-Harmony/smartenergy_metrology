@@ -29,8 +29,10 @@ Refer to the following links for release notes, training materials, and interfac
 | ------- | ------------------------------------------------ |
 | apps    | Metering demo applications                       |
 | config  | Smart Energy Metrology module configuration file |
-| docs    | Smart Energy Metrology help documentation        |
 | drivers | Driver/Firmware files for metrology devicess     |
+
+# Driver documentation
+[Metrology Driver](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=drv_metrology&redirect=true)
 
 # Code Examples
 

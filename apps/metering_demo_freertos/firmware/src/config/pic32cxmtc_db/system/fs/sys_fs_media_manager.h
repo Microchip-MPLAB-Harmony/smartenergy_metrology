@@ -47,7 +47,6 @@ File System Service Media Manager Interface Declarations and Types
 #include "system/fs/sys_fs.h"
 #include "system/system_media.h"
 #include "system/system.h"
-#include "system/fs/fat_fs/file_system/ff.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

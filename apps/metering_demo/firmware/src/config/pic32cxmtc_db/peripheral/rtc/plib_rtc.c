@@ -262,7 +262,6 @@ void __attribute__((used)) RTC_InterruptHandler( void )
     if( (rtc_status & enabledInterrupts) != 0U )
     {
         RTC_REGS->RTC_SCCR |= enabledInterrupts;
-        (void)RTC_REGS->RTC_SCCR;
 
         if( rtc.callback != NULL )
         {

@@ -174,7 +174,6 @@
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/croutine.h</itemPath>
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/FreeRTOS.h</itemPath>
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/deprecated_definitions.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/mpu_syscall_numbers.h</itemPath>
           </logicalFolder>
           <logicalFolder name="portable" displayName="portable" projectFiles="true">
             <logicalFolder name="GCC" displayName="GCC" projectFiles="true">
@@ -400,7 +399,6 @@
             <logicalFolder name="sefc" displayName="sefc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc1.c</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc0.c</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc_common.c</itemPath>
             </logicalFolder>
             <logicalFolder name="supc" displayName="supc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/supc/plib_supc.c</itemPath>
@@ -499,7 +497,7 @@
         <targetDevice>PIC32CX2051MTSH128</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool>j32</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>4.35</languageToolchainVersion>
         <platform>3</platform>
@@ -540,7 +538,7 @@
         <makeCustomizationNormalizeHexFile>true</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <C32>
-        <property key="additional-warnings" value="true"/>
+        <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
         <property key="appendMe" value=""/>
         <property key="enable-app-io" value="false"/>
@@ -552,10 +550,10 @@
                   value="../src;../src/config/pic32cxmtsh_db;../src/config/pic32cxmtsh_db/system/fs/fat_fs/file_system;../src/config/pic32cxmtsh_db/system/fs/fat_fs/hardware_access;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include;../src/packs/PIC32CX2051MTSH128_DFP;../src/third_party/rtos/FreeRTOS/Source/include;../src/third_party/rtos/FreeRTOS/Source/portable/GCC/SAM/ARM_CM4F"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="isolate-each-function" value="true"/>
+        <property key="isolate-each-function" value="false"/>
         <property key="make-warnings-into-errors" value="false"/>
-        <property key="optimization-level" value="-O1"/>
-        <property key="place-data-into-section" value="true"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
         <property key="preprocessor-macros" value=""/>

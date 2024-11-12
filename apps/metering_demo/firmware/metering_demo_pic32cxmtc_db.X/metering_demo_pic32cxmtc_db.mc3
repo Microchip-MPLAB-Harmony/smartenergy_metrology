@@ -6723,7 +6723,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\bsp\bsp.h</file>
-         <hash>0b7a25f9f521c48e7d2ba6612171d40c34246f6285fd0d2e0de56ff2e6e753b8</hash>
+         <hash>bc7bcf330d7d2fadc6527fff4f57e141548d01b3a20faec61e6d5d5e2edff443</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\configuration.h</file>
@@ -6731,7 +6731,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>3420d37bbc718fc3211c1098fd55a1ea647987f14ac105b75abb6f2270648763</hash>
+         <hash>b8a686f83f94f3a55d72eb871659e467190b9caee6d5cddcea8b98744f53e7d8</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -6779,7 +6779,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>6d6d83158ad594912aa313180ed890a5bd13da839f810a0349e2153382564c6b</hash>
+         <hash>2e3008abb26a772f0a7278561c7b25d0b5a88e50fe0a31c1b87e3863c90f07db</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\bin\met_bin.S</file>
@@ -6819,7 +6819,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\src\drv_sst26_local.h</file>
-         <hash>737fa7267c7b58062a645e38966a08998bc556605beb02de16c81391ee299d69</hash>
+         <hash>29c71a6ae051fcf47b8235ad561a592dbdc820cfa2831c0aac0371c39671ad3a</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\exceptions.c</file>
@@ -6851,7 +6851,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\initialization.c</file>
-         <hash>3db25e292ac7a366826b8f4a7fcb99a916b12f3ce154f67a6743b9eaae5b39f8</hash>
+         <hash>8f5a6e5f02ea324fad2c8ef1e57687f5183f4f39b011d9e3b41626462a1e6e34</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.c</file>
@@ -6867,7 +6867,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\osal\osal.h</file>
-         <hash>1cfe3b61d9693b2369922041eef33fe16b3c1ccd9c85d4ded808b805f90a869c</hash>
+         <hash>8404fbe44807fa0484ffb38843a72cb9af8e31c9c30bd1b2594e609b8ea317d9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\osal\osal_definitions.h</file>
@@ -6875,7 +6875,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\osal\osal_impl_basic.h</file>
-         <hash>7f06b68ec1d6cf3bbd1129bdac599d108557e2c26ca5a58a28a3d59fdf772944</hash>
+         <hash>67ce72d34fd1e4dee0b6937fa026ab2c7bd285f82a24da09742c68333adaf0fc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\clk\plib_clk.c</file>
@@ -6895,7 +6895,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\dwdt\plib_dwdt.c</file>
-         <hash>2c2ec87f538ea7e7d2e18ca2af1ee8a1268fe86ba5c2398e7a87a21d338aa29a</hash>
+         <hash>10c4c7f59704542e08cca4b7b9fedf9bbb463da403ae37df76d84e04e2f07e19</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\dwdt\plib_dwdt.h</file>
@@ -6951,7 +6951,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\rtc\plib_rtc.c</file>
-         <hash>a8782c5b654f61831452255beac99c164426b1d04590f9f33b1ee9d6b58a573a</hash>
+         <hash>a3c571a996d177a8a6ff75e28a4ba15bb851f2ccaba9c49947282c9063bbf0bb</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\rtc\plib_rtc.h</file>
@@ -6959,31 +6959,27 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\rtc\plib_rtc_common.h</file>
-         <hash>564e86593cffa4d8f25d902c297581f46fd254f22a843c59dc07a247a6916b94</hash>
+         <hash>8400f492792ef1e23890d3b67bdd7b417c09d41cd07ada441a9213a1ef0c1245</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc0.c</file>
-         <hash>4a89dcc3e0ee351cd5a7bc9318e3c9be70594916e5e49102bfa7ac0d6e55ad5f</hash>
+         <hash>2666b2b03017cb9382e2f9224af9a1b1158b5a063163946a0ed60ee62701f571</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc0.h</file>
-         <hash>c8d9d5456cc5955420ca7944b76c87957bef7b4dfe72c2b63f20006869253f69</hash>
+         <hash>35517063851978e25640dfaf6512a6af69907bec245ccd05698bf94afee49581</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc1.c</file>
-         <hash>c3440d24017306c395cfea6ae6b92894241d8af49b4cf90e24a124e1423bb830</hash>
+         <hash>10160ae893fdc4dbcf4b8f76752e74f6562a5845672a5a45cf940f65e15c46ca</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc1.h</file>
-         <hash>dac96d7fb9cf7837a028517adab2500fc02d41593582bf5d442e89453878e800</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc_common.c</file>
-         <hash>51f27aeddb5b5fc686040cae6f4039f8815028739798a0c91739216ebb05fa19</hash>
+         <hash>83b92e05b738cfeed963f18fe17bd28c298bc3092af00bb0448676aa58e8151c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc_common.h</file>
-         <hash>693c69e571d2328b2fb1ea87787b8d0d9e1f432819b5756ef4a6eed8cf32b195</hash>
+         <hash>3e24f63c9dcb1ed3c31964d7718ebdd4e4e012f6a8d1a99b59f1cce1d2158137</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\supc\plib_supc.c</file>
@@ -7031,7 +7027,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\command\src\sys_command.c</file>
-         <hash>870e3c97b32eea8d896ea309b892f7300eee83833ae269ac9b5902018bed565a</hash>
+         <hash>84360285206bc304af70cc0b29fea061345ba6e27674613b5bb947da9fda0768</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\command\sys_command.h</file>
@@ -7091,11 +7087,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs.c</file>
-         <hash>ecc5ea0bc26927dea239f8485e871def38b0170415921b6e2cd784aa8ef5932b</hash>
+         <hash>e6f4b416098de46fc230e3ecfb99cad91106ac0e99ab808c2a6c0df391e233b5</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_fat_interface.c</file>
-         <hash>60b86f1de0b9cb870c46cf96730cf666e2f4bedfd2d50a039542de27a750bb5c</hash>
+         <hash>c7873a18d6d2ee9cb2eb1bf9c678dfc6c22837d4c22e5c3bcbf30507b3aa125f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_local.h</file>
@@ -7103,7 +7099,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_media_manager.c</file>
-         <hash>38a260f85a5aeebbba6049f5f99a60aa7961e490bdbc4e3ca5e8cf2df6c6200c</hash>
+         <hash>e310ad7d9927852ef24ec9759f411815df4bfb494d8d288b799476ff30cf2c77</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -7115,11 +7111,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\sys_fs_fat_interface.h</file>
-         <hash>7d398a893c42258ee2c06a2135087fd6ac9bcec02df07bea5882a5d55373ca4b</hash>
+         <hash>8abf10cb082958d08f5cf3210694cef73fdb6fa9b6a641e00da547cbcec0719b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\sys_fs_media_manager.h</file>
-         <hash>e777be6440f14c582e5e75fe021664b2eba99f57d781d5d58a22bea3a48ac9dd</hash>
+         <hash>2f7c76d5a40a41594e86a831470c67d7aeec5b6e540fb967518ce095fe6da271</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\int\src\sys_int.c</file>

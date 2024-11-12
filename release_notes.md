@@ -3,7 +3,7 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
-## Smart Energy Metrology Release v1.0.0
+## Smart Energy Metrology Release v1.0.0-E1
 
 ### New Features
 
@@ -15,15 +15,15 @@
 
 - **New Features and Enhancements**
   - Updated and improved output format on HTML documentation.
-  - Includes a beta version of the simultaneous multi-harmonic analysis of the first 31 harmonics.
+  - Includes an engineering version of the simultaneous multi-harmonic analysis of the first 31 harmonics.
 
 ### Bug fixes
 
-- None
+- None.
 
 ### Known Issues
 
-- None
+- Some exceptions occur while executing dependency callback when MCC is started. These exceptions are related to some PLIB issues that will be fixed on next CSP release.
 
 ### Development Tools
 

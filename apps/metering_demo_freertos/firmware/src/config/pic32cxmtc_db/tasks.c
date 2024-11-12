@@ -61,12 +61,12 @@
 // *****************************************************************************
 // *****************************************************************************
 TaskHandle_t xSYS_CMD_Tasks;
-static void lSYS_CMD_Tasks(  void *pvParameters  )
+void lSYS_CMD_Tasks(  void *pvParameters  )
 {
-    while(true)
+    while(1)
     {
-        (void) SYS_CMD_Tasks();
-        vTaskDelay(10U / portTICK_PERIOD_MS);
+        SYS_CMD_Tasks();
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
@@ -100,11 +100,8 @@ static void lDRV_METROLOGY_Tasks(  void *pvParameters  )
     }
 }
 
-
 /* Handle for the APP_METROLOGY_Tasks. */
 TaskHandle_t xAPP_METROLOGY_Tasks;
-
-
 
 static void lAPP_METROLOGY_Tasks(  void *pvParameters  )
 {   
@@ -113,11 +110,8 @@ static void lAPP_METROLOGY_Tasks(  void *pvParameters  )
         APP_METROLOGY_Tasks();
     }
 }
-
 /* Handle for the APP_CONSOLE_Tasks. */
 TaskHandle_t xAPP_CONSOLE_Tasks;
-
-
 
 static void lAPP_CONSOLE_Tasks(  void *pvParameters  )
 {   
@@ -126,11 +120,8 @@ static void lAPP_CONSOLE_Tasks(  void *pvParameters  )
         APP_CONSOLE_Tasks();
     }
 }
-
 /* Handle for the APP_DATALOG_Tasks. */
 TaskHandle_t xAPP_DATALOG_Tasks;
-
-
 
 static void lAPP_DATALOG_Tasks(  void *pvParameters  )
 {   
@@ -140,11 +131,8 @@ static void lAPP_DATALOG_Tasks(  void *pvParameters  )
         vTaskDelay(100U / portTICK_PERIOD_MS);
     }
 }
-
 /* Handle for the APP_DISPLAY_Tasks. */
 TaskHandle_t xAPP_DISPLAY_Tasks;
-
-
 
 static void lAPP_DISPLAY_Tasks(  void *pvParameters  )
 {   
@@ -153,11 +141,8 @@ static void lAPP_DISPLAY_Tasks(  void *pvParameters  )
         APP_DISPLAY_Tasks();
     }
 }
-
 /* Handle for the APP_ENERGY_Tasks. */
 TaskHandle_t xAPP_ENERGY_Tasks;
-
-
 
 static void lAPP_ENERGY_Tasks(  void *pvParameters  )
 {   
@@ -166,11 +151,8 @@ static void lAPP_ENERGY_Tasks(  void *pvParameters  )
         APP_ENERGY_Tasks();
     }
 }
-
 /* Handle for the APP_EVENTS_Tasks. */
 TaskHandle_t xAPP_EVENTS_Tasks;
-
-
 
 static void lAPP_EVENTS_Tasks(  void *pvParameters  )
 {   
@@ -204,7 +186,7 @@ void SYS_Tasks ( void )
         "SYS_CMD_TASKS",
         SYS_CMD_RTOS_STACK_SIZE,
         (void*)NULL,
-        SYS_CMD_RTOS_TASK_PRIORITY ,
+        SYS_CMD_RTOS_TASK_PRIORITY,
         &xSYS_CMD_Tasks
     );
 
@@ -214,7 +196,7 @@ void SYS_Tasks ( void )
         "SYS_FS_TASKS",
         SYS_FS_STACK_SIZE,
         (void*)NULL,
-        SYS_FS_PRIORITY ,
+        SYS_FS_PRIORITY,
         (TaskHandle_t*)NULL
     );
 
@@ -246,60 +228,54 @@ void SYS_Tasks ( void )
     
 
     /* Maintain the application's state machine. */
-    
-    /* Create OS Thread for APP_METROLOGY_Tasks. */
-    (void) xTaskCreate(
-           (TaskFunction_t) lAPP_METROLOGY_Tasks,
-           "APP_METROLOGY_Tasks",
-           1024,
-           NULL,
-           1U ,
-           &xAPP_METROLOGY_Tasks);
+        /* Create OS Thread for APP_METROLOGY_Tasks. */
+    (void) xTaskCreate((TaskFunction_t) lAPP_METROLOGY_Tasks,
+                "APP_METROLOGY_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_METROLOGY_Tasks);
 
     /* Create OS Thread for APP_CONSOLE_Tasks. */
-    (void) xTaskCreate(
-           (TaskFunction_t) lAPP_CONSOLE_Tasks,
-           "APP_CONSOLE_Tasks",
-           1024,
-           NULL,
-           1U ,
-           &xAPP_CONSOLE_Tasks);
+    (void) xTaskCreate((TaskFunction_t) lAPP_CONSOLE_Tasks,
+                "APP_CONSOLE_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_CONSOLE_Tasks);
 
     /* Create OS Thread for APP_DATALOG_Tasks. */
-    (void) xTaskCreate(
-           (TaskFunction_t) lAPP_DATALOG_Tasks,
-           "APP_DATALOG_Tasks",
-           1024,
-           NULL,
-           1U ,
-           &xAPP_DATALOG_Tasks);
+    (void) xTaskCreate((TaskFunction_t) lAPP_DATALOG_Tasks,
+                "APP_DATALOG_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_DATALOG_Tasks);
 
     /* Create OS Thread for APP_DISPLAY_Tasks. */
-    (void) xTaskCreate(
-           (TaskFunction_t) lAPP_DISPLAY_Tasks,
-           "APP_DISPLAY_Tasks",
-           1024,
-           NULL,
-           1U ,
-           &xAPP_DISPLAY_Tasks);
+    (void) xTaskCreate((TaskFunction_t) lAPP_DISPLAY_Tasks,
+                "APP_DISPLAY_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_DISPLAY_Tasks);
 
     /* Create OS Thread for APP_ENERGY_Tasks. */
-    (void) xTaskCreate(
-           (TaskFunction_t) lAPP_ENERGY_Tasks,
-           "APP_ENERGY_Tasks",
-           1024,
-           NULL,
-           1U ,
-           &xAPP_ENERGY_Tasks);
+    (void) xTaskCreate((TaskFunction_t) lAPP_ENERGY_Tasks,
+                "APP_ENERGY_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_ENERGY_Tasks);
 
     /* Create OS Thread for APP_EVENTS_Tasks. */
-    (void) xTaskCreate(
-           (TaskFunction_t) lAPP_EVENTS_Tasks,
-           "APP_EVENTS_Tasks",
-           1024,
-           NULL,
-           1U ,
-           &xAPP_EVENTS_Tasks);
+    (void) xTaskCreate((TaskFunction_t) lAPP_EVENTS_Tasks,
+                "APP_EVENTS_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_EVENTS_Tasks);
+
 
 
 

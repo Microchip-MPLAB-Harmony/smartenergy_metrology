@@ -160,7 +160,6 @@
         <logicalFolder name="Source" displayName="Source" projectFiles="true">
           <logicalFolder name="include" displayName="include" projectFiles="true">
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/mpu_prototypes.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/mpu_syscall_numbers.h</itemPath>
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/event_groups.h</itemPath>
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/FreeRTOS.h</itemPath>
             <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/timers.h</itemPath>
@@ -399,7 +398,6 @@
             <logicalFolder name="sefc" displayName="sefc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtc_db/peripheral/sefc/plib_sefc0.c</itemPath>
               <itemPath>../src/config/pic32cxmtc_db/peripheral/sefc/plib_sefc1.c</itemPath>
-              <itemPath>../src/config/pic32cxmtc_db/peripheral/sefc/plib_sefc_common.c</itemPath>
             </logicalFolder>
             <logicalFolder name="supc" displayName="supc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtc_db/peripheral/supc/plib_supc.c</itemPath>

@@ -190,7 +190,7 @@ extern "C" {
 /* Metrology Default Config: CREEP I */
 #define DRV_METROLOGY_CONF_CREEP_I            0x212dUL
 /* Metrology Default Config: FEATURE_CTRL */
-#define DRV_METROLOGY_CONF_FCTRL              0x30000300UL
+#define DRV_METROLOGY_CONF_FCTRL              0x300UL
 /* Metrology Default Config: HARMONIC_CTRL */
 #define DRV_METROLOGY_CONF_HARMONIC_CTRL      0x0UL
 /* Metrology Default Config: PULSE0_CTRL */

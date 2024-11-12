@@ -221,8 +221,6 @@ Remarks:
 
 typedef struct
 {
-    SYS_MODULE_OBJ sysCommand;
-
     SYS_MODULE_OBJ  drvSST26;
     SYS_MODULE_OBJ  sysTime;
     SYS_MODULE_OBJ  drvMemory0;

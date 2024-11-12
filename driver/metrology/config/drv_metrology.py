@@ -297,7 +297,7 @@ def instantiateComponent(metComponentCommon):
         at2427Value = 0x07010101
     else:
         enablePhase3 = 0
-        featCtrlValue = 0x30000300
+        featCtrlValue = 0x00000300
         at2427Value = 0x07000001
 
     drvMetRegBaseAddress = metComponentCommon.createHexSymbol("DRV_MET_BASE_ADDRESS", None)
@@ -752,14 +752,14 @@ def instantiateComponent(metComponentCommon):
     drvMetConfHarmonicsChannelIC = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_IC", drvMetConfHarmonicsChannel)
     drvMetConfHarmonicsChannelIC.setLabel("Enable IC")
     drvMetConfHarmonicsChannelIC.setVisible(enablePhase3)
-    drvMetConfHarmonicsChannelIC.setDefaultValue(enablePhase3)
+    drvMetConfHarmonicsChannelIC.setDefaultValue(1)
     drvMetConfHarmonicsChannelIC.setHelp(srv_met_helpkeyword)
     featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_IC")
 
     drvMetConfHarmonicsChannelVC = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_HARMONICS_CHN_VC", drvMetConfHarmonicsChannel)
     drvMetConfHarmonicsChannelVC.setLabel("Enable VC")
     drvMetConfHarmonicsChannelVC.setVisible(enablePhase3)
-    drvMetConfHarmonicsChannelVC.setDefaultValue(enablePhase3)
+    drvMetConfHarmonicsChannelVC.setDefaultValue(1)
     drvMetConfHarmonicsChannelVC.setHelp(srv_met_helpkeyword)
     featCtrlDependencies.append("DRV_MET_CONF_HARMONICS_CHN_VC")
 
