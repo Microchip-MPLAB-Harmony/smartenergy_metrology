@@ -113,7 +113,7 @@ static HARMONICS_REG_ID harRegsDisplayOrder[HARMONICS_REG_NUM] = {
     HARMONICS_V_C_m_I_ID,
     HARMONICS_I_N_m_R_ID,
     HARMONICS_I_N_m_I_ID
-}; 
+};
 
 /* Local Queue element to request Datalog operations */
 APP_DATALOG_QUEUE_DATA datalogQueueElement;
@@ -1249,7 +1249,7 @@ static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 1)
     {
         APP_METROLOGY_CaptureHarmonicData();
-        
+
         // Read all metrology harmonics registers
         app_consoleData.harNumToRead = 0;
         app_consoleData.numRegsPending = HARMONICS_REG_NUM;
@@ -1263,7 +1263,7 @@ static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         if (idx < DRV_METROLOGY_HARMONICS_MAX_ORDER)
         {
             APP_METROLOGY_CaptureHarmonicData();
-            
+
             // Read register value
             app_consoleData.harNumToRead = idx;
             app_consoleData.numRegsPending = HARMONICS_REG_NUM;
@@ -1298,7 +1298,7 @@ static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Extract harmonic number from parameters
         harmonicNum = (uint8_t)strtol(argv[1], NULL, 10);
     }
-    
+
     if (harmonicNum != 0xFF)
     {
         // Set harmonics calculation mode on metrology driver
@@ -1468,6 +1468,26 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         else if (strcmp(argv[1], "Q") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_REACTIVE_POWER;
+            wakeup = true;
+        }
+        else if (strcmp(argv[1], "UF") == 0)
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_VOLTAGE;
+            wakeup = true;
+        }
+        else if (strcmp(argv[1], "IF") == 0)
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_CURRENT;
+            wakeup = true;
+        }
+        else if (strcmp(argv[1], "PF") == 0)
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_ACTIVE_POWER;
+            wakeup = true;
+        }
+        else if (strcmp(argv[1], "QF") == 0)
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_REACTIVE_POWER;
             wakeup = true;
         }
         else if (strcmp(argv[1], "S") == 0)
@@ -2301,16 +2321,16 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint8_t numRegId;
             uint8_t harmonicNum;
-            
+
             if (app_consoleData.numRegsPending == HARMONICS_REG_NUM)
             {
                 // Remove Prompt symbol
                 _removePrompt();
             }
-            
+
             numRegId = HARMONICS_REG_NUM - app_consoleData.numRegsPending;
             harmonicNum = app_consoleData.harNumToRead;
-            
+
             // Read and print register values
             if (app_consoleData.numRegsPending >= 4)
             {
@@ -2320,7 +2340,7 @@ void APP_CONSOLE_Tasks ( void )
                 APP_METROLOGY_GetHarmonicRegister(numRegId + 3, harmonicNum, &regValue32[3], regName[3]);
                 SYS_CMD_PRINT("%-19s%-19s%-19s%-19s\r\n", regName[0], regName[1], regName[2], regName[3]);
                 SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
-                
+
                 // Advance to next register group
                 app_consoleData.numRegsPending -= 4;
             }
@@ -2331,7 +2351,7 @@ void APP_CONSOLE_Tasks ( void )
                 APP_METROLOGY_GetHarmonicRegister(numRegId + 2, harmonicNum, &regValue32[2], regName[2]);
                 SYS_CMD_PRINT("%-19s%-19s%-19s\r\n", regName[0], regName[1], regName[2]);
                 SYS_CMD_PRINT("%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2]);
-                
+
                 // Advance to next register group
                 app_consoleData.numRegsPending -= 3;
             }
@@ -2341,7 +2361,7 @@ void APP_CONSOLE_Tasks ( void )
                 APP_METROLOGY_GetHarmonicRegister(numRegId + 1, harmonicNum, &regValue32[1], regName[1]);
                 SYS_CMD_PRINT("%-19s%-19s\r\n", regName[0], regName[1]);
                 SYS_CMD_PRINT("%-19X%-19X\r\n", regValue32[0], regValue32[1]);
-                
+
                 // Advance to next register group
                 app_consoleData.numRegsPending -= 2;
             }
@@ -2350,7 +2370,7 @@ void APP_CONSOLE_Tasks ( void )
                 APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
                 SYS_CMD_PRINT("%-19s\r\n", regName[0]);
                 SYS_CMD_PRINT("%-19X\r\n", regValue32[0]);
-                
+
                 // Advance to next register group
                 app_consoleData.numRegsPending -= 1;
             }
@@ -2376,7 +2396,7 @@ void APP_CONSOLE_Tasks ( void )
                 // Remove Prompt symbol
                 _removePrompt();
             }
-            
+
             // Read and print register values
             if (app_consoleData.numRegsPending == 0)
             {
@@ -2399,12 +2419,12 @@ void APP_CONSOLE_Tasks ( void )
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 2, &regValue32[2], regName[2]);
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 3, &regValue32[3], regName[3]);
-                    
+
                     if (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER)
                     {
                         SYS_CMD_PRINT("%-19s\r\n", regName[0]);
                     }
-                    
+
                     SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
 
                     // Advance to next harmonic group
@@ -2415,7 +2435,7 @@ void APP_CONSOLE_Tasks ( void )
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 2, &regValue32[2], regName[2]);
-                    
+
                     SYS_CMD_PRINT("%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2]);
 
                     // Advance to next harmonic group
@@ -2425,7 +2445,7 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
-                    
+
                     SYS_CMD_PRINT("%-19X%-19X\r\n", regValue32[0], regValue32[1]);
 
                     // Advance to next harmonic group
@@ -2434,7 +2454,7 @@ void APP_CONSOLE_Tasks ( void )
                 else if (app_consoleData.numHarmsPending == 1)
                 {
                     APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
-                    
+
                     SYS_CMD_PRINT("%-19X\r\n", regValue32[0]);
 
                     // Advance to next harmonic group
@@ -2514,10 +2534,10 @@ void APP_CONSOLE_Tasks ( void )
         {
             DRV_METROLOGY_HARMONICS_RMS *pHarmonicRMSData;
             uint8_t harmonicNum;
-            
+
             harmonicNum = app_consoleData.harmonicNumRequest;
             pHarmonicRMSData = &harmonicAnalysisRMSData[harmonicNum - 1];
-            
+
             if (app_consoleData.harmonicNumPrint == 1)
             {
                 if (app_consoleData.harmonicNumRequest == 0)
@@ -2530,7 +2550,7 @@ void APP_CONSOLE_Tasks ( void )
                 SYS_CMD_PRINT("The calculated harmonic %u Irms/Vrms:\r\n", harmonicNum);
 
                 SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\r\n");
-                SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_A_m, 
+                SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_A_m,
                         pHarmonicRMSData->Irms_B_m, pHarmonicRMSData->Irms_C_m);
             }
             else if (app_consoleData.harmonicNumPrint == 2)
@@ -2547,7 +2567,7 @@ void APP_CONSOLE_Tasks ( void )
                 // Go back to IDLE
                 app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             }
-            
+
             if (app_consoleData.state != APP_CONSOLE_STATE_PROMPT)
             {
                 app_consoleData.harmonicNumPrint++;
@@ -2565,7 +2585,7 @@ void APP_CONSOLE_Tasks ( void )
                 // Remove Prompt symbol
                 _removePrompt();
             }
-            
+
             // Read and print register values
             if (app_consoleData.numRegsPending == 0)
             {
@@ -2580,7 +2600,7 @@ void APP_CONSOLE_Tasks ( void )
 
                 numRegId = APP_CONSOLE_HAR_DESC_SIZE - app_consoleData.numRegsPending;
                 harmonicNum = DRV_METROLOGY_HARMONICS_MAX_ORDER - app_consoleData.numHarmsPending;
-                
+
                 // Read and print harmonic values
                 if (app_consoleData.numHarmsPending >= 4)
                 {
@@ -2588,15 +2608,15 @@ void APP_CONSOLE_Tasks ( void )
                     {
                         SYS_CMD_PRINT("%s\r\n", _console_har_desc[numRegId]);
                     }
-                    
+
                     rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
                     rmsValues[1] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
                     rmsValues[2] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
                     rmsValues[3] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    
-                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f%-19.3f\r\n", 
-                            rmsValues[0], rmsValues[1], rmsValues[2], rmsValues[3]); 
-                    
+
+                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f%-19.3f\r\n",
+                            rmsValues[0], rmsValues[1], rmsValues[2], rmsValues[3]);
+
                     // Advance to next harmonic group
                     app_consoleData.numHarmsPending -= 4;
                 }
@@ -2605,10 +2625,10 @@ void APP_CONSOLE_Tasks ( void )
                     rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
                     rmsValues[1] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
                     rmsValues[2] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    
-                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", 
-                            rmsValues[0], rmsValues[1], rmsValues[2]); 
-                    
+
+                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n",
+                            rmsValues[0], rmsValues[1], rmsValues[2]);
+
                     // Advance to next harmonic group
                     app_consoleData.numHarmsPending -= 3;
                 }
@@ -2616,18 +2636,18 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
                     rmsValues[1] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    
-                    SYS_CMD_PRINT("%-19.3f%-19.3f\r\n", rmsValues[0], rmsValues[1]); 
-                    
+
+                    SYS_CMD_PRINT("%-19.3f%-19.3f\r\n", rmsValues[0], rmsValues[1]);
+
                     // Advance to next harmonic group
                     app_consoleData.numHarmsPending -= 2;
                 }
                 else if (app_consoleData.numHarmsPending == 1)
                 {
                     rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    
-                    SYS_CMD_PRINT("%-19.3f\r\n", rmsValues[0]); 
-                    
+
+                    SYS_CMD_PRINT("%-19.3f\r\n", rmsValues[0]);
+
                     // Advance to next harmonic group
                     app_consoleData.numHarmsPending -= 1;
                 }
@@ -2655,7 +2675,7 @@ void APP_CONSOLE_Tasks ( void )
 //            {
 //                DRV_METROLOGY_HARMONICS_RMS *pHarmonicRMSData;
 //                uint8_t harmonicNum;
-//            
+//
 //                harmonicNum = app_consoleData.harmonicNumRequest;
 //                pHarmonicRMSData = &harmonicAnalysisRMSData[harmonicNum];
 //
@@ -2665,7 +2685,7 @@ void APP_CONSOLE_Tasks ( void )
 //                    SYS_CMD_PRINT("The calculated harmonic %u Irms/Vrms:\r\n", harmonicNum + 1);
 //
 //                    SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\r\n");
-//                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_A_m, 
+//                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_A_m,
 //                            pHarmonicRMSData->Irms_B_m, pHarmonicRMSData->Irms_C_m);
 //                }
 //                else if (app_consoleData.harmonicNumPrint == 2)
@@ -2678,7 +2698,7 @@ void APP_CONSOLE_Tasks ( void )
 //                {
 //                    SYS_CMD_MESSAGE("Vrms_Har_C(V)\r\n");
 //                    SYS_CMD_PRINT("%-19.3f\r\n", pHarmonicRMSData->Vrms_C_m);
-//                    
+//
 //                    app_consoleData.harmonicNumPrint = 0;
 //                    app_consoleData.harmonicNumRequest++;
 //                }
@@ -2947,6 +2967,88 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetRMS(RMS_QC, &qc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present reactive power is :\r\nQt=%c%.1fW Qa=%c%.1fW Qb=%c%.1fW Qc=%c%.1fW\r\n",
+                   sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb],
+                    (float)qb/10, sign[signc], (float)qc/10);
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_VOLTAGE:
+        {
+            uint32_t va, vb, vc;
+
+            // Remove Prompt symbol
+            _removePrompt();
+
+            APP_METROLOGY_GetRMS(RMS_UAF, &va, 0);
+            APP_METROLOGY_GetRMS(RMS_UBF, &vb, 0);
+            APP_METROLOGY_GetRMS(RMS_UCF, &vc, 0);
+            // Show received data on console
+            SYS_CMD_PRINT("Present voltage (fundamental) is :\r\nUaf=%.3fV Ubf=%.3fV Ucf=%.3fV\r\n",(float)va/10000, (float)vb/10000, (float)vc/10000);
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_CURRENT:
+        {
+            uint32_t ia, ib, ic, inm;
+
+            // Remove Prompt symbol
+            _removePrompt();
+
+            APP_METROLOGY_GetRMS(RMS_IAF, &ia, 0);
+            APP_METROLOGY_GetRMS(RMS_IBF, &ib, 0);
+            APP_METROLOGY_GetRMS(RMS_ICF, &ic, 0);
+            APP_METROLOGY_GetRMS(RMS_INMF, &inm, 0);
+            // Show received data on console
+            SYS_CMD_PRINT("Present current (fundamental) is :\r\nIaf=%.4fA Ibf=%.4fA Icf=%.4fA Inmf=%.4fA\r\n",
+                    (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)inm/10000);
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_ACTIVE_POWER:
+        {
+            uint32_t pt, pa, pb, pc;
+            DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
+
+            // Remove Prompt symbol
+            _removePrompt();
+
+            APP_METROLOGY_GetRMS(RMS_PTF, &pt, &signt);
+            APP_METROLOGY_GetRMS(RMS_PAF, &pa, &signa);
+            APP_METROLOGY_GetRMS(RMS_PBF, &pb, &signb);
+            APP_METROLOGY_GetRMS(RMS_PCF, &pc, &signc);
+            // Show received data on console
+            SYS_CMD_PRINT("Present active power (fundamental) is :\r\nPtf=%c%.1fW Paf=%c%.1fW Pbf=%c%.1fW Pcf=%c%.1fW\r\n",
+                   sign[signt], (float)pt/10, sign[signa], (float)pa/10, sign[signb],
+                    (float)pb/10, sign[signc], (float)pc/10);
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_REACTIVE_POWER:
+        {
+            uint32_t qt, qa, qb, qc;
+            DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
+
+            // Remove Prompt symbol
+            _removePrompt();
+
+            APP_METROLOGY_GetRMS(RMS_QTF, &qt, &signt);
+            APP_METROLOGY_GetRMS(RMS_QAF, &qa, &signa);
+            APP_METROLOGY_GetRMS(RMS_QBF, &qb, &signb);
+            APP_METROLOGY_GetRMS(RMS_QCF, &qc, &signc);
+            // Show received data on console
+            SYS_CMD_PRINT("Present reactive power (fundamental) is :\r\nQtf=%c%.1fW Qaf=%c%.1fW Qbf=%c%.1fW Qcf=%c%.1fW\r\n",
                    sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb],
                     (float)qb/10, sign[signc], (float)qc/10);
 

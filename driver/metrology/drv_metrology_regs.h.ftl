@@ -1209,7 +1209,7 @@ typedef struct
     __O  uint64_t I_A_F;             /**< Offset: 0x30  (R/  32) Amp-squared-samples, phase-A, fundamental only (uQ24.40) */
     __O  uint64_t I_B_F;             /**< Offset: 0x38  (R/  32) Amp-squared-samples, phase-B, fundamental only (uQ24.40) */
     __O  uint64_t I_C_F;             /**< Offset: 0x40  (R/  32) Amp-squared-samples, phase-C, fundamental only (uQ24.40) */
-    __O  uint64_t I_Nmi;             /**< Offset: 0x48  (R/  32) Amp-squared-samples, phase-N, fundamental only (uQ44.20) */
+    __O  uint64_t I_Nmi;             /**< Offset: 0x48  (R/  32) Amp-squared-samples, raw phase-N measured minus imputed, fundamental + harmonics (uQ44.20) */
     __O  uint64_t I_Nm_F;            /**< Offset: 0x50  (R/  32) Amp-squared-samples, phase-N, fundamental only (uQ24.40) */
     __O  uint64_t Reserved1[5];
     __O  int64_t  P_A;               /**< Offset: 0x78  (R/  32) Watt-samples, phase-A, fundamental + harmonics (sQ23.40) */

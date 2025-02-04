@@ -627,11 +627,45 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     afeRMS[RMS_SB]  = lDRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
     afeRMS[RMS_SC]  = lDRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
 
+    afeRMS[RMS_UAF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_A_F, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeRMS[RMS_UBF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeRMS[RMS_UCF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_C_F, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+
+    afeRMS[RMS_IAF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_A_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IA);
+    afeRMS[RMS_IBF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IB);
+    afeRMS[RMS_ICF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_C_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IC);
+
+    afeRMS[RMS_INMF] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_Nm_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IN);
+
+    afeRMS[RMS_PAF]  = lDRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_A_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    gDrvMetObj.metAFEData.afeEvents.pafDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A_F);
+    afeRMS[RMS_PBF]  = lDRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    gDrvMetObj.metAFEData.afeEvents.pbfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B_F);
+    afeRMS[RMS_PCF]  = lDRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_C_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    gDrvMetObj.metAFEData.afeEvents.pcfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C_F);
+
+    afeRMS[RMS_QAF]  = lDRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_A_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    gDrvMetObj.metAFEData.afeEvents.qafDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A_F);
+    afeRMS[RMS_QBF]  = lDRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    gDrvMetObj.metAFEData.afeEvents.qbfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B_F);
+    afeRMS[RMS_QCF]  = lDRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_C_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    gDrvMetObj.metAFEData.afeEvents.qcfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C_F);
+
+    afeRMS[RMS_SAF]  = lDRV_Metrology_GetSRMS(gDrvMetObj.metAccData.I_A_F, gDrvMetObj.metAccData.V_A_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeRMS[RMS_SBF]  = lDRV_Metrology_GetSRMS(gDrvMetObj.metAccData.I_B_F, gDrvMetObj.metAccData.V_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeRMS[RMS_SCF]  = lDRV_Metrology_GetSRMS(gDrvMetObj.metAccData.I_C_F, gDrvMetObj.metAccData.V_C_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+
     afeRMS[RMS_PT]  = afeRMS[RMS_PA] + afeRMS[RMS_PB] + afeRMS[RMS_PC];
     gDrvMetObj.metAFEData.afeEvents.ptDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A + gDrvMetObj.metAccData.P_B + gDrvMetObj.metAccData.P_C);
 
     afeRMS[RMS_QT]  = afeRMS[RMS_QA] + afeRMS[RMS_QB] + afeRMS[RMS_QC];
     gDrvMetObj.metAFEData.afeEvents.qtDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A + gDrvMetObj.metAccData.Q_B + gDrvMetObj.metAccData.Q_C);
+
+    afeRMS[RMS_PTF]  = afeRMS[RMS_PAF] + afeRMS[RMS_PBF] + afeRMS[RMS_PCF];
+    gDrvMetObj.metAFEData.afeEvents.ptfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A_F + gDrvMetObj.metAccData.P_B_F + gDrvMetObj.metAccData.P_C_F);
+
+    afeRMS[RMS_QTF]  = afeRMS[RMS_QAF] + afeRMS[RMS_QBF] + afeRMS[RMS_QCF];
+    gDrvMetObj.metAFEData.afeEvents.qtfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A_F + gDrvMetObj.metAccData.Q_B_F + gDrvMetObj.metAccData.Q_C_F);
 
     afeRMS[RMS_ST]  = afeRMS[RMS_SA] + afeRMS[RMS_SB] + afeRMS[RMS_SC];
 
@@ -1463,6 +1497,38 @@ DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)
         sign = RMS_SIGN_NEGATIVE;
     }
     else if ((type == RMS_QT) && (gDrvMetObj.metAFEData.afeEvents.qtDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PAF) && (gDrvMetObj.metAFEData.afeEvents.pafDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PBF) && (gDrvMetObj.metAFEData.afeEvents.pbfDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PCF) && (gDrvMetObj.metAFEData.afeEvents.pcfDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PTF) && (gDrvMetObj.metAFEData.afeEvents.ptfDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QAF) && (gDrvMetObj.metAFEData.afeEvents.qafDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QBF) && (gDrvMetObj.metAFEData.afeEvents.qbfDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QCF) && (gDrvMetObj.metAFEData.afeEvents.qcfDir == 1U))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QTF) && (gDrvMetObj.metAFEData.afeEvents.qtfDir == 1U))
     {
         sign = RMS_SIGN_NEGATIVE;
     }

@@ -283,14 +283,21 @@ typedef struct {
     unsigned int qbDir : 1;
     unsigned int qcDir : 1;
     unsigned int qtDir : 1;
+    unsigned int pafDir : 1;
+    unsigned int pbfDir : 1;
+    unsigned int pcfDir : 1;
+    unsigned int ptfDir : 1;
+    unsigned int qafDir : 1;
+    unsigned int qbfDir : 1;
+    unsigned int qcfDir : 1;
+    unsigned int qtfDir : 1;
     unsigned int sagA : 1;
     unsigned int sagB : 1;
     unsigned int sagC : 1;
-    unsigned int reserved1 : 1;
     unsigned int swellA : 1;
     unsigned int swellB : 1;
     unsigned int swellC : 1;
-    unsigned int reserved2 : 17;
+    unsigned int reserved : 10;
 } DRV_METROLOGY_AFE_EVENTS;
 
 /* Metrology Driver RMS type
@@ -330,6 +337,25 @@ typedef enum {
     RMS_SA,
     RMS_SB,
     RMS_SC,
+    RMS_UAF,
+    RMS_UBF,
+    RMS_UCF,
+    RMS_IAF,
+    RMS_IBF,
+    RMS_ICF,
+    RMS_INMF,
+    RMS_PTF,
+    RMS_PAF,
+    RMS_PBF,
+    RMS_PCF,
+    RMS_QTF,
+    RMS_QAF,
+    RMS_QBF,
+    RMS_QCF,
+    RMS_STF,
+    RMS_SAF,
+    RMS_SBF,
+    RMS_SCF,
     RMS_FREQ,
     RMS_ANGLEA,
     RMS_ANGLEB,
