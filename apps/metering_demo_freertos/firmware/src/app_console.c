@@ -1492,6 +1492,11 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_REACTIVE_POWER;
             wakeup = true;
         }
+        else if (strcmp(argv[1], "S") == 0)
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_APARENT_POWER;
+            wakeup = true;
+        }
         else if (strcmp(argv[1], "UF") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_VOLTAGE;
@@ -1512,9 +1517,9 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_REACTIVE_POWER;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "S") == 0)
+        else if (strcmp(argv[1], "SF") == 0)
         {
-            app_consoleData.state = APP_CONSOLE_STATE_PRINT_APARENT_POWER;
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_APARENT_POWER;
             wakeup = true;
         }
         else if (strcmp(argv[1], "F") == 0)
@@ -2945,6 +2950,26 @@ void APP_CONSOLE_Tasks ( void )
             break;
         }
 
+        case APP_CONSOLE_STATE_PRINT_APARENT_POWER:
+        {
+            uint32_t st, sa, sb, sc;
+
+            // Remove Prompt symbol
+            _removePrompt();
+
+            APP_METROLOGY_GetMeasure(MEASURE_ST, &st, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_SA, &sa, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_SB, &sb, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_SC, &sc, 0);
+            // Show received data on console
+            SYS_CMD_PRINT("Present apparent power is :\r\nSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
+                   (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
         case APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_VOLTAGE:
         {
             uint32_t va, vb, vc;
@@ -3027,19 +3052,19 @@ void APP_CONSOLE_Tasks ( void )
             break;
         }
 
-        case APP_CONSOLE_STATE_PRINT_APARENT_POWER:
+        case APP_CONSOLE_STATE_PRINT_FUNDAMENTAL_APARENT_POWER:
         {
             uint32_t st, sa, sb, sc;
 
             // Remove Prompt symbol
             _removePrompt();
 
-            APP_METROLOGY_GetMeasure(MEASURE_ST, &st, 0);
-            APP_METROLOGY_GetMeasure(MEASURE_SA, &sa, 0);
-            APP_METROLOGY_GetMeasure(MEASURE_SB, &sb, 0);
-            APP_METROLOGY_GetMeasure(MEASURE_SC, &sc, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_STF, &st, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_SAF, &sa, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_SBF, &sb, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_SCF, &sc, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present apparent power is :\r\nSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
+            SYS_CMD_PRINT("Present apparent power (fundamental) is :\r\nSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
                    (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
 
             // Go back to IDLE

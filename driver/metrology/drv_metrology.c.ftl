@@ -669,6 +669,8 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     afeMeasure[MEASURE_ST]  = afeMeasure[MEASURE_SA] + afeMeasure[MEASURE_SB] + afeMeasure[MEASURE_SC];
 
+    afeMeasure[MEASURE_STF]  = afeMeasure[MEASURE_SAF] + afeMeasure[MEASURE_SBF] + afeMeasure[MEASURE_SCF];
+
     afeMeasure[MEASURE_FREQ]  = (freq * 100U) >> FREQ_Q;
 
     afeMeasure[MEASURE_ANGLEA]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
