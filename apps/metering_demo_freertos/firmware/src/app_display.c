@@ -340,7 +340,7 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_VA_RMS:
         {
-            APP_METROLOGY_GetRMS(RMS_UA, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_UA_RMS, &rmsValue, NULL);
             sprintf((char *)buff1, "%5u%03u",
                     (unsigned int)(rmsValue/10000),
                     (unsigned int)((rmsValue%10000)/10));
@@ -354,7 +354,7 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_VB_RMS:
         {
-            APP_METROLOGY_GetRMS(RMS_UB, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_UB_RMS, &rmsValue, NULL);
             sprintf((char *)buff1, "%5u%03u",
                     (unsigned int)(rmsValue/10000),
                     (unsigned int)((rmsValue%10000)/10));
@@ -368,7 +368,7 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_VC_RMS:
         {
-            APP_METROLOGY_GetRMS(RMS_UC, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_UC_RMS, &rmsValue, NULL);
             sprintf((char *)buff1, "%5u%03u",
                     (unsigned int)(rmsValue/10000),
                     (unsigned int)((rmsValue%10000)/10));
@@ -382,7 +382,7 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_IA_RMS:
         {
-            APP_METROLOGY_GetRMS(RMS_IA, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_IA_RMS, &rmsValue, NULL);
             sprintf((char *)buff1, "%5u%03u",
                     (unsigned int)(rmsValue/10000),
                     (unsigned int)((rmsValue%10000)/10));
@@ -396,7 +396,7 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_IB_RMS:
         {
-            APP_METROLOGY_GetRMS(RMS_IB, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_IB_RMS, &rmsValue, NULL);
             sprintf((char *)buff1, "%5u%03u",
                     (unsigned int)(rmsValue/10000),
                     (unsigned int)((rmsValue%10000)/10));
@@ -410,7 +410,7 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_IC_RMS:
         {
-            APP_METROLOGY_GetRMS(RMS_IC, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_IC_RMS, &rmsValue, NULL);
             sprintf((char *)buff1, "%5u%03u",
                     (unsigned int)(rmsValue/10000),
                     (unsigned int)((rmsValue%10000)/10));

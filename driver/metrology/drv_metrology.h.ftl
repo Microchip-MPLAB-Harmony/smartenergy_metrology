@@ -106,18 +106,18 @@ typedef enum {
 } DRV_METROLOGY_START_MODE;
 
 // *****************************************************************************
-/* Metrology Driver RMS sign
+/* Metrology Driver Measure sign
 
   Summary:
     Describes the sign of some metrology measurements.
 
   Description:
-    This quality only affects to some RMS measurements.
+    This quality only affects to some measurements.
 */
 typedef enum {
-    RMS_SIGN_POSITIVE = 0,
-    RMS_SIGN_NEGATIVE = 1,
-} DRV_METROLOGY_RMS_SIGN;
+    MEASURE_SIGN_POSITIVE = 0,
+    MEASURE_SIGN_NEGATIVE = 1,
+} DRV_METROLOGY_MEASURE_SIGN;
 
 // *****************************************************************************
 /* Metrology Callback Function Pointer
@@ -959,7 +959,7 @@ void DRV_METROLOGY_SetControl(DRV_METROLOGY_REGS_CONTROL * pControl);
         if (app_metrologyData.queueFree)
         {
             newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-            newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
+            newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
             xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
         }
         else
@@ -975,14 +975,14 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
 
 // *****************************************************************************
 /* Function:
-    uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
+    uint32_t DRV_METROLOGY_GetMeasureValue(DRV_METROLOGY_MEASURE_TYPE type);
 
   Summary:
-    Gets the last RMS value of the selected measurement type.
+    Gets the last value of the selected measurement type.
 
   Description:
-    RMS values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
-    For further information about RMS types, refer to DRV_METROLOGY_RMS_TYPE definition.
+    Values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    For further information about Measurement types, refer to DRV_METROLOGY_MEASURE_TYPE definition.
 
   Precondition:
     None.
@@ -991,7 +991,7 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
     type - Indicate what type of measurement is obtained.
 
   Returns:
-    The RMS value of the selected type.
+    The value of the selected type.
 
   Example:
     <code>
@@ -1001,7 +1001,7 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
         if (app_metrologyData.queueFree)
         {
             newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-            newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
+            newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
             xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
         }
         else
@@ -1013,18 +1013,18 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
   Remarks:
     None.
 */
-uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
+uint32_t DRV_METROLOGY_GetMeasureValue(DRV_METROLOGY_MEASURE_TYPE type);
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
+    DRV_METROLOGY_MEASURE_SIGN DRV_METROLOGY_GetMeasureSign(DRV_METROLOGY_MEASURE_TYPE type);
 
   Summary:
-    Gets the sign of the last RMS value of the selected measurement type.
+    Gets the sign of the last value of the selected measurement type.
 
   Description:
-    RMS sign values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
-    For further information about RMS types, refer to DRV_METROLOGY_RMS_TYPE definition.
+    Sign values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    For further information about Measurement types, refer to DRV_METROLOGY_MEASURE_TYPE definition.
 
   Precondition:
     None.
@@ -1033,7 +1033,8 @@ uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
     type - Indicate what type of measurement is obtained.
 
   Returns:
-    The RMS sign of the last RMS value. Positive sign is identified as RMS_SIGN_POSITIVE (0), negative sign as RMS_SIGN_NEGATIVE (1).
+    The sign of the last value for the selected type.
+    Positive sign is identified as MEASURE_SIGN_POSITIVE (0), negative sign as MEASURE_SIGN_NEGATIVE (1).
 
   Example:
     <code>
@@ -1043,7 +1044,7 @@ uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
   Remarks:
     None.
 */
-DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
+DRV_METROLOGY_MEASURE_SIGN DRV_METROLOGY_GetMeasureSign(DRV_METROLOGY_MEASURE_TYPE type);
 
 // *****************************************************************************
 /* Function:
@@ -1141,7 +1142,7 @@ void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
     calibration process of the metrology library.
 
   Description:
-    These internal calibration values are used to obtain the RMS values correctly.
+    These internal calibration values are used to obtain the measurement values correctly.
     They also includes the result of the calibration process to be checked by the main application.
 
   Precondition:

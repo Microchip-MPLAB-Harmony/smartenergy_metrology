@@ -100,19 +100,19 @@ extern uint8_t met_bin_end;
 #define DRV_METROLOGY_IPC_PULSE2_IRQ_MSK          IPC_ISR_IRQ26_Msk
 </#if>
 
-#define  FREQ_Q         12U
-#define  GAIN_P_K_T_Q   24U
-#define  GAIN_VI_Q      10U
-#define  RMS_DIV_G      1024U    /* (1<<GAIN_VI_Q) */
-#define  CAL_VI_Q       29U
-#define  CAL_PH_Q       31U
-#define  RMS_Q          40U
-#define  RMS_DIV_Q      0x10000000000ULL  /* (1<<RMS_Q) */
-#define  RMS_Inx_Q      20U
-#define  RMS_DIV_Inx_Q  0x100000UL /* (1<< RMS_Inx_Q) */
-#define  RMS_PQ_SYMB    0x8000000000000000ULL       /* p/q symbol bit */
-#define  RMS_HARMONIC   0x80000000UL
-#define  CONST_Pi       3.1415926
+#define  FREQ_Q            12U
+#define  GAIN_P_K_T_Q      24U
+#define  GAIN_VI_Q         10U
+#define  DIV_GAIN          1024U /* (1 << GAIN_VI_Q) */
+#define  CAL_VI_Q          29U
+#define  CAL_PH_Q          31U
+#define  Q_FACTOR          40U
+#define  DIV_Q_FACTOR      0x10000000000ULL /* (1 << Q_FACTOR) */
+#define  Inx_Q_FACTOR      20U
+#define  DIV_Inx_Q_FACTOR  0x100000UL /* (1 << Inx_Q_FACTOR) */
+#define  PQ_SYMB           0x8000000000000000ULL /* p/q symbol bit */
+#define  HARMONIC_FACTOR   0x80000000UL
+#define  CONST_Pi          3.1415926
 
 /* Metrology Driver Sensor Type
 
@@ -300,69 +300,69 @@ typedef struct {
     unsigned int reserved : 10;
 } DRV_METROLOGY_AFE_EVENTS;
 
-/* Metrology Driver RMS type
+/* Metrology Driver Measurements type
 
   Summary:
-    Identifies the all RMS types of measurements.
+    Identifies all types of measurements.
 
   Description:
-    RMS values are calculated including all harmonics of each phase, where:
+    Values are calculated both including all harmonics and fundamental only (F added at the end of magnitude name), where:
         - U = Voltage RMS value
         - I = Current RMS value
-        - P = Active power RMS value
-        - Q = Reactive power RMS value
-        - S = Aparent power RMS value
+        - P = Active power value
+        - Q = Reactive power value
+        - S = Aparent power value
         - FREQ = Frequency of the line voltage fundamental harmonic component determined by the Metrology library using the dominant phase
         - ANGLE = Angle between the voltage and current vectors
 */
 typedef enum {
-    RMS_UA = 0,
-    RMS_UB,
-    RMS_UC,
-    RMS_IA,
-    RMS_IB,
-    RMS_IC,
-    RMS_INI,
-    RMS_INM,
-    RMS_INMI,
-    RMS_PT,
-    RMS_PA,
-    RMS_PB,
-    RMS_PC,
-    RMS_QT,
-    RMS_QA,
-    RMS_QB,
-    RMS_QC,
-    RMS_ST,
-    RMS_SA,
-    RMS_SB,
-    RMS_SC,
-    RMS_UAF,
-    RMS_UBF,
-    RMS_UCF,
-    RMS_IAF,
-    RMS_IBF,
-    RMS_ICF,
-    RMS_INMF,
-    RMS_PTF,
-    RMS_PAF,
-    RMS_PBF,
-    RMS_PCF,
-    RMS_QTF,
-    RMS_QAF,
-    RMS_QBF,
-    RMS_QCF,
-    RMS_STF,
-    RMS_SAF,
-    RMS_SBF,
-    RMS_SCF,
-    RMS_FREQ,
-    RMS_ANGLEA,
-    RMS_ANGLEB,
-    RMS_ANGLEC,
-    RMS_ANGLEN,
-    RMS_TYPE_NUM
-} DRV_METROLOGY_RMS_TYPE;
+    MEASURE_UA_RMS = 0,
+    MEASURE_UB_RMS,
+    MEASURE_UC_RMS,
+    MEASURE_IA_RMS,
+    MEASURE_IB_RMS,
+    MEASURE_IC_RMS,
+    MEASURE_INI_RMS,
+    MEASURE_INM_RMS,
+    MEASURE_INMI_RMS,
+    MEASURE_PT,
+    MEASURE_PA,
+    MEASURE_PB,
+    MEASURE_PC,
+    MEASURE_QT,
+    MEASURE_QA,
+    MEASURE_QB,
+    MEASURE_QC,
+    MEASURE_ST,
+    MEASURE_SA,
+    MEASURE_SB,
+    MEASURE_SC,
+    MEASURE_UAF_RMS,
+    MEASURE_UBF_RMS,
+    MEASURE_UCF_RMS,
+    MEASURE_IAF_RMS,
+    MEASURE_IBF_RMS,
+    MEASURE_ICF_RMS,
+    MEASURE_IMNF_RMS,
+    MEASURE_PTF,
+    MEASURE_PAF,
+    MEASURE_PBF,
+    MEASURE_PCF,
+    MEASURE_QTF,
+    MEASURE_QAF,
+    MEASURE_QBF,
+    MEASURE_QCF,
+    MEASURE_STF,
+    MEASURE_SAF,
+    MEASURE_SBF,
+    MEASURE_SCF,
+    MEASURE_FREQ,
+    MEASURE_ANGLEA,
+    MEASURE_ANGLEB,
+    MEASURE_ANGLEC,
+    MEASURE_ANGLEN,
+    MEASURE_TYPE_NUM
+} DRV_METROLOGY_MEASURE_TYPE;
 
 /* Metrology Driver AFE calculated data
 
@@ -372,12 +372,12 @@ typedef enum {
   Description:
     - energy. Active energy calculated value.
     - afeEvents. AFE events data.
-    - RMS[RMS_TYPE_NUM]. RMS calculated values.
+    - measure[MEASURE_TYPE_NUM]. Measure calculated values.
 */
 typedef struct {
     uint32_t energy;
     DRV_METROLOGY_AFE_EVENTS afeEvents;
-    uint32_t RMS[RMS_TYPE_NUM];
+    uint32_t measure[MEASURE_TYPE_NUM];
 } DRV_METROLOGY_AFE_DATA;
 
 /* Metrology Driver Configuration

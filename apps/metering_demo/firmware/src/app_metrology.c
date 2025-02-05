@@ -523,7 +523,7 @@ void APP_METROLOGY_Tasks (void)
 
                 // Send new Energy values to the Energy Task
                 newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-                newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
+                newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
                 if (APP_ENERGY_SendEnergyData(&newMetrologyData) == false)
                 {
                     SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
@@ -650,9 +650,9 @@ bool APP_METROLOGY_GetAccumulatorRegister(ACCUMULATOR_REG_ID regId, uint64_t * r
 
 void APP_METROLOGY_CaptureHarmonicData(void)
 {
-    (void) memcpy((uint8_t *)&app_metrologyData.harmonicsData, 
+    (void) memcpy((uint8_t *)&app_metrologyData.harmonicsData,
             (uint8_t *)app_metrologyData.pMetHarData, sizeof(DRV_METROLOGY_REGS_HARMONICS));
-    
+
 }
 
 bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint8_t harmonicNum, uint32_t *regValue, char *regName)
@@ -661,65 +661,65 @@ bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint8_t harmonicN
     {
         return false;
     }
-    
+
     switch(regId)
     {
         case HARMONICS_I_A_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.I_A_m_R[harmonicNum];
             break;
-            
+
         case HARMONICS_I_B_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.I_B_m_R[harmonicNum];
             break;
-            
+
         case HARMONICS_I_C_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.I_C_m_R[harmonicNum];
             break;
-            
+
         case HARMONICS_I_N_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.I_N_m_R[harmonicNum];
             break;
-            
+
         case HARMONICS_V_A_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.V_A_m_R[harmonicNum];
             break;
-            
+
         case HARMONICS_V_B_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.V_B_m_R[harmonicNum];
             break;
-            
+
         case HARMONICS_V_C_m_R_ID:
             *regValue = app_metrologyData.harmonicsData.V_C_m_R[harmonicNum];
             break;
-           
+
         case HARMONICS_I_A_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.I_A_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_I_B_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.I_B_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_I_C_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.I_C_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_I_N_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.I_N_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_V_A_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.V_A_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_V_B_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.V_B_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_V_C_m_I_ID:
             *regValue = app_metrologyData.harmonicsData.V_C_m_I[harmonicNum];
             break;
-            
+
         case HARMONICS_REG_NUM:
         default:
             break;
@@ -733,19 +733,19 @@ bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint8_t harmonicN
     return true;
 }
 
-bool APP_METROLOGY_GetRMS(DRV_METROLOGY_RMS_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_RMS_SIGN * sign)
+bool APP_METROLOGY_GetMeasure(DRV_METROLOGY_MEASURE_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_MEASURE_SIGN * sign)
 {
-    if (rmsId >= RMS_TYPE_NUM)
+    if (rmsId >= MEASURE_TYPE_NUM)
     {
         return false;
     }
 
     if (sign != NULL)
     {
-        *sign = DRV_METROLOGY_GetRMSSign(rmsId);
+        *sign = DRV_METROLOGY_GetMeasureSign(rmsId);
     }
 
-    *rmsValue = DRV_METROLOGY_GetRMSValue(rmsId);
+    *rmsValue = DRV_METROLOGY_GetMeasureValue(rmsId);
     return true;
 }
 
