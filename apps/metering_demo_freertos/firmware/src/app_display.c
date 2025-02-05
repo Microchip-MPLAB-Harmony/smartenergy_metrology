@@ -551,7 +551,7 @@ static void APP_DISPLAY_Process(void)
 
     if (upd_symbols)
     {
-        APP_EVENTS_FLAGS eventFlags;
+        DRV_METROLOGY_AFE_EVENTS eventFlags;
         APP_EVENTS_GetLastEventFlags(&eventFlags);
 
         if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_A) && (eventFlags.sagA))

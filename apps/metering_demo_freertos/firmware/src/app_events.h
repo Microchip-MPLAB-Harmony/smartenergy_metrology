@@ -124,23 +124,6 @@ typedef struct
 
 } APP_EVENTS_QUEUE_DATA;
 
-typedef struct {
-    uint32_t paDir : 1;
-    uint32_t pbDir : 1;
-    uint32_t pcDir : 1;
-    uint32_t ptDir : 1;
-    uint32_t qaDir : 1;
-    uint32_t qbDir : 1;
-    uint32_t qcDir : 1;
-    uint32_t qtDir : 1;
-    uint32_t sagA : 1;
-    uint32_t sagB : 1;
-    uint32_t sagC : 1;
-    uint32_t swellA : 1;
-    uint32_t swellB : 1;
-    uint32_t swellC : 1;
-} APP_EVENTS_FLAGS;
-
 // *****************************************************************************
 /* Application states
 
@@ -183,7 +166,7 @@ typedef struct
 
     APP_EVENTS_EVENTS events;
 
-    APP_EVENTS_FLAGS flags;
+    DRV_METROLOGY_AFE_EVENTS flags;
 
     bool dataIsRdy;
 
@@ -273,7 +256,7 @@ void APP_EVENTS_Tasks( void );
 void APP_EVENTS_ClearEvents(void);
 bool APP_EVENTS_GetNumEvents(APP_EVENTS_EVENT_ID eventId, uint8_t * counter);
 bool APP_EVENTS_GetEventInfo(APP_EVENTS_EVENT_ID eventId, uint8_t offset, APP_EVENTS_EVENT_INFO *eventInfo);
-void APP_EVENTS_GetLastEventFlags(APP_EVENTS_FLAGS *eventFlags);
+void APP_EVENTS_GetLastEventFlags(DRV_METROLOGY_AFE_EVENTS *eventFlags);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
