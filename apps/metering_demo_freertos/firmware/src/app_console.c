@@ -2875,7 +2875,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_UB_RMS, &vb, 0);
             APP_METROLOGY_GetMeasure(MEASURE_UC_RMS, &vc, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present voltage is :\r\nUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/10000, (float)vb/10000, (float)vc/10000);
+            SYS_CMD_PRINT("Present voltage is :\r\nUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/VI_ACCURACY_INT, (float)vb/VI_ACCURACY_INT, (float)vc/VI_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2898,8 +2898,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_INMI_RMS, &inmi, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present current is :\r\nIa=%.4fA Ib=%.4fA Ic=%.4fA Ini=%.4fA Inm=%.4fA Inmi=%.4fA\r\n",
-                    (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)ini/10000,
-                    (float)inm/10000, (float)inmi/10000);
+                    (float)ia/VI_ACCURACY_INT, (float)ib/VI_ACCURACY_INT, (float)ic/VI_ACCURACY_INT, (float)ini/VI_ACCURACY_INT,
+                    (float)inm/VI_ACCURACY_INT, (float)inmi/VI_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2920,8 +2920,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_PC, &pc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present active power is :\r\nPt=%c%.1fW Pa=%c%.1fW Pb=%c%.1fW Pc=%c%.1fW\r\n",
-                   sign[signt], (float)pt/10, sign[signa], (float)pa/10, sign[signb],
-                    (float)pb/10, sign[signc], (float)pc/10);
+                   sign[signt], (float)pt/PQS_ACCURACY_INT, sign[signa], (float)pa/PQS_ACCURACY_INT, sign[signb],
+                    (float)pb/PQS_ACCURACY_INT, sign[signc], (float)pc/PQS_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2942,8 +2942,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_QC, &qc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present reactive power is :\r\nQt=%c%.1fVAr Qa=%c%.1fVAr Qb=%c%.1fVAr Qc=%c%.1fVAr\r\n",
-                   sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb],
-                    (float)qb/10, sign[signc], (float)qc/10);
+                   sign[signt], (float)qt/PQS_ACCURACY_INT, sign[signa], (float)qa/PQS_ACCURACY_INT, sign[signb],
+                    (float)qb/PQS_ACCURACY_INT, sign[signc], (float)qc/PQS_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2963,7 +2963,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_SC, &sc, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present apparent power is :\r\nSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
-                   (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
+                   (float)st/PQS_ACCURACY_INT, (float)sa/PQS_ACCURACY_INT, (float)sb/PQS_ACCURACY_INT, (float)sc/PQS_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2981,7 +2981,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_UBF_RMS, &vb, 0);
             APP_METROLOGY_GetMeasure(MEASURE_UCF_RMS, &vc, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present voltage (fundamental) is :\r\nUaf=%.3fV Ubf=%.3fV Ucf=%.3fV\r\n",(float)va/10000, (float)vb/10000, (float)vc/10000);
+            SYS_CMD_PRINT("Present voltage (fundamental) is :\r\nUaf=%.3fV Ubf=%.3fV Ucf=%.3fV\r\n",(float)va/VI_ACCURACY_INT, (float)vb/VI_ACCURACY_INT, (float)vc/VI_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -3001,7 +3001,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_IMNF_RMS, &inm, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present current (fundamental) is :\r\nIaf=%.4fA Ibf=%.4fA Icf=%.4fA Inmf=%.4fA\r\n",
-                    (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)inm/10000);
+                    (float)ia/VI_ACCURACY_INT, (float)ib/VI_ACCURACY_INT, (float)ic/VI_ACCURACY_INT, (float)inm/VI_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -3022,8 +3022,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_PCF, &pc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present active power (fundamental) is :\r\nPtf=%c%.1fW Paf=%c%.1fW Pbf=%c%.1fW Pcf=%c%.1fW\r\n",
-                   sign[signt], (float)pt/10, sign[signa], (float)pa/10, sign[signb],
-                    (float)pb/10, sign[signc], (float)pc/10);
+                   sign[signt], (float)pt/PQS_ACCURACY_INT, sign[signa], (float)pa/PQS_ACCURACY_INT, sign[signb],
+                    (float)pb/PQS_ACCURACY_INT, sign[signc], (float)pc/PQS_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -3044,8 +3044,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_QCF, &qc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present reactive power (fundamental) is :\r\nQtf=%c%.1fVAr Qaf=%c%.1fVAr Qbf=%c%.1fVAr Qcf=%c%.1fVAr\r\n",
-                   sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb],
-                    (float)qb/10, sign[signc], (float)qc/10);
+                   sign[signt], (float)qt/PQS_ACCURACY_INT, sign[signa], (float)qa/PQS_ACCURACY_INT, sign[signb],
+                    (float)qb/PQS_ACCURACY_INT, sign[signc], (float)qc/PQS_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -3065,7 +3065,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_SCF, &sc, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present apparent power (fundamental) is :\r\nSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
-                   (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
+                   (float)st/PQS_ACCURACY_INT, (float)sa/PQS_ACCURACY_INT, (float)sb/PQS_ACCURACY_INT, (float)sc/PQS_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;

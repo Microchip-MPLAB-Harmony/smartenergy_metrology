@@ -338,7 +338,7 @@ static uint32_t lDRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
     {
         m = sqrt(m);
         m = m * (double)k_x / (double)DIV_GAIN;
-        m = m * (double)10000;
+        m = m * VI_ACCURACY_DOUBLE;
     }
 
     return ((uint32_t)(m));
@@ -376,7 +376,7 @@ static uint32_t lDRV_Metrology_GetPQ(int64_t val, uint32_t k_ix, uint32_t k_vx)
     mult = (double)k_ix * (double)k_vx;
     divisor = (double)DIV_GAIN * (double)DIV_GAIN;
     m = (m * mult) / divisor;
-    m = m * 10.0;
+    m = m * PQS_ACCURACY_DOUBLE;
 
     return ((uint32_t)(m));
 }
@@ -405,7 +405,7 @@ static uint32_t lDRV_Metrology_GetS(int64_t pv, int64_t qv, uint32_t k_ix, uint3
     mult = (double)k_ix * (double)k_vx;
     divisor = (double)DIV_GAIN * (double)DIV_GAIN;
     m = (m * mult) / divisor;
-    m = m * 10.0;
+    m = m * PQS_ACCURACY_DOUBLE;
 
     n = lDRV_Metrology_GetDouble(qv);
 
@@ -414,7 +414,7 @@ static uint32_t lDRV_Metrology_GetS(int64_t pv, int64_t qv, uint32_t k_ix, uint3
     mult = (double)k_ix * (double)k_vx;
     divisor = (double)DIV_GAIN * (double)DIV_GAIN;
     n = (n * mult) / divisor;
-    n = n * 10.0;
+    n = n * PQS_ACCURACY_DOUBLE;
 
     m = m * m;
     n = n * n;
@@ -468,21 +468,21 @@ static uint32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
-        k = m / 4000.0;                 /* k =k/fs */
+        k = m / SAMPLING_FREQ;          /* k =k/fs */
 
         m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_B);
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
-        k += m / 4000.0;                /* k =k/fs */
+        k += m / SAMPLING_FREQ;         /* k =k/fs */
 
         m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_C);
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
-        k += m / 4000.0;                /* k =k/fs */
+        k += m / SAMPLING_FREQ;         /* k =k/fs */
     }
     else
     {
@@ -492,24 +492,24 @@ static uint32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
-        k = m / 4000.0;                 /* k =k/fs */
+        k = m / SAMPLING_FREQ;          /* k =k/fs */
 
         m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_B);
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
-        k += m / 4000.0;                /* k =k/fs */
+        k += m / SAMPLING_FREQ;         /* k =k/fs */
 
         m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_C);
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
-        k += m / 4000.0;                /* k =k/fs */
+        k += m / SAMPLING_FREQ;         /* k =k/fs */
     }
 
-    k = k / 3600.0;         /* xxxxxx (Wh/Varh) */
+    k = k / SECS_IN_HOUR_DOUBLE; /* xxxxxx (Wh/Varh) */
     k = k * 10000.0;        /* *10000 (kWh/kVarh) */
 
     return ((uint32_t)(k));  /* xxxx (kWh/kVarh) */
@@ -1654,14 +1654,14 @@ void DRV_METROLOGY_StartCalibration(void)
         pCalibrationData->numIntegrationPeriods = 4U;
 
         /* Increase accuracy of references for calibrating procedure */
-        pCalibrationData->references.aimIA *= 10000.0;
-        pCalibrationData->references.aimVA *= 10000.0;
+        pCalibrationData->references.aimIA *= VI_ACCURACY_DOUBLE;
+        pCalibrationData->references.aimVA *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.angleA *= 1000.0;
-        pCalibrationData->references.aimIB *= 10000.0;
-        pCalibrationData->references.aimVB *= 10000.0;
+        pCalibrationData->references.aimIB *= VI_ACCURACY_DOUBLE;
+        pCalibrationData->references.aimVB *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.angleB *= 1000.0;
-        pCalibrationData->references.aimIC *= 10000.0;
-        pCalibrationData->references.aimVC *= 10000.0;
+        pCalibrationData->references.aimIC *= VI_ACCURACY_DOUBLE;
+        pCalibrationData->references.aimVC *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.angleC *= 1000.0;
 
         /* Save FEATURE_CTRL register value, to be restored after calibration */

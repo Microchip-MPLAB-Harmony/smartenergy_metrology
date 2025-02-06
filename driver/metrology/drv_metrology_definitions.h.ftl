@@ -100,19 +100,25 @@ extern uint8_t met_bin_end;
 #define DRV_METROLOGY_IPC_PULSE2_IRQ_MSK          IPC_ISR_IRQ26_Msk
 </#if>
 
-#define  FREQ_Q            12U
-#define  GAIN_P_K_T_Q      24U
-#define  GAIN_VI_Q         10U
-#define  DIV_GAIN          1024U /* (1 << GAIN_VI_Q) */
-#define  CAL_VI_Q          29U
-#define  CAL_PH_Q          31U
-#define  Q_FACTOR          40U
-#define  DIV_Q_FACTOR      0x10000000000ULL /* (1 << Q_FACTOR) */
-#define  Inx_Q_FACTOR      20U
-#define  DIV_Inx_Q_FACTOR  0x100000UL /* (1 << Inx_Q_FACTOR) */
-#define  PQ_SYMB           0x8000000000000000ULL /* p/q symbol bit */
-#define  HARMONIC_FACTOR   0x80000000UL
-#define  CONST_Pi          3.1415926
+#define FREQ_Q               12U
+#define GAIN_P_K_T_Q         24U
+#define GAIN_VI_Q            10U
+#define DIV_GAIN             1024U /* (1 << GAIN_VI_Q) */
+#define CAL_VI_Q             29U
+#define CAL_PH_Q             31U
+#define Q_FACTOR             40U
+#define DIV_Q_FACTOR         0x10000000000ULL /* (1 << Q_FACTOR) */
+#define Inx_Q_FACTOR         20U
+#define DIV_Inx_Q_FACTOR     0x100000UL /* (1 << Inx_Q_FACTOR) */
+#define PQ_SYMB              0x8000000000000000ULL /* p/q symbol bit */
+#define HARMONIC_FACTOR      0x80000000UL
+#define CONST_Pi             3.1415926
+#define SAMPLING_FREQ        4000.0
+#define VI_ACCURACY_DOUBLE   10000.0
+#define VI_ACCURACY_INT      10000U
+#define SECS_IN_HOUR_DOUBLE  3600.0
+#define PQS_ACCURACY_DOUBLE  10.0
+#define PQS_ACCURACY_INT     10U
 
 /* Metrology Driver Sensor Type
 
