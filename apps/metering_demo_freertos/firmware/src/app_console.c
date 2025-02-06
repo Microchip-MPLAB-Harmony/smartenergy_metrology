@@ -2875,7 +2875,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_UB_RMS, &vb, 0);
             APP_METROLOGY_GetMeasure(MEASURE_UC_RMS, &vc, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present voltage is :\r\nUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/VI_ACCURACY_INT, (float)vb/VI_ACCURACY_INT, (float)vc/VI_ACCURACY_INT);
+            SYS_CMD_PRINT("Present voltage is :\r\nUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",
+                    (float)va/VI_ACCURACY_INT, (float)vb/VI_ACCURACY_INT, (float)vc/VI_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2981,7 +2982,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_UBF_RMS, &vb, 0);
             APP_METROLOGY_GetMeasure(MEASURE_UCF_RMS, &vc, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present voltage (fundamental) is :\r\nUaf=%.3fV Ubf=%.3fV Ucf=%.3fV\r\n",(float)va/VI_ACCURACY_INT, (float)vb/VI_ACCURACY_INT, (float)vc/VI_ACCURACY_INT);
+            SYS_CMD_PRINT("Present voltage (fundamental) is :\r\nUaf=%.3fV Ubf=%.3fV Ucf=%.3fV\r\n",
+                    (float)va/VI_ACCURACY_INT, (float)vb/VI_ACCURACY_INT, (float)vc/VI_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -3081,7 +3083,7 @@ void APP_CONSOLE_Tasks ( void )
 
             APP_METROLOGY_GetMeasure(MEASURE_FREQ, &freq, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/100);
+            SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/FREQ_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -3102,8 +3104,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_ANGLEN, &an, &signn);
             // Show received data on console
             SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f Angle_N=%c%.3f\r\n",
-                    sign[signa], (float)aa/100000, sign[signb], (float)ab/100000,
-                    sign[signc], (float)ac/100000, sign[signn], (float)an/100000);
+                    sign[signa], (float)aa/ANGLE_ACCURACY_INT, sign[signb], (float)ab/ANGLE_ACCURACY_INT,
+                    sign[signc], (float)ac/ANGLE_ACCURACY_INT, sign[signn], (float)an/ANGLE_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;

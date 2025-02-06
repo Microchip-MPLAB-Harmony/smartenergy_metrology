@@ -433,7 +433,7 @@ static uint32_t lDRV_Metrology_GetAngle(int64_t p, int64_t q)
     qd = (double)q;
     m = atan2(qd, pd);
     m = 180.0 * m;
-    m = m * 100000.0;
+    m = m * ANGLE_ACCURACY_DOUBLE;
     m = m / CONST_Pi;
     n = (int32_t)m;
 
@@ -671,7 +671,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     afeMeasure[MEASURE_STF]  = afeMeasure[MEASURE_SAF] + afeMeasure[MEASURE_SBF] + afeMeasure[MEASURE_SCF];
 
-    afeMeasure[MEASURE_FREQ]  = (freq * 100U) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQ]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
 
     afeMeasure[MEASURE_ANGLEA]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
     afeMeasure[MEASURE_ANGLEB]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);
