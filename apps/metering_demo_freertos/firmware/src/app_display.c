@@ -257,7 +257,7 @@ static void APP_DISPLAY_Process(void)
 {
     uint64_t total;
     uint64_t upd_symbols = 1;
-    uint32_t rmsValue;
+    uint32_t value;
     uint8_t buff1[12];
     uint8_t idx;
     struct tm current_time;
@@ -340,10 +340,10 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_VA_RMS:
         {
-            APP_METROLOGY_GetMeasure(MEASURE_UA_RMS, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_UA_RMS, &value, NULL);
             sprintf((char *)buff1, "%5u%03u",
-                    (unsigned int)(rmsValue/VI_ACCURACY_INT),
-                    (unsigned int)((rmsValue%VI_ACCURACY_INT)/10));
+                    (unsigned int)(value/VI_ACCURACY_INT),
+                    (unsigned int)((value%VI_ACCURACY_INT)/10));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_V);
             cl010_show_icon(CL010_ICON_DOT_1);
@@ -354,10 +354,10 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_VB_RMS:
         {
-            APP_METROLOGY_GetMeasure(MEASURE_UB_RMS, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_UB_RMS, &value, NULL);
             sprintf((char *)buff1, "%5u%03u",
-                    (unsigned int)(rmsValue/VI_ACCURACY_INT),
-                    (unsigned int)((rmsValue%VI_ACCURACY_INT)/10));
+                    (unsigned int)(value/VI_ACCURACY_INT),
+                    (unsigned int)((value%VI_ACCURACY_INT)/10));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_V);
             cl010_show_icon(CL010_ICON_DOT_1);
@@ -368,10 +368,10 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_VC_RMS:
         {
-            APP_METROLOGY_GetMeasure(MEASURE_UC_RMS, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_UC_RMS, &value, NULL);
             sprintf((char *)buff1, "%5u%03u",
-                    (unsigned int)(rmsValue/VI_ACCURACY_INT),
-                    (unsigned int)((rmsValue%VI_ACCURACY_INT)/10));
+                    (unsigned int)(value/VI_ACCURACY_INT),
+                    (unsigned int)((value%VI_ACCURACY_INT)/10));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_V);
             cl010_show_icon(CL010_ICON_DOT_1);
@@ -382,10 +382,10 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_IA_RMS:
         {
-            APP_METROLOGY_GetMeasure(MEASURE_IA_RMS, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_IA_RMS, &value, NULL);
             sprintf((char *)buff1, "%5u%03u",
-                    (unsigned int)(rmsValue/VI_ACCURACY_INT),
-                    (unsigned int)((rmsValue%VI_ACCURACY_INT)/10));
+                    (unsigned int)(value/VI_ACCURACY_INT),
+                    (unsigned int)((value%VI_ACCURACY_INT)/10));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_A);
             cl010_show_icon(CL010_ICON_DOT_1);
@@ -396,10 +396,10 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_IB_RMS:
         {
-            APP_METROLOGY_GetMeasure(MEASURE_IB_RMS, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_IB_RMS, &value, NULL);
             sprintf((char *)buff1, "%5u%03u",
-                    (unsigned int)(rmsValue/VI_ACCURACY_INT),
-                    (unsigned int)((rmsValue%VI_ACCURACY_INT)/10));
+                    (unsigned int)(value/VI_ACCURACY_INT),
+                    (unsigned int)((value%VI_ACCURACY_INT)/10));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_A);
             cl010_show_icon(CL010_ICON_DOT_1);
@@ -410,10 +410,10 @@ static void APP_DISPLAY_Process(void)
 
         case APP_DISPLAY_IC_RMS:
         {
-            APP_METROLOGY_GetMeasure(MEASURE_IC_RMS, &rmsValue, NULL);
+            APP_METROLOGY_GetMeasure(MEASURE_IC_RMS, &value, NULL);
             sprintf((char *)buff1, "%5u%03u",
-                    (unsigned int)(rmsValue/VI_ACCURACY_INT),
-                    (unsigned int)((rmsValue%VI_ACCURACY_INT)/10));
+                    (unsigned int)(value/VI_ACCURACY_INT),
+                    (unsigned int)((value%VI_ACCURACY_INT)/10));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_A);
             cl010_show_icon(CL010_ICON_DOT_1);

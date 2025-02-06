@@ -733,19 +733,19 @@ bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint8_t harmonicN
     return true;
 }
 
-bool APP_METROLOGY_GetMeasure(DRV_METROLOGY_MEASURE_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_MEASURE_SIGN * sign)
+bool APP_METROLOGY_GetMeasure(DRV_METROLOGY_MEASURE_TYPE measureId, uint32_t * value, DRV_METROLOGY_MEASURE_SIGN * sign)
 {
-    if (rmsId >= MEASURE_TYPE_NUM)
+    if (measureId >= MEASURE_TYPE_NUM)
     {
         return false;
     }
 
     if (sign != NULL)
     {
-        *sign = DRV_METROLOGY_GetMeasureSign(rmsId);
+        *sign = DRV_METROLOGY_GetMeasureSign(measureId);
     }
 
-    *rmsValue = DRV_METROLOGY_GetMeasureValue(rmsId);
+    *value = DRV_METROLOGY_GetMeasureValue(measureId);
     return true;
 }
 
