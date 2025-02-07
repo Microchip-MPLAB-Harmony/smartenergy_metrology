@@ -393,34 +393,53 @@ static unsigned char lDRV_Metrology_CheckPQDir(int64_t val)
     }
 }
 
-static uint32_t lDRV_Metrology_GetS(int64_t pv, int64_t qv, uint32_t k_ix, uint32_t k_vx)
+static uint32_t lDRV_Metrology_GetS(uint64_t i_val, uint64_t v_val, uint32_t k_ix, uint32_t k_vx)
 {
-    double m, n;
-    double divisor, mult;
+    double i_m, v_m;
+    double s_m;
 
-    m = lDRV_Metrology_GetDouble(pv);
+    /* Get i and v values in double format */
+    i_m = (double)i_val;
+    v_m = (double)v_val;
+    i_m = (i_m / (double)DIV_Q_FACTOR);
+    v_m = (v_m / (double)DIV_Q_FACTOR);
+    /* Accumulated to mean value */
+    i_m = (i_m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
+    v_m = (v_m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
 
-    m = m / (double)DIV_Q_FACTOR;
-    m = m / (double)gDrvMetObj.metRegisters->MET_STATUS.N;
-    mult = (double)k_ix * (double)k_vx;
-    divisor = (double)DIV_GAIN * (double)DIV_GAIN;
-    m = (m * mult) / divisor;
-    m = m * PQS_ACCURACY_DOUBLE;
+    /* Obtain RMS value for Current */
+    if (i_m < 0.0)
+    {
+        /* Protection against negative value */
+        i_m = 0.0;
+    }
+    else
+    {
+        /* Square root */
+        i_m = sqrt(i_m);
+        /* Convert to Amps */
+        i_m = i_m * (double)k_ix / (double)DIV_GAIN;
+    }
 
-    n = lDRV_Metrology_GetDouble(qv);
+    /* Obtain RMS value for Voltage */
+    if (v_m < 0.0)
+    {
+        /* Protection against negative value */
+        v_m = 0.0;
+    }
+    else
+    {
+        /* Square root */
+        v_m = sqrt(v_m);
+        /* Convert to Volts */
+        v_m = v_m * (double)k_vx / (double)DIV_GAIN;
+    }
 
-    n = n / (double)DIV_Q_FACTOR;
-    n = n / (double)gDrvMetObj.metRegisters->MET_STATUS.N;
-    mult = (double)k_ix * (double)k_vx;
-    divisor = (double)DIV_GAIN * (double)DIV_GAIN;
-    n = (n * mult) / divisor;
-    n = n * PQS_ACCURACY_DOUBLE;
+    /* Compute Apparent Power as Irms*Vrms */
+    s_m = i_m * v_m;
+    s_m = s_m * PQS_ACCURACY_DOUBLE;
 
-    m = m * m;
-    n = n * n;
-    m = sqrt(m + n);
-
-    return ((uint32_t)(m));
+    return ((uint32_t)(s_m));
 }
 
 static uint32_t lDRV_Metrology_GetAngle(int64_t p, int64_t q)
@@ -623,9 +642,9 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     afeMeasure[MEASURE_QC]  = lDRV_Metrology_GetPQ(gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
     gDrvMetObj.metAFEData.afeEvents.qcDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C);
 
-    afeMeasure[MEASURE_SA]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
-    afeMeasure[MEASURE_SB]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
-    afeMeasure[MEASURE_SC]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    afeMeasure[MEASURE_SA]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.I_A, gDrvMetObj.metAccData.V_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeMeasure[MEASURE_SB]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.I_B, gDrvMetObj.metAccData.V_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeMeasure[MEASURE_SC]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.I_C, gDrvMetObj.metAccData.V_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
 
     afeMeasure[MEASURE_UAF_RMS] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_A_F, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
     afeMeasure[MEASURE_UBF_RMS] = lDRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
