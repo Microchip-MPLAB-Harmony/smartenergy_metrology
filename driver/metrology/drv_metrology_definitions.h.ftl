@@ -260,13 +260,13 @@ typedef struct {
 
   Description:
     - pHarmonicAnalysisResponse. Pointer to store the result of the Harmonic Analysis.
-    - harmonicNum: Store the harmonic number to be analyzed.
+    - harmonicBitmap: Store the harmonics to be analyzed.
     - integrationPeriods: Indicate the number of integration periods that must be waited until get the response
     - running: Flag to indicate that harmonic analysis is in process.
 */
 typedef struct {
     DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;
-    uint8_t harmonicNum;
+    uint32_t harmonicBitmap;
     uint8_t integrationPeriods;
     bool  running;
     bool holdRegs;

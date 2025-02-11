@@ -337,12 +337,12 @@ static void _APP_METROLOGY_CalibrationCallback(bool result)
     OSAL_SEM_Post(&appMetrologyCalibrationSemID);
 }
 
-static void _APP_METROLOGY_HarmonicAnalysisCallback(uint8_t harmonicNum)
+static void _APP_METROLOGY_HarmonicAnalysisCallback(uint32_t harmonicBitmap)
 {
     if (app_metrologyData.pHarmonicAnalysisCallback)
     {
         app_metrologyData.harmonicAnalysisPending = false;
-        app_metrologyData.pHarmonicAnalysisCallback(harmonicNum);
+        app_metrologyData.pHarmonicAnalysisCallback(harmonicBitmap);
     }
 }
 
@@ -681,7 +681,7 @@ void APP_METROLOGY_CaptureHarmonicData(void)
 
 bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint8_t harmonicNum, uint32_t *regValue, char *regName)
 {
-    if (harmonicNum >= 31)
+    if (harmonicNum >= DRV_METROLOGY_HARMONICS_MAX_ORDER)
     {
         return false;
     }
@@ -827,7 +827,7 @@ size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *address)
     return (size_t)app_metrologyData.pMetControl->CAPTURE_BUFF_SIZE;
 }
 
-bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
+bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap)
 {
     if (app_metrologyData.harmonicAnalysisPending)
     {
@@ -844,11 +844,15 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
         return false;
     }
 
-    app_metrologyData.harmonicAnalysisPending = true;
-
-    DRV_METROLOGY_StartHarmonicAnalysis(harmonicNum, app_metrologyData.pHarmonicAnalysisResponse);
-
-    return true;
+    if (DRV_METROLOGY_StartHarmonicAnalysis(harmonicBitmap, app_metrologyData.pHarmonicAnalysisResponse))
+    {
+        app_metrologyData.harmonicAnalysisPending = true;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK callback,

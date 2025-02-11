@@ -342,20 +342,12 @@ static void _maxDemandCallback(struct tm * time, bool dataValid)
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MAX_DEMAND;
 }
 
-static void _harmonicAnalysisCallback(uint8_t harmonicNum)
+static void _harmonicAnalysisCallback(uint32_t harmonicBitmap)
 {
-    app_consoleData.harmonicNumRequest = harmonicNum;
-    app_consoleData.harmonicNumPrint = 1;
-    if (harmonicNum == 0)
-    {
-        app_consoleData.numRegsPending = APP_CONSOLE_HAR_DESC_SIZE;
-        app_consoleData.numHarmsPending = DRV_METROLOGY_HARMONICS_MAX_ORDER;
-        app_consoleData.state = APP_CONSOLE_STATE_PRINT_ALL_HARMONIC_ANALYSIS;
-    }
-    else
-    {
-        app_consoleData.state = APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS;
-    }
+    app_consoleData.harmonicBitmap = harmonicBitmap;
+    app_consoleData.numRegsPending = APP_CONSOLE_HAR_DESC_SIZE;
+    app_consoleData.numHarmsPending = DRV_METROLOGY_HARMONICS_MAX_ORDER;
+    app_consoleData.state = APP_CONSOLE_STATE_PRINT_ALL_HARMONIC_ANALYSIS;
 }
 
 static void _calibrationCallback(bool result)
@@ -1287,32 +1279,50 @@ static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    uint8_t harmonicNum = 0xFF;
+    uint8_t num = 0xFF;
+    uint32_t harmonicBitmap = 0xFFFFFFFF;
 
     if (argc == 1)
     {
-        harmonicNum = 0;
+        harmonicBitmap = 0x7FFFFFFF;
+        num = 0;
     }
     else if (argc == 2)
     {
         // Extract harmonic number from parameters
-        harmonicNum = (uint8_t)strtol(argv[1], NULL, 10);
-    }
-
-    if (harmonicNum != 0xFF)
-    {
-        // Set harmonics calculation mode on metrology driver
-        if (APP_METROLOGY_StartHarmonicAnalysis(harmonicNum) == false)
+        num = (uint8_t)strtol(argv[1], NULL, 10);
+        if (num == 0)
         {
-            // Incorrect parameter number
-            SYS_CMD_MESSAGE("Previous harmonic analysis is running\r\n");
+            harmonicBitmap = 0x7FFFFFFF;
         }
         else
         {
-            /* Show console communication icon */
-            APP_DISPLAY_SetSerialCommunication();
+            harmonicBitmap = 1 << (num - 1);
         }
-        // Response will be provided on _harmonicAnalysisCallback function
+    }
+
+    if (num != 0xFF)
+    {
+        if (num <= DRV_METROLOGY_HARMONICS_MAX_ORDER)
+        {
+            // Set harmonics calculation mode on metrology driver
+            if (APP_METROLOGY_StartHarmonicAnalysis(harmonicBitmap) == false)
+            {
+                // Incorrect parameter number
+                SYS_CMD_MESSAGE("Previous harmonic analysis is running\r\n");
+            }
+            else
+            {
+                /* Show console communication icon */
+                APP_DISPLAY_SetSerialCommunication();
+            }
+            // Response will be provided on _harmonicAnalysisCallback function
+        }
+        else
+        {
+            // Incorrect harmonic order
+            SYS_CMD_MESSAGE("Invalid harmonic order\r\n");
+        }
     }
     else
     {
@@ -2535,54 +2545,6 @@ void APP_CONSOLE_Tasks ( void )
             break;
         }
 
-        case APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS:
-        {
-            DRV_METROLOGY_HARMONICS_RMS *pHarmonicRMSData;
-            uint8_t harmonicNum;
-
-            harmonicNum = app_consoleData.harmonicNumRequest;
-            pHarmonicRMSData = &harmonicAnalysisRMSData[harmonicNum - 1];
-
-            if (app_consoleData.harmonicNumPrint == 1)
-            {
-                if (app_consoleData.harmonicNumRequest == 0)
-                {
-                    // Remove Prompt symbol
-                    _removePrompt();
-                }
-
-                // Show received data on console
-                SYS_CMD_PRINT("The calculated harmonic %u Irms/Vrms:\r\n", harmonicNum);
-
-                SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\r\n");
-                SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_A_m,
-                        pHarmonicRMSData->Irms_B_m, pHarmonicRMSData->Irms_C_m);
-            }
-            else if (app_consoleData.harmonicNumPrint == 2)
-            {
-                SYS_CMD_MESSAGE("Irms_Har_N(A)      Vrms_Har_A(V)      Vrms_Har_B(V)\r\n");
-                SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_N_m,
-                        pHarmonicRMSData->Vrms_A_m, pHarmonicRMSData->Vrms_B_m);
-            }
-            else if (app_consoleData.harmonicNumPrint == 3)
-            {
-                SYS_CMD_MESSAGE("Vrms_Har_C(V)\r\n");
-                SYS_CMD_PRINT("%-19.3f\r\n", pHarmonicRMSData->Vrms_C_m);
-
-                // Go back to IDLE
-                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
-            }
-
-            if (app_consoleData.state != APP_CONSOLE_STATE_PROMPT)
-            {
-                app_consoleData.harmonicNumPrint++;
-                app_consoleData.nextState = app_consoleData.state;
-                app_consoleData.state = APP_CONSOLE_STATE_DELAY;
-                app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
-            }
-            break;
-        }
-
         case APP_CONSOLE_STATE_PRINT_ALL_HARMONIC_ANALYSIS:
         {
             if (app_consoleData.numRegsPending == APP_CONSOLE_HAR_DESC_SIZE)
@@ -2601,68 +2563,65 @@ void APP_CONSOLE_Tasks ( void )
             {
                 double rmsValues[4];
                 uint8_t numRegId;
-                uint8_t harmonicNum;
+                uint8_t currHarmonic;
+                uint8_t index, printCount;
 
                 numRegId = APP_CONSOLE_HAR_DESC_SIZE - app_consoleData.numRegsPending;
-                harmonicNum = DRV_METROLOGY_HARMONICS_MAX_ORDER - app_consoleData.numHarmsPending;
+                currHarmonic = DRV_METROLOGY_HARMONICS_MAX_ORDER - app_consoleData.numHarmsPending;
 
-                // Read and print harmonic values
-                if (app_consoleData.numHarmsPending >= 4)
+                if (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER)
                 {
-                    if (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER)
+                    SYS_CMD_PRINT("%s\r\n", _console_har_desc[numRegId]);
+                }
+
+                // Start or continue walking through bitmap from current position
+                printCount = 0;
+                for (index = currHarmonic; index < DRV_METROLOGY_HARMONICS_MAX_ORDER; index ++)
+                {
+                    // Active or not, decrease pending number
+                    app_consoleData.numHarmsPending--;
+                    if ((app_consoleData.harmonicBitmap & (1 << index)) != 0U)
                     {
-                        SYS_CMD_PRINT("%s\r\n", _console_har_desc[numRegId]);
+                        // Active harmonic
+                        rmsValues[printCount] = *((double *)&harmonicAnalysisRMSData[index] + numRegId);
+                        printCount++;
+                        if (printCount == 4)
+                        {
+                            // Max prints per process, exit
+                            break;
+                        }
                     }
+                }
 
-                    rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    rmsValues[1] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    rmsValues[2] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    rmsValues[3] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-
+                // Print
+                if (printCount == 4)
+                {
                     SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f%-19.3f\r\n",
                             rmsValues[0], rmsValues[1], rmsValues[2], rmsValues[3]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 4;
                 }
-                else if (app_consoleData.numHarmsPending == 3)
+                else if (printCount == 3)
                 {
-                    rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    rmsValues[1] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    rmsValues[2] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-
                     SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n",
                             rmsValues[0], rmsValues[1], rmsValues[2]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 3;
                 }
-                else if (app_consoleData.numHarmsPending == 2)
+                else if (printCount == 2)
                 {
-                    rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-                    rmsValues[1] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-
                     SYS_CMD_PRINT("%-19.3f%-19.3f\r\n", rmsValues[0], rmsValues[1]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 2;
                 }
-                else if (app_consoleData.numHarmsPending == 1)
+                else if (printCount == 1)
                 {
-                    rmsValues[0] = *((double *)&harmonicAnalysisRMSData[harmonicNum++] + numRegId);
-
                     SYS_CMD_PRINT("%-19.3f\r\n", rmsValues[0]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 1;
                 }
-                else
+
+                // Check whether all harmonics are walked
+                if (app_consoleData.numHarmsPending == 0)
                 {
                     // Advance to next register group
                     app_consoleData.numHarmsPending = DRV_METROLOGY_HARMONICS_MAX_ORDER;
                     app_consoleData.numRegsPending--;
                 }
 
+                // Delay before continue printing
                 app_consoleData.nextState = app_consoleData.state;
                 app_consoleData.state = APP_CONSOLE_STATE_DELAY;
                 app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
@@ -2670,54 +2629,6 @@ void APP_CONSOLE_Tasks ( void )
 
             break;
         }
-//        {
-//            if (app_consoleData.harmonicNumRequest == DRV_METROLOGY_HARMONICS_MAX_ORDER)
-//            {
-//                // All harmonics have been read
-//                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
-//            }
-//            else
-//            {
-//                DRV_METROLOGY_HARMONICS_RMS *pHarmonicRMSData;
-//                uint8_t harmonicNum;
-//
-//                harmonicNum = app_consoleData.harmonicNumRequest;
-//                pHarmonicRMSData = &harmonicAnalysisRMSData[harmonicNum];
-//
-//                if (app_consoleData.harmonicNumPrint == 1)
-//                {
-//                    // Show received data on console
-//                    SYS_CMD_PRINT("The calculated harmonic %u Irms/Vrms:\r\n", harmonicNum + 1);
-//
-//                    SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\r\n");
-//                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_A_m,
-//                            pHarmonicRMSData->Irms_B_m, pHarmonicRMSData->Irms_C_m);
-//                }
-//                else if (app_consoleData.harmonicNumPrint == 2)
-//                {
-//                    SYS_CMD_MESSAGE("Irms_Har_N(A)      Vrms_Har_A(V)      Vrms_Har_B(V)\r\n");
-//                    SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", pHarmonicRMSData->Irms_N_m,
-//                            pHarmonicRMSData->Vrms_A_m, pHarmonicRMSData->Vrms_B_m);
-//                }
-//                else if (app_consoleData.harmonicNumPrint == 3)
-//                {
-//                    SYS_CMD_MESSAGE("Vrms_Har_C(V)\r\n");
-//                    SYS_CMD_PRINT("%-19.3f\r\n", pHarmonicRMSData->Vrms_C_m);
-//
-//                    app_consoleData.harmonicNumPrint = 0;
-//                    app_consoleData.harmonicNumRequest++;
-//                }
-//
-//                if (app_consoleData.state != APP_CONSOLE_STATE_PROMPT)
-//                {
-//                    app_consoleData.harmonicNumPrint++;
-//                    app_consoleData.nextState = app_consoleData.state;
-//                    app_consoleData.state = APP_CONSOLE_STATE_DELAY;
-//                    app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
-//                }
-//            }
-//            break;
-//        }
 
         case APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY:
         {

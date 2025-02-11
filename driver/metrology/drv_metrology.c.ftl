@@ -864,63 +864,61 @@ static void lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
     DRV_METROLOGY_HARMONICS_RMS *pHarmonicsRsp = gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse;
     DRV_METROLOGY_REGS_HARMONICS *pHarData = &gDrvMetObj.metHarData;
     int32_t real, imag, k;
-    uint8_t index, startIdx, endIdx;
-    uint8_t harmonicNum;
+    uint8_t index;
+    uint32_t harmonicBitmap = gDrvMetObj.harmonicAnalysisData.harmonicBitmap;
 
     /* Disable Harmonic Analysis */
     gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = 0;
 
-    harmonicNum = gDrvMetObj.harmonicAnalysisData.harmonicNum;
-    if (harmonicNum == 0)
+    for (index = 0; index < DRV_METROLOGY_HARMONICS_MAX_ORDER; index++)
     {
-        startIdx = 0;
-        endIdx = DRV_METROLOGY_HARMONICS_MAX_ORDER;
-    }
-    else
-    {
-        startIdx = harmonicNum - 1;
-        endIdx = harmonicNum;
+        if ((harmonicBitmap & (1 << index)) != 0U)
+        {
+            real = pHarData->I_A_m_R[index];
+            imag = pHarData->I_A_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
+            pHarmonicsRsp->Irms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-        /* Locate output pointer data */
-        pHarmonicsRsp += startIdx;
-    }
+            real = pHarData->I_B_m_R[index];
+            imag = pHarData->I_B_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
+            pHarmonicsRsp->Irms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-    for (index = startIdx; index < endIdx; index++)
-    {
-        real = pHarData->I_A_m_R[index];
-        imag = pHarData->I_A_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
-        pHarmonicsRsp->Irms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
+            real = pHarData->I_C_m_R[index];
+            imag = pHarData->I_C_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
+            pHarmonicsRsp->Irms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-        real = pHarData->I_B_m_R[index];
-        imag = pHarData->I_B_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
-        pHarmonicsRsp->Irms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
+            real = pHarData->I_N_m_R[index];
+            imag = pHarData->I_N_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_IN;
+            pHarmonicsRsp->Irms_N_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-        real = pHarData->I_C_m_R[index];
-        imag = pHarData->I_C_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
-        pHarmonicsRsp->Irms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
+            real = pHarData->V_A_m_R[index];
+            imag = pHarData->V_A_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
+            pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-        real = pHarData->I_N_m_R[index];
-        imag = pHarData->I_N_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_IN;
-        pHarmonicsRsp->Irms_N_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
+            real = pHarData->V_B_m_R[index];
+            imag = pHarData->V_B_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
+            pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-        real = pHarData->V_A_m_R[index];
-        imag = pHarData->V_A_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
-        pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
-
-        real = pHarData->V_B_m_R[index];
-        imag = pHarData->V_B_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
-        pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
-
-        real = pHarData->V_C_m_R[index];
-        imag = pHarData->V_C_m_I[index];
-        k = gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
-        pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
+            real = pHarData->V_C_m_R[index];
+            imag = pHarData->V_C_m_I[index];
+            k = gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
+            pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
+        }
+        else
+        {
+            pHarmonicsRsp->Irms_A_m = 0;
+            pHarmonicsRsp->Irms_B_m = 0;
+            pHarmonicsRsp->Irms_C_m = 0;
+            pHarmonicsRsp->Irms_N_m = 0;
+            pHarmonicsRsp->Vrms_A_m = 0;
+            pHarmonicsRsp->Vrms_B_m = 0;
+            pHarmonicsRsp->Vrms_C_m = 0;
+        }
 
         pHarmonicsRsp++;
     }
@@ -1367,10 +1365,10 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
 
                 lDRV_METROLOGY_UpdateHarmonicAnalysisValues();
                 gDrvMetObj.harmonicAnalysisData.running = false;
-                /* Launch calibration callback */
+                /* Launch Harmonic Analysis callback */
                 if (gDrvMetObj.harmonicAnalysisCallback != NULL)
                 {
-                    gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicNum);
+                    gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicBitmap);
                 }
 
                 /* Reset harmonic registers update flag */
@@ -1738,35 +1736,31 @@ void DRV_METROLOGY_StartCalibration(void)
     }
 }
 
-void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse)
+bool DRV_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse)
 {
-    if (harmonicNum > DRV_METROLOGY_HARMONICS_MAX_ORDER)
+    if (harmonicBitmap > HARMONIC_CTRL_HARMONIC_m_REQ_Msk)
     {
-        return;
+        /* Requested harmonics out of bounds */
+        return false;
+    }
+    if (gDrvMetObj.harmonicAnalysisData.running)
+    {
+        /* Harmonic Analysis already running */
+        return false;
     }
 
-    if (gDrvMetObj.harmonicAnalysisData.running == false)
-    {
-        gDrvMetObj.harmonicAnalysisData.running = true;
-        gDrvMetObj.harmonicAnalysisData.integrationPeriods = 2;
-        gDrvMetObj.harmonicAnalysisData.harmonicNum = harmonicNum;
+    gDrvMetObj.harmonicAnalysisData.running = true;
+    gDrvMetObj.harmonicAnalysisData.integrationPeriods = 2;
+    gDrvMetObj.harmonicAnalysisData.harmonicBitmap = harmonicBitmap;
 
-        /* Set Data pointer to store the Harmonic data result */
-        gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse = pHarmonicResponse;
+    /* Set Data pointer to store the Harmonic data result */
+    gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse = pHarmonicResponse;
 
-        /* Set Number of Harmonic for Analysis */
-        gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = 0;
-        if (harmonicNum == 0)
-        {
-            gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = HARMONIC_CTRL_HARMONIC_m_REQ_Msk;
-        }
-        else
-        {
-            harmonicNum--;
-            gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = HARMONIC_CTRL_HARMONIC_m_REQ((1 << harmonicNum));
-        }
+    /* Set Number of Harmonic for Analysis */
+    gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = 0;
+    gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = HARMONIC_CTRL_HARMONIC_m_REQ(harmonicBitmap);
+    /* Enable Harmonic Analysis */
+    gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL |= HARMONIC_CTRL_HARMONIC_EN_Msk;
 
-        /* Enable Harmonic Analysis */
-        gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL |= HARMONIC_CTRL_HARMONIC_EN_Msk;
-    }
+    return true;
 }

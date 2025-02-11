@@ -167,13 +167,13 @@ typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result);
     when the Harmonics analysis has been completed.
 
   Parameters:
-    harmonicNum  - The number of the harmonic that has been analyzed. If 0, all
-                    harmonics from 0 to 31 have been processed.
+    harmonicBitmap  - Bitmap defining analyzed harmonics.
+                      Each bit set represents one harmonic.
 
   Remarks:
     None.
 */
-typedef void (* DRV_METROLOGY_HARMONICS_CALLBACK) (uint8_t harmonicNum);
+typedef void (* DRV_METROLOGY_HARMONICS_CALLBACK) (uint32_t harmonicBitmap);
 
 // *****************************************************************************
 
@@ -548,12 +548,12 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CAL
 
   Example:
     <code>
-        static void lAPP_METROLOGY_HarmonicAnalysisCallback(uint8_t harmonicNum)
+        static void lAPP_METROLOGY_HarmonicAnalysisCallback(uint32_t harmonicBitmap)
         {
             if (app_metrologyData.pHarmonicAnalysisCallback)
             {
                 app_metrologyData.harmonicAnalysisPending = false;
-                app_metrologyData.pHarmonicAnalysisCallback(harmonicNum);
+                app_metrologyData.pHarmonicAnalysisCallback(harmonicBitmap);
             }
         }
 
@@ -1223,8 +1223,8 @@ void DRV_METROLOGY_StartCalibration(void);
 
 // *****************************************************************************
 /* Function:
-    void DRV_METROLOGY_StartHarmonicAnalysis(
-        uint8_t harmonicNum,
+    bool DRV_METROLOGY_StartHarmonicAnalysis(
+        uint32_t harmonicBitmap,
         DRV_METROLOGY_HARMONIC *pHarmonicResponse
     );
 
@@ -1241,23 +1241,26 @@ void DRV_METROLOGY_StartCalibration(void);
     None.
 
   Parameters:
-    harmonicNum - Harmonic number. If 0, all harmonics from 0 to 31 will be processed.
+    harmonicBitmap - Bitmap defining harmonics to be processed. Each bit set represents one harmonic.
     pHarmonicResponse - Pointer to the harmonic analysis struct data to store the harmonic data result.
 
   Returns:
-    None.
+    True if Harmonic Analysis is successfully triggered. Otherwise False.
 
   Example:
     <code>
         DRV_METROLOGY_HARMONIC harmonicAnalysisResponse;
 
-        DRV_METROLOGY_StartHarmonicAnalysis(3, &harmonicAnalysisResponse);
+        if (DRV_METROLOGY_StartHarmonicAnalysis(3, &harmonicAnalysisResponse))
+        {
+            waitForResponse();
+        }
     </code>
 
   Remarks:
     None.
 */
-void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse);
+bool DRV_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse);
 
 #ifdef __cplusplus
  }
