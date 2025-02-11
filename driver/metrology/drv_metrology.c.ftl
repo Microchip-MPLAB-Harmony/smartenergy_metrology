@@ -867,9 +867,6 @@ static void lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
     uint8_t index;
     uint32_t harmonicBitmap = gDrvMetObj.harmonicAnalysisData.harmonicBitmap;
 
-    /* Disable Harmonic Analysis */
-    gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL = 0;
-
     for (index = 0; index < DRV_METROLOGY_HARMONICS_MAX_ORDER; index++)
     {
         if ((harmonicBitmap & (1 << index)) != 0U)
@@ -1358,13 +1355,12 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
 
             /* Check if there is a harmonic analysis process running */
             if ((gDrvMetObj.harmonicAnalysisData.running == true) &&
-                (gDrvMetObj.harmonicAnalysisData.integrationPeriods == 0U) )
+                (gDrvMetObj.harmonicAnalysisData.integrationPeriods == 0U))
             {
                 /* Prevent updating of harmonic registers */
                 gDrvMetObj.harmonicAnalysisData.holdRegs = true;
 
                 lDRV_METROLOGY_UpdateHarmonicAnalysisValues();
-                gDrvMetObj.harmonicAnalysisData.running = false;
                 /* Launch Harmonic Analysis callback */
                 if (gDrvMetObj.harmonicAnalysisCallback != NULL)
                 {
@@ -1763,4 +1759,13 @@ bool DRV_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, DRV_METROLOGY_
     gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL |= HARMONIC_CTRL_HARMONIC_EN_Msk;
 
     return true;
+}
+
+void DRV_METROLOGY_StopHarmonicAnalysis(void)
+{
+    /* Clear flags and disable in registers */
+    gDrvMetObj.harmonicAnalysisData.running = false;
+    gDrvMetObj.metRegisters->MET_CONTROL.HARMONIC_CTRL &=
+        (HARMONIC_CTRL_HARMONIC_EN(HARMONIC_CTRL_HARMONIC_EN_DISABLED_Val) |
+        HARMONIC_CTRL_HARMONIC_m_REQ_Msk);
 }

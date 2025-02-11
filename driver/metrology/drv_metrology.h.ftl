@@ -1233,9 +1233,9 @@ void DRV_METROLOGY_StartCalibration(void);
 
   Description:
     This routine configures the metrology library to enable the harmonics computation
-    and to calculate the data corresponding to the harmonic number n.
+    and to calculate the data corresponding to the harmonics active in harmonicBitmap.
     Then, the metrology driver receives the data from the metrology library and
-    computes the RMS currents and voltages of the selected harmonic.
+    computes the RMS currents and voltages of the selected harmonics.
 
   Precondition:
     None.
@@ -1261,6 +1261,39 @@ void DRV_METROLOGY_StartCalibration(void);
     None.
 */
 bool DRV_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse);
+
+// *****************************************************************************
+/* Function:
+    void DRV_METROLOGY_StopHarmonicAnalysis(void);
+
+  Summary:
+    Stops the harmonic Analysis process.
+
+  Description:
+    This routine configures the metrology library to disable the harmonics
+    computation.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+        if (harmonicAnalysisCompleted)
+        {
+            DRV_METROLOGY_StopHarmonicAnalysis();
+        }
+    </code>
+
+  Remarks:
+    None.
+*/
+void DRV_METROLOGY_StopHarmonicAnalysis(void);
 
 #ifdef __cplusplus
  }

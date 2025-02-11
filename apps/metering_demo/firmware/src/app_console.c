@@ -152,6 +152,7 @@ static void _commandEVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandHAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandHRR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandHRRX(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandIDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandIDW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandMDC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
@@ -199,6 +200,7 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
     {"EVER",_commandEVER, ": Read single event record"},
     {"HAR", _commandHAR, ": Read harmonic register"},
     {"HRR", _commandHRR, ": Read harmonic Irms/Vrms"},
+    {"HRRX", _commandHRRX, ": Extended version of HRR, using Harmonics bitmap and Start/Stop functionality"},
     {"IDR", _commandIDR, ": Read meter id"},
     {"IDW", _commandIDW, ": Write meter id (id length limited to 6 characters)"},
     {"MDC", _commandMDC, ": Clear all maxim demand and happen time"},
@@ -1306,9 +1308,9 @@ static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         if (num <= DRV_METROLOGY_HARMONICS_MAX_ORDER)
         {
             // Set harmonics calculation mode on metrology driver
-            if (APP_METROLOGY_StartHarmonicAnalysis(harmonicBitmap) == false)
+            if (APP_METROLOGY_StartHarmonicAnalysis(harmonicBitmap, true) == false)
             {
-                // Incorrect parameter number
+                // Analysis already running
                 SYS_CMD_MESSAGE("Previous harmonic analysis is running\r\n");
             }
             else
@@ -1328,6 +1330,79 @@ static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\r\n");
+    }
+}
+
+static void _commandHRRX(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    uint8_t num = 0xFF;
+    uint32_t harmonicBitmap = 0xFFFFFFFF;
+
+    if (argc == 2)
+    {
+        // Extract Start/Stop from parameters
+        num = (uint8_t)strtol(argv[1], NULL, 10);
+        if (num == 1)
+        {
+            // Start command without bitmap argument, analyse all harmonics
+            harmonicBitmap = 0x7FFFFFFF;
+        }
+        else if (num == 0)
+        {
+            // Stop command
+            harmonicBitmap = 0x7FFFFFFF;
+        }
+        else
+        {
+            // Wrong command
+            num = 0xFF;
+        }
+    }
+    else if (argc == 3)
+    {
+        // This must be a Start command
+        num = (uint8_t)strtol(argv[1], NULL, 10);
+        if (num == 1)
+        {
+            // Extract bitmap from parameters
+            harmonicBitmap = (uint32_t)strtoul(argv[2], NULL, 16);
+        }
+    }
+
+    if ((num == 0xFF) && (harmonicBitmap == 0xFFFFFFFF))
+    {
+        // Incorrect parameter number
+        SYS_CMD_MESSAGE("Incorrect param number\r\n");
+    }
+    else if ((num > 1) || (harmonicBitmap == 0xFFFFFFFF))
+    {
+        // Incorrect parameter format
+        SYS_CMD_MESSAGE("Incorrect param format\r\n");
+    }
+    else
+    {
+        // Correct command
+        if (num == 1)
+        {
+            // Start command
+            // Set harmonics calculation mode on metrology driver
+            if (APP_METROLOGY_StartHarmonicAnalysis(harmonicBitmap, false) == false)
+            {
+                // Analysis already running
+                SYS_CMD_MESSAGE("Previous harmonic analysis is running\r\n");
+            }
+            else
+            {
+                /* Show console communication icon */
+                APP_DISPLAY_SetSerialCommunication();
+            }
+            // Response will be provided on _harmonicAnalysisCallback function
+        }
+        else if (num == 0)
+        {
+            // Stop command
+            APP_METROLOGY_StopHarmonicAnalysis();
+        }
     }
 }
 

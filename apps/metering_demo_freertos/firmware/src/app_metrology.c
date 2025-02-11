@@ -339,10 +339,19 @@ static void _APP_METROLOGY_CalibrationCallback(bool result)
 
 static void _APP_METROLOGY_HarmonicAnalysisCallback(uint32_t harmonicBitmap)
 {
-    if (app_metrologyData.pHarmonicAnalysisCallback)
+    if (app_metrologyData.stopHarmonicAnalysis)
     {
         app_metrologyData.harmonicAnalysisPending = false;
-        app_metrologyData.pHarmonicAnalysisCallback(harmonicBitmap);
+        DRV_METROLOGY_StopHarmonicAnalysis();
+    }
+
+    if (app_metrologyData.pHarmonicAnalysisCallback)
+    {
+        if (app_metrologyData.sendHarmonicsToConsole)
+        {
+            app_metrologyData.sendHarmonicsToConsole = false;
+            app_metrologyData.pHarmonicAnalysisCallback(harmonicBitmap);
+        }
     }
 }
 
@@ -827,7 +836,7 @@ size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *address)
     return (size_t)app_metrologyData.pMetControl->CAPTURE_BUFF_SIZE;
 }
 
-bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap)
+bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, bool singleMode)
 {
     if (app_metrologyData.harmonicAnalysisPending)
     {
@@ -847,12 +856,20 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap)
     if (DRV_METROLOGY_StartHarmonicAnalysis(harmonicBitmap, app_metrologyData.pHarmonicAnalysisResponse))
     {
         app_metrologyData.harmonicAnalysisPending = true;
+        app_metrologyData.stopHarmonicAnalysis = singleMode;
+        app_metrologyData.sendHarmonicsToConsole = true;
         return true;
     }
     else
     {
         return false;
     }
+}
+
+void APP_METROLOGY_StopHarmonicAnalysis(void)
+{
+    app_metrologyData.stopHarmonicAnalysis = true;
+    app_metrologyData.sendHarmonicsToConsole = true;
 }
 
 void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK callback,

@@ -324,6 +324,8 @@ typedef struct
     DRV_METROLOGY_REGS_HARMONICS * pMetHarData;
 
     bool harmonicAnalysisPending;
+    bool stopHarmonicAnalysis;
+    bool sendHarmonicsToConsole;
     DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;
     DRV_METROLOGY_HARMONICS_CALLBACK pHarmonicAnalysisCallback;
     DRV_METROLOGY_REGS_HARMONICS harmonicsData;
@@ -431,7 +433,8 @@ void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration);
 void APP_METROLOGY_SetCalibrationCallback(DRV_METROLOGY_CALIBRATION_CALLBACK callback);
 size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *pData);
-bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap);
+bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, bool singleMode);
+void APP_METROLOGY_StopHarmonicAnalysis(void);
 void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK callback,
         DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse);
 void APP_METROLOGY_Restart(void);
