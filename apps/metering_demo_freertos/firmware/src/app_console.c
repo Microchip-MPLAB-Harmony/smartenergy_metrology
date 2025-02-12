@@ -2651,25 +2651,22 @@ void APP_CONSOLE_Tasks ( void )
 
                 if (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER)
                 {
-                    SYS_CMD_PRINT("%s\r\n", _console_har_desc[numRegId]);
+                    // Print magnitude and active bitmap, since all harmonics will be printed
+                    SYS_CMD_PRINT("%s, bitmap: 0x%08X\r\n", _console_har_desc[numRegId], app_consoleData.harmonicBitmap);
                 }
 
-                // Start or continue walking through bitmap from current position
+                // Start or continue walking through harmonics from current position
                 printCount = 0;
                 for (index = currHarmonic; index < DRV_METROLOGY_HARMONICS_MAX_ORDER; index ++)
                 {
-                    // Active or not, decrease pending number
+                    // Active or not, print value (will be 0 if inactive)
                     app_consoleData.numHarmsPending--;
-                    if ((app_consoleData.harmonicBitmap & (1 << index)) != 0U)
+                    rmsValues[printCount] = *((double *)&harmonicAnalysisRMSData[index] + numRegId);
+                    printCount++;
+                    if (printCount == 4)
                     {
-                        // Active harmonic
-                        rmsValues[printCount] = *((double *)&harmonicAnalysisRMSData[index] + numRegId);
-                        printCount++;
-                        if (printCount == 4)
-                        {
-                            // Max prints per process, exit
-                            break;
-                        }
+                        // Max prints per process, exit
+                        break;
                     }
                 }
 
