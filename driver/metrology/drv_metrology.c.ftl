@@ -611,7 +611,6 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     /* Get State Flag Register */
     stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
-    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ;
 
     /* Update Measure values */
     afeMeasure = gDrvMetObj.metAFEData.measure;
@@ -690,7 +689,14 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     afeMeasure[MEASURE_STF]  = afeMeasure[MEASURE_SAF] + afeMeasure[MEASURE_SBF] + afeMeasure[MEASURE_SCF];
 
+    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ;
     afeMeasure[MEASURE_FREQ]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
+    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VA;
+    afeMeasure[MEASURE_FREQA]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
+    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VB;
+    afeMeasure[MEASURE_FREQB]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
+    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VC;
+    afeMeasure[MEASURE_FREQC]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
 
     afeMeasure[MEASURE_ANGLEA]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
     afeMeasure[MEASURE_ANGLEB]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);

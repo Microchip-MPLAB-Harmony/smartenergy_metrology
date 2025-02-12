@@ -1616,6 +1616,11 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_FREQUENCY;
             wakeup = true;
         }
+        else if (strcmp(argv[1], "FT") == 0)
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_TOTAL_FREQUENCY;
+            wakeup = true;
+        }
         else if (strcmp(argv[1], "A") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_ANGLE;
@@ -3075,6 +3080,27 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetMeasure(MEASURE_FREQ, &freq, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/FREQ_ACCURACY_INT);
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_TOTAL_FREQUENCY:
+        {
+            uint32_t freq, freqA, freqB, freqC;
+
+            // Remove Prompt symbol
+            _removePrompt();
+
+            APP_METROLOGY_GetMeasure(MEASURE_FREQ, &freq, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_FREQA, &freqA, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_FREQB, &freqB, 0);
+            APP_METROLOGY_GetMeasure(MEASURE_FREQC, &freqC, 0);
+            // Show received data on console
+            SYS_CMD_PRINT("Dominant frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/FREQ_ACCURACY_INT);
+            SYS_CMD_PRINT("FreqA=%.2fHz, FreqB=%.2fHz, FreqC=%.2fHz\r\n",
+                (float)freqA/FREQ_ACCURACY_INT, (float)freqB/FREQ_ACCURACY_INT, (float)freqC/FREQ_ACCURACY_INT);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
