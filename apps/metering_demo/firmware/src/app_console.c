@@ -1299,7 +1299,11 @@ static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         }
         else
         {
-            harmonicBitmap = 1 << (num - 1);
+            // Turn into bitmap only if valid number
+            if (num <= DRV_METROLOGY_HARMONICS_MAX_ORDER)
+            {
+                harmonicBitmap = 1 << (num - 1);
+            }
         }
     }
 
