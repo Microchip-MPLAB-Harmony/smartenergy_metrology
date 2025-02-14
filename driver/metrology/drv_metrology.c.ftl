@@ -578,8 +578,7 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle(uint32_t measured, double
         correction_angle = (int64_t)measured;
     }
 
-    /* Improved angle accuracy */
-    reference *= 100.0;
+    /* Get diff with reference */
     correction_angle = correction_angle - (int64_t)reference;
 
     /* Correction angle should be between -180 and 180 degrees */
@@ -1704,15 +1703,15 @@ void DRV_METROLOGY_StartCalibration(void)
         /* Increase accuracy of references for calibrating procedure */
         pCalibrationData->references.aimIA *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.aimVA *= VI_ACCURACY_DOUBLE;
-        pCalibrationData->references.angleA *= 1000.0;
+        pCalibrationData->references.angleA *= ANGLE_ACCURACY_DOUBLE;
         pCalibrationData->references.aimIB *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.aimVB *= VI_ACCURACY_DOUBLE;
-        pCalibrationData->references.angleB *= 1000.0;
+        pCalibrationData->references.angleB *= ANGLE_ACCURACY_DOUBLE;
         pCalibrationData->references.aimIC *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.aimVC *= VI_ACCURACY_DOUBLE;
-        pCalibrationData->references.angleC *= 1000.0;
+        pCalibrationData->references.angleC *= ANGLE_ACCURACY_DOUBLE;
         pCalibrationData->references.aimIN *= VI_ACCURACY_DOUBLE;
-        pCalibrationData->references.angleN *= 1000.0;
+        pCalibrationData->references.angleN *= ANGLE_ACCURACY_DOUBLE;
 
         /* Save FEATURE_CTRL register value, to be restored after calibration */
         pCalibrationData->featureCtrlBackup = pMetControlRegs->FEATURE_CTRL;
