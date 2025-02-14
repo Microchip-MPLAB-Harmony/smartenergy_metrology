@@ -731,15 +731,18 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
         pCalibrationData->dspAccIa += pMetAccRegs->I_A;
         pCalibrationData->dspAccIb += pMetAccRegs->I_B;
         pCalibrationData->dspAccIc += pMetAccRegs->I_C;
+        pCalibrationData->dspAccIn += pMetAccRegs->I_Nm;
         pCalibrationData->dspAccUa += pMetAccRegs->V_A;
         pCalibrationData->dspAccUb += pMetAccRegs->V_B;
         pCalibrationData->dspAccUc += pMetAccRegs->V_C;
         pCalibrationData->dspAccPa += pMetAccRegs->P_A_F;
         pCalibrationData->dspAccPb += pMetAccRegs->P_B_F;
         pCalibrationData->dspAccPc += pMetAccRegs->P_C_F;
+        pCalibrationData->dspAccPn += pMetAccRegs->P_N_F;
         pCalibrationData->dspAccQa += pMetAccRegs->Q_A_F;
         pCalibrationData->dspAccQb += pMetAccRegs->Q_B_F;
         pCalibrationData->dspAccQc += pMetAccRegs->Q_C_F;
+        pCalibrationData->dspAccQn += pMetAccRegs->Q_N_F;
 
         return false;
     }
@@ -753,7 +756,8 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
 
         /* The number of the required integration periods has been completed */
         /* Get Calibration Values */
-        if ((pCalibrationData->references.lineId == PHASE_A) || (pCalibrationData->references.lineId == PHASE_T))
+        if ((pCalibrationData->references.lineId == PHASE_A) || (pCalibrationData->references.lineId == PHASE_T) ||
+            (pCalibrationData->references.lineId == PHASE_TN))
         {
             /* Calibration I RMS */
             pCalibrationData->dspAccIa >>= 2U;
@@ -787,7 +791,8 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             pCalibrationData->result = true;
         }
 
-        if ((pCalibrationData->references.lineId == PHASE_B) || (pCalibrationData->references.lineId == PHASE_T))
+        if ((pCalibrationData->references.lineId == PHASE_B) || (pCalibrationData->references.lineId == PHASE_T) ||
+            (pCalibrationData->references.lineId == PHASE_TN))
         {
             /* Calibration I RMS */
             pCalibrationData->dspAccIb >>= 2U;
@@ -821,7 +826,8 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             pCalibrationData->result = true;
         }
 
-        if ((pCalibrationData->references.lineId == PHASE_C) || (pCalibrationData->references.lineId == PHASE_T))
+        if ((pCalibrationData->references.lineId == PHASE_C) || (pCalibrationData->references.lineId == PHASE_T) ||
+            (pCalibrationData->references.lineId == PHASE_TN))
         {
             /* Calibration I RMS */
             pCalibrationData->dspAccIc >>= 2U;
@@ -851,6 +857,29 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             pCalibrationData->dspAccQc /= 4;
             k = lDRV_Metrology_GetAngle(pCalibrationData->dspAccPc, pCalibrationData->dspAccQc);
             pMetControlRegs->CAL_PH_IC = lDRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleC);
+
+            pCalibrationData->result = true;
+        }
+
+        if ((pCalibrationData->references.lineId == PHASE_N) || (pCalibrationData->references.lineId == PHASE_TN))
+        {
+            /* Calibration I RMS */
+            pCalibrationData->dspAccIn >>= 2U;
+            k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccIn, pMetControlRegs->K_IN);
+            m = (uint64_t)pCalibrationData->references.aimIN;
+            m = m << CAL_VI_Q;
+            m_div = m / k;
+            pMetControlRegs->CAL_M_IN = (uint32_t)m_div;
+            if ((((m % k) * 10U) / k) > 4U)
+            {
+                pMetControlRegs->CAL_M_IN += 1U;
+            }
+
+            /* Calibration Phase */
+            pCalibrationData->dspAccPn /= 4;
+            pCalibrationData->dspAccQn /= 4;
+            k = lDRV_Metrology_GetAngle(pCalibrationData->dspAccPn, pCalibrationData->dspAccQn);
+            pMetControlRegs->CAL_PH_IN = lDRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleN);
 
             pCalibrationData->result = true;
         }
@@ -1682,6 +1711,8 @@ void DRV_METROLOGY_StartCalibration(void)
         pCalibrationData->references.aimIC *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.aimVC *= VI_ACCURACY_DOUBLE;
         pCalibrationData->references.angleC *= 1000.0;
+        pCalibrationData->references.aimIN *= VI_ACCURACY_DOUBLE;
+        pCalibrationData->references.angleN *= 1000.0;
 
         /* Save FEATURE_CTRL register value, to be restored after calibration */
         pCalibrationData->featureCtrlBackup = pMetControlRegs->FEATURE_CTRL;
@@ -1694,41 +1725,44 @@ void DRV_METROLOGY_StartCalibration(void)
         pCalibrationData->dspAccUa = 0U;
         pCalibrationData->dspAccUb = 0U;
         pCalibrationData->dspAccUc = 0U;
-        pCalibrationData->dspAccUn = 0U;
         pCalibrationData->dspAccPa = 0;
         pCalibrationData->dspAccPb = 0;
         pCalibrationData->dspAccPc = 0;
+        pCalibrationData->dspAccPn = 0;
         pCalibrationData->dspAccQa = 0;
         pCalibrationData->dspAccQb = 0;
         pCalibrationData->dspAccQc = 0;
+        pCalibrationData->dspAccQn = 0;
 
         /* Initialize calibration registers to the default values */
         switch (pCalibrationData->references.lineId)
         {
             case PHASE_A:
-                pMetControlRegs->FEATURE_CTRL = FEATURE_CTRL_RZC_CHAN_SELECT(FEATURE_CTRL_RZC_CHAN_SELECT_V1_Val) |
-                        FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_A_Val) | FEATURE_CTRL_PHASE_A_EN_Msk;
+                pMetControlRegs->FEATURE_CTRL =
+                    (FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_A_Val) | FEATURE_CTRL_PHASE_A_EN_Msk);
                 break;
 
             case PHASE_B:
-                pMetControlRegs->FEATURE_CTRL = FEATURE_CTRL_RZC_CHAN_SELECT(FEATURE_CTRL_RZC_CHAN_SELECT_V2_Val) |
-                        FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_B_Val) | FEATURE_CTRL_PHASE_B_EN_Msk;
+                pMetControlRegs->FEATURE_CTRL =
+                    (FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_B_Val) | FEATURE_CTRL_PHASE_B_EN_Msk);
                 break;
 
             case PHASE_C:
-                pMetControlRegs->FEATURE_CTRL = FEATURE_CTRL_RZC_CHAN_SELECT(FEATURE_CTRL_RZC_CHAN_SELECT_V3_Val) |
-                        FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_C_Val) | FEATURE_CTRL_PHASE_C_EN_Msk;
+                pMetControlRegs->FEATURE_CTRL =
+                    (FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_C_Val) | FEATURE_CTRL_PHASE_C_EN_Msk);
                 break;
 
+            case PHASE_N:
             case PHASE_T:
-                pMetControlRegs->FEATURE_CTRL = FEATURE_CTRL_RZC_CHAN_SELECT(FEATURE_CTRL_RZC_CHAN_SELECT_V1_Val) |
-                        FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_A_Val) | FEATURE_CTRL_PHASE_A_EN_Msk |
+            case PHASE_TN:
+                pMetControlRegs->FEATURE_CTRL =
+                        FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_ACTIVE_PHASE_Val) | FEATURE_CTRL_PHASE_A_EN_Msk |
                         FEATURE_CTRL_PHASE_B_EN_Msk | FEATURE_CTRL_PHASE_C_EN_Msk;
                 break;
 
             default:
-                pMetControlRegs->FEATURE_CTRL = FEATURE_CTRL_RZC_CHAN_SELECT(FEATURE_CTRL_RZC_CHAN_SELECT_V1_Val) |
-                        FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_A_Val) | FEATURE_CTRL_PHASE_A_EN_Msk;
+                pMetControlRegs->FEATURE_CTRL =
+                    (FEATURE_CTRL_SYNCH(FEATURE_CTRL_SYNCH_A_Val) | FEATURE_CTRL_PHASE_A_EN_Msk);
                 break;
 
         }

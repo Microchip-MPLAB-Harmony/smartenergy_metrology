@@ -59,7 +59,7 @@ Microchip or any third party.
 #define   FEATURE_CTRL_RZC_DIR_POSITIVE_Val            _UINT32_(0x0)                           /* (FEATURE_CTRL) Positive-going raw zero-crossings selected */
 #define   FEATURE_CTRL_RZC_DIR_NEGATIVE_Val            _UINT32_(0x1)                           /* (FEATURE_CTRL) Negative-going raw zero-crossings selected */
 #define FEATURE_CTRL_SYNCH_Pos                       _UINT32_(4)                               /* (FEATURE_CTRL) Active Voltage Channel Selection Position */
-#define FEATURE_CTRL_SYNCH_Msk                       (_UINT32_(0x2) << FEATURE_CTRL_SYNCH_Pos)    /* (FEATURE_CTRL) Active Voltage Channel Selection Mask */
+#define FEATURE_CTRL_SYNCH_Msk                       (_UINT32_(0x3) << FEATURE_CTRL_SYNCH_Pos)    /* (FEATURE_CTRL) Active Voltage Channel Selection Mask */
 #define FEATURE_CTRL_SYNCH(value)                    (FEATURE_CTRL_SYNCH_Msk & (_UINT32_(value) << FEATURE_CTRL_SYNCH_Pos))
 #define   FEATURE_CTRL_SYNCH_ACTIVE_PHASE_Val          _UINT32_(0x0)                           /* (FEATURE_CTRL) Measurement interval based on active phase, determined dynamically */
 #define   FEATURE_CTRL_SYNCH_A_Val                     _UINT32_(0x1)                           /* (FEATURE_CTRL) Measurement interval based on phase-A */
@@ -1205,7 +1205,7 @@ typedef struct
     __O  uint64_t I_B;               /**< Offset: 0x10  (R/  32) Amp-squared-samples, phase-B, fundamental + harmonics (uQ24.40) */
     __O  uint64_t I_C;               /**< Offset: 0x18  (R/  32) Amp-squared-samples, phase-C, fundamental + harmonics (uQ24.40) */
     __O  uint64_t I_Ni;              /**< Offset: 0x20  (R/  32) Amp-squared-samples, phase-N inputed, fundamental + harmonics (uQ44.20) */
-    __O  uint64_t I_Nm;              /**< Offset: 0x28  (R/  32) Amp-squared-samples, phase-N measured, fundamental + harmonics (uQ44.20) */
+    __O  uint64_t I_Nm;              /**< Offset: 0x28  (R/  32) Amp-squared-samples, phase-N measured, fundamental + harmonics (uQ24.40) */
     __O  uint64_t I_A_F;             /**< Offset: 0x30  (R/  32) Amp-squared-samples, phase-A, fundamental only (uQ24.40) */
     __O  uint64_t I_B_F;             /**< Offset: 0x38  (R/  32) Amp-squared-samples, phase-B, fundamental only (uQ24.40) */
     __O  uint64_t I_C_F;             /**< Offset: 0x40  (R/  32) Amp-squared-samples, phase-C, fundamental only (uQ24.40) */
@@ -1218,7 +1218,7 @@ typedef struct
     __O  int64_t  P_A_F;             /**< Offset: 0x90  (R/  32) Watt-samples, phase-A, fundamental only (sQ23.40) */
     __O  int64_t  P_B_F;             /**< Offset: 0x98  (R/  32) Watt-samples, phase-B, fundamental only (sQ23.40) */
     __O  int64_t  P_C_F;             /**< Offset: 0xA0  (R/  32) Watt-samples, phase-C, fundamental only (sQ23.40) */
-    __O  int64_t  P_N;               /**< Offset: 0xA8  (R/  32) Watt-samples, phase-N, fundamental only (sQ23.40) */
+    __O  int64_t  P_N;               /**< Offset: 0xA8  (R/  32) Watt-samples, phase-N, fundamental + harmonics (sQ23.40) */
     __O  int64_t  P_N_F;             /**< Offset: 0xB0  (R/  32) Watt-samples, phase-N, fundamental only (sQ23.40) */
     __O  uint64_t Reserved2;
     __O  int64_t  Q_A;               /**< Offset: 0xC0  (R/  32) VAR-samples, phase-A, fundamental + harmonics (sQ23.40) */
@@ -1227,7 +1227,7 @@ typedef struct
     __O  int64_t  Q_A_F;             /**< Offset: 0xD8  (R/  32) VAR-samples, phase-A, fundamental only (sQ23.40) */
     __O  int64_t  Q_B_F;             /**< Offset: 0xE0  (R/  32) VAR-samples, phase-B, fundamental only (sQ23.40) */
     __O  int64_t  Q_C_F;             /**< Offset: 0xE8  (R/  32) VAR-samples, phase-C, fundamental only (sQ23.40) */
-    __O  int64_t  Q_N;               /**< Offset: 0xF0  (R/  32) VAR-samples, phase-N, fundamental only (sQ23.40) */
+    __O  int64_t  Q_N;               /**< Offset: 0xF0  (R/  32) VAR-samples, phase-N, fundamental + harmonics (sQ23.40) */
     __O  int64_t  Q_N_F;             /**< Offset: 0xF8  (R/  32) VAR-samples, phase-N, fundamental only (sQ23.40) */
     __O  uint64_t Reserved3;
     __O  uint64_t V_A;               /**< Offset: 0x108 (R/  32) Volt-square-samples, phase-A, fundamental + harmonics (sQ24.40) */

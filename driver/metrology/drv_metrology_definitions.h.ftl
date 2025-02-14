@@ -166,8 +166,10 @@ typedef enum {
     PHASE_A        = 1,
     PHASE_B        = 2,
     PHASE_C        = 3,
+    PHASE_N        = 4,
     PHASE_T        = 5,
-    PHASE_ID_NUM   = PHASE_T
+    PHASE_TN       = 6,
+    PHASE_ID_NUM   = PHASE_TN
 } DRV_METROLOGY_PHASE_ID;
 
 
@@ -192,6 +194,8 @@ typedef struct {
     double aimVC;
     double aimIC;
     double angleC;
+    double aimIN;
+    double angleN;
     DRV_METROLOGY_PHASE_ID lineId;
 } DRV_METROLOGY_CALIBRATION_REFS;
 
@@ -222,13 +226,14 @@ typedef struct {
     uint64_t dspAccUa;
     uint64_t dspAccUb;
     uint64_t dspAccUc;
-    uint64_t dspAccUn;
     int64_t  dspAccPa;
     int64_t  dspAccPb;
     int64_t  dspAccPc;
+    int64_t  dspAccPn;
     int64_t  dspAccQa;
     int64_t  dspAccQb;
     int64_t  dspAccQc;
+    int64_t  dspAccQn;
     bool  running;
     bool  result;
 } DRV_METROLOGY_CALIBRATION;

@@ -136,7 +136,9 @@ static void _commandBUF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandCALA(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandCALB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandCALC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCALN(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandCALT(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCALTN(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandCNF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandDAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandDCB (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
@@ -184,7 +186,9 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
     {"CAL_A", _commandCALA, ": Automatic calibration phase A"},
     {"CAL_B", _commandCALB, ": Automatic calibration phase B"},
     {"CAL_C", _commandCALC, ": Automatic calibration phase C"},
+    {"CAL_N", _commandCALN, ": Automatic calibration Neutral"},
     {"CAL_T", _commandCALT, ": Automatic calibration three phases A,B,C"},
+    {"CAL_TN", _commandCALTN, ": Automatic calibration three phases A,B,C and Neutral"},
     {"CNF", _commandCNF, ": Automatic configuration"},
     {"DAR", _commandDAR, ": Read DSP_ACC register"},
     {"DCB", _commandDCB, ": Go to low power mode"},
@@ -594,6 +598,37 @@ static void _commandCALC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
+static void _commandCALN(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    APP_METROLOGY_CALIBRATION newCalibration = {0};
+    bool parseError = false;
+
+    if (argc != 3) {
+        SYS_CMD_MESSAGE("Unsupported Command !\r\n");
+        return;
+    }
+
+    newCalibration.lineId = PHASE_N;
+
+    if(_getCalibrationValue(argv[1], "IN", &newCalibration.aimIN) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[2], "AN", &newCalibration.angleN) == false)
+    {
+        parseError = true;
+    }
+
+    if (parseError) {
+        SYS_CMD_MESSAGE("Unsupported Command !\r\n");
+    }
+    else
+    {
+        SYS_CMD_MESSAGE("Calibrating...\r\n");
+        APP_METROLOGY_StartCalibration(&newCalibration);
+    }
+}
+
 static void _commandCALT(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     APP_METROLOGY_CALIBRATION newCalibration = {0};
@@ -639,6 +674,73 @@ static void _commandCALT(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         parseError = true;
     }
     else if(_getCalibrationValue(argv[9], "AC", &newCalibration.angleC) == false)
+    {
+        parseError = true;
+    }
+
+    if (parseError) {
+        SYS_CMD_MESSAGE("Unsupported Command !\r\n");
+    }
+    else
+    {
+        SYS_CMD_MESSAGE("Calibrating...\r\n");
+        APP_METROLOGY_StartCalibration(&newCalibration);
+    }
+}
+
+static void _commandCALTN(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    APP_METROLOGY_CALIBRATION newCalibration = {0};
+    bool parseError = false;
+
+    if (argc != 12) {
+        SYS_CMD_MESSAGE("Unsupported Command !\r\n");
+        return;
+    }
+
+    newCalibration.lineId = PHASE_TN;
+
+    if(_getCalibrationValue(argv[1], "UA", &newCalibration.aimVA) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[2], "IA", &newCalibration.aimIA) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[3], "AA", &newCalibration.angleA) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[4], "UB", &newCalibration.aimVB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[5], "IB", &newCalibration.aimIB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[6], "AB", &newCalibration.angleB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[7], "UC", &newCalibration.aimVC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[8], "IC", &newCalibration.aimIC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[9], "AC", &newCalibration.angleC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[10], "IN", &newCalibration.aimIN) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[11], "AN", &newCalibration.angleN) == false)
     {
         parseError = true;
     }

@@ -271,6 +271,8 @@ typedef struct
     double aimVC;
     double aimIC;
     double angleC;
+    double aimIN;
+    double angleN;
     DRV_METROLOGY_PHASE_ID lineId;
 } APP_METROLOGY_CALIBRATION;
 

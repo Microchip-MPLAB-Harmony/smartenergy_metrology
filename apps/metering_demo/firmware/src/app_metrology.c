@@ -794,6 +794,8 @@ void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration)
         pCalibrationRefs->aimIC = calibration->aimIC;
         pCalibrationRefs->aimVC = calibration->aimVC;
         pCalibrationRefs->angleC = calibration->angleC;
+        pCalibrationRefs->aimIN = calibration->aimIN;
+        pCalibrationRefs->angleN = calibration->angleN;
         pCalibrationRefs->lineId = calibration->lineId;
 
         app_metrologyData.state = APP_METROLOGY_STATE_CHECK_CALIBRATION;
