@@ -404,22 +404,32 @@ Microchip or any third party.
 #define I_K_t_Msk                                  (_UINT32_(0xFFFFFFFF) << I_K_t_Pos)         /* (I_K_t) Meter Current Pulse Constant Mask */
 #define I_K_t_Val(value)                           (I_K_t_Msk & (_UINT32_(value) << I_K_t_Pos))
 
-/* -------- CREEP_THRESHOLD_P : (MET_CONTROL Offset: 0x30) (R/W  32) Creep Threshold for Active Energy (uQ2.30) -------- */
+/* -------- S_K_t : (MET_CONTROL Offset: 0x30) (R/W  32) Meter Apparent Power Pulse Constant (uQ8.24) -------- */
+#define S_K_t_Pos                                  _UINT32_(0)                                 /* (S_K_t) Meter Apparent Power Pulse Constant Position */
+#define S_K_t_Msk                                  (_UINT32_(0xFFFFFFFF) << S_K_t_Pos)         /* (S_K_t) Meter Apparent Power Pulse Constant Mask */
+#define S_K_t_Val(value)                           (S_K_t_Msk & (_UINT32_(value) << S_K_t_Pos))
+
+/* -------- CREEP_THRESHOLD_P : (MET_CONTROL Offset: 0x34) (R/W  32) Creep Threshold for Active Energy (uQ2.30) -------- */
 #define CREEP_THRESHOLD_P_Pos                      _UINT32_(0)                                 /* (CREEP_THRESHOLD_P) Creep Threshold for Active Energy Position */
 #define CREEP_THRESHOLD_P_Msk                      (_UINT32_(0xFFFFFFFF) << CREEP_THRESHOLD_P_Pos)         /* (CREEP_THRESHOLD_P) Creep Threshold for Active Energy Mask */
 #define CREEP_THRESHOLD_P_Val(value)               (CREEP_THRESHOLD_P_Msk & (_UINT32_(value) << CREEP_THRESHOLD_P_Pos))
 
-/* -------- CREEP_THRESHOLD_Q : (MET_CONTROL Offset: 0x34) (R/W  32) Creep Threshold for Quadenergy (uQ2.30) -------- */
+/* -------- CREEP_THRESHOLD_Q : (MET_CONTROL Offset: 0x38) (R/W  32) Creep Threshold for Quadenergy (uQ2.30) -------- */
 #define CREEP_THRESHOLD_Q_Pos                      _UINT32_(0)                                 /* (CREEP_THRESHOLD_Q) Creep Threshold for Quadenergy Position */
 #define CREEP_THRESHOLD_Q_Msk                      (_UINT32_(0xFFFFFFFF) << CREEP_THRESHOLD_Q_Pos)         /* (CREEP_THRESHOLD_Q) Creep Threshold for Quadenergy Mask */
 #define CREEP_THRESHOLD_Q_Val(value)               (CREEP_THRESHOLD_Q_Msk & (_UINT32_(value) << CREEP_THRESHOLD_Q_Pos))
 
-/* -------- CREEP_THRESHOLD_I : (MET_CONTROL Offset: 0x38) (R/W  32) Creep Threshold of Phase Current (uQ2.30) -------- */
+/* -------- CREEP_THRESHOLD_I : (MET_CONTROL Offset: 0x3C) (R/W  32) Creep Threshold of Phase Current (uQ2.30) -------- */
 #define CREEP_THRESHOLD_I_Pos                      _UINT32_(0)                                 /* (CREEP_THRESHOLD_I) Creep Threshold of Phase Current Position */
 #define CREEP_THRESHOLD_I_Msk                      (_UINT32_(0xFFFFFFFF) << CREEP_THRESHOLD_I_Pos)         /* (CREEP_THRESHOLD_I) Creep Threshold of Phase Current Mask */
 #define CREEP_THRESHOLD_I_Val(value)               (CREEP_THRESHOLD_I_Msk & (_UINT32_(value) << CREEP_THRESHOLD_I_Pos))
 
-/* -------- POWER_OFFSET_CTRL : (MET_CONTROL Offset: 0x3C) (R/W  32) Power offset control -------- */
+/* -------- CREEP_THRESHOLD_S : (MET_CONTROL Offset: 0x40) (R/W  32) Creep Threshold for Apparent Energy (uQ2.30) -------- */
+#define CREEP_THRESHOLD_S_Pos                      _UINT32_(0)                                 /* (CREEP_THRESHOLD_S) Creep Threshold for Apparent Energy Position */
+#define CREEP_THRESHOLD_S_Msk                      (_UINT32_(0xFFFFFFFF) << CREEP_THRESHOLD_S_Pos)         /* (CREEP_THRESHOLD_S) Creep Threshold for Apparent Energy Mask */
+#define CREEP_THRESHOLD_S_Val(value)               (CREEP_THRESHOLD_S_Msk & (_UINT32_(value) << CREEP_THRESHOLD_S_Pos))
+
+/* -------- POWER_OFFSET_CTRL : (MET_CONTROL Offset: 0x44) (R/W  32) Power offset control -------- */
 #define POWER_OFFSET_CTRL_Q_OFFSET_ACC_A_Pos       _UINT32_(16)                                 /* (POWER_OFFSET_CTRL) Reactive Power Offset for Accumulator Quantities Enable Position */
 #define POWER_OFFSET_CTRL_Q_OFFSET_ACC_A_Msk       (_UINT32_(0x1) << POWER_OFFSET_CTRL_Q_OFFSET_ACC_A_Pos)         /* (POWER_OFFSET_CTRL) Reactive Power Offset for Accumulator Quantities Enable Mask */
 #define POWER_OFFSET_CTRL_Q_OFFSET_ACC_A(value)    (POWER_OFFSET_CTRL_Q_OFFSET_ACC_A_Msk & (_UINT32_(value) << POWER_OFFSET_CTRL_Q_OFFSET_ACC_A_Pos))
@@ -461,157 +471,157 @@ Microchip or any third party.
 #define   POWER_OFFSET_CTRL_P_OFFSET_PUL_DISABLED_Val      _UINT32_(0x0)                            /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable disabled */
 #define   POWER_OFFSET_CTRL_P_OFFSET_PUL_ENABLED_Val       _UINT32_(0x1)                            /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable enabled */
 
-/* -------- POWER_OFFSET_P : (MET_CONTROL Offset: 0x40) (R/W  32) Active Power Offset (sQ1.30) -------- */
+/* -------- POWER_OFFSET_P : (MET_CONTROL Offset: 0x48) (R/W  32) Active Power Offset (sQ1.30) -------- */
 #define POWER_OFFSET_P_Pos                         _UINT32_(0)                                 /* (POWER_OFFSET_P) Active Power Offset Position */
 #define POWER_OFFSET_P_Msk                         (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_P_Pos)         /* (POWER_OFFSET_P) Active Power Offset Mask */
 #define POWER_OFFSET_P_Val(value)                  (POWER_OFFSET_P_Msk & (_UINT32_(value) << POWER_OFFSET_P_Pos))
 
-/* -------- POWER_OFFSET_Q : (MET_CONTROL Offset: 0x44) (R/W  32) Active Power Offset (sQ1.30) -------- */
+/* -------- POWER_OFFSET_Q : (MET_CONTROL Offset: 0x4C) (R/W  32) Active Power Offset (sQ1.30) -------- */
 #define POWER_OFFSET_Q_Pos                         _UINT32_(0)                                 /* (POWER_OFFSET_Q) Active Power Offset Position */
 #define POWER_OFFSET_Q_Msk                         (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_Q_Pos)         /* (POWER_OFFSET_Q) Active Power Offset Mask */
 #define POWER_OFFSET_Q_Val(value)                  (POWER_OFFSET_Q_Msk & (_UINT32_(value) << POWER_OFFSET_Q_Pos))
 
-/* -------- SWELL_THRESHOLD_VA : (MET_CONTROL Offset: 0x48) (R/W  32) Voltage swell threshold for each half cycle of phase-A voltage (uQ0.32) -------- */
+/* -------- POWER_OFFSET_S : (MET_CONTROL Offset: 0x50) (R/W  32) Apparent Power Offset (sQ1.30) -------- */
+#define POWER_OFFSET_S_Pos                         _UINT32_(0)                                 /* (POWER_OFFSET_S) Apparent Power Offset Position */
+#define POWER_OFFSET_S_Msk                         (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_S_Pos)         /* (POWER_OFFSET_S) Apparent Power Offset Mask */
+#define POWER_OFFSET_S_Val(value)                  (POWER_OFFSET_S_Msk & (_UINT32_(value) << POWER_OFFSET_S_Pos))
+
+/* -------- SWELL_THRESHOLD_VA : (MET_CONTROL Offset: 0x54) (R/W  32) Voltage swell threshold for each half cycle of phase-A voltage (uQ0.32) -------- */
 #define SWELL_THRESHOLD_VA_Pos                     _UINT32_(0)                                 /* (SWELL_THRESHOLD_VA) Voltage swell threshold Position */
 #define SWELL_THRESHOLD_VA_Msk                     (_UINT32_(0xFFFFFFFF) << SWELL_THRESHOLD_VA_Pos)         /* (SWELL_THRESHOLD_VA) Voltage swell threshold Mask */
 #define SWELL_THRESHOLD_VA_Val(value)              (SWELL_THRESHOLD_VA_Msk & (_UINT32_(value) << SWELL_THRESHOLD_VA_Pos))
 
-/* -------- SWELL_THRESHOLD_VB : (MET_CONTROL Offset: 0x4C) (R/W  32) Voltage swell threshold for each half cycle of phase-B voltage (uQ0.32) -------- */
+/* -------- SWELL_THRESHOLD_VB : (MET_CONTROL Offset: 0x58) (R/W  32) Voltage swell threshold for each half cycle of phase-B voltage (uQ0.32) -------- */
 #define SWELL_THRESHOLD_VB_Pos                     _UINT32_(0)                                 /* (SWELL_THRESHOLD_VB) Voltage swell threshold Position */
 #define SWELL_THRESHOLD_VB_Msk                     (_UINT32_(0xFFFFFFFF) << SWELL_THRESHOLD_VB_Pos)         /* (SWELL_THRESHOLD_VB) Voltage swell threshold Mask */
 #define SWELL_THRESHOLD_VB_Val(value)              (SWELL_THRESHOLD_VB_Msk & (_UINT32_(value) << SWELL_THRESHOLD_VB_Pos))
 
-/* -------- SWELL_THRESHOLD_VC : (MET_CONTROL Offset: 0x50) (R/W  32) Voltage swell threshold for each half cycle of phase-C voltage (uQ0.32) -------- */
+/* -------- SWELL_THRESHOLD_VC : (MET_CONTROL Offset: 0x5C) (R/W  32) Voltage swell threshold for each half cycle of phase-C voltage (uQ0.32) -------- */
 #define SWELL_THRESHOLD_VC_Pos                     _UINT32_(0)                                 /* (SWELL_THRESHOLD_VC) Voltage swell threshold Position */
 #define SWELL_THRESHOLD_VC_Msk                     (_UINT32_(0xFFFFFFFF) << SWELL_THRESHOLD_VC_Pos)         /* (SWELL_THRESHOLD_VC) Voltage swell threshold Mask */
 #define SWELL_THRESHOLD_VC_Val(value)              (SWELL_THRESHOLD_VC_Msk & (_UINT32_(value) << SWELL_THRESHOLD_VC_Pos))
 
-/* -------- SAG_THRESHOLD_VA : (MET_CONTROL Offset: 0x54) (R/W  32) Voltage sag threshold for each half cycle of phase-A voltage (uQ0.32) -------- */
+/* -------- SAG_THRESHOLD_VA : (MET_CONTROL Offset: 0x60) (R/W  32) Voltage sag threshold for each half cycle of phase-A voltage (uQ0.32) -------- */
 #define SAG_THRESHOLD_VA_Pos                     _UINT32_(0)                                 /* (SAG_THRESHOLD_VA) Voltage sag threshold Position */
 #define SAG_THRESHOLD_VA_Msk                     (_UINT32_(0xFFFFFFFF) << SAG_THRESHOLD_VA_Pos)         /* (SAG_THRESHOLD_VA) Voltage sag threshold Mask */
 #define SAG_THRESHOLD_VA_Val(value)              (SAG_THRESHOLD_VA_Msk & (_UINT32_(value) << SAG_THRESHOLD_VA_Pos))
 
-/* -------- SAG_THRESHOLD_VB : (MET_CONTROL Offset: 0x58) (R/W  32) Voltage sag threshold for each half cycle of phase-B voltage (uQ0.32) -------- */
+/* -------- SAG_THRESHOLD_VB : (MET_CONTROL Offset: 0x64) (R/W  32) Voltage sag threshold for each half cycle of phase-B voltage (uQ0.32) -------- */
 #define SAG_THRESHOLD_VB_Pos                     _UINT32_(0)                                 /* (SAG_THRESHOLD_VB) Voltage sag threshold Position */
 #define SAG_THRESHOLD_VB_Msk                     (_UINT32_(0xFFFFFFFF) << SAG_THRESHOLD_VB_Pos)         /* (SAG_THRESHOLD_VB) Voltage sag threshold Mask */
 #define SAG_THRESHOLD_VB_Val(value)              (SAG_THRESHOLD_VB_Msk & (_UINT32_(value) << SAG_THRESHOLD_VB_Pos))
 
-/* -------- SAG_THRESHOLD_VC : (MET_CONTROL Offset: 0x5C) (R/W  32) Voltage sag threshold for each half cycle of phase-C voltage (uQ0.32) -------- */
+/* -------- SAG_THRESHOLD_VC : (MET_CONTROL Offset: 0x68) (R/W  32) Voltage sag threshold for each half cycle of phase-C voltage (uQ0.32) -------- */
 #define SAG_THRESHOLD_VC_Pos                     _UINT32_(0)                                 /* (SAG_THRESHOLD_VC) Voltage sag threshold Position */
 #define SAG_THRESHOLD_VC_Msk                     (_UINT32_(0xFFFFFFFF) << SAG_THRESHOLD_VC_Pos)         /* (SAG_THRESHOLD_VC) Voltage sag threshold Mask */
 #define SAG_THRESHOLD_VC_Val(value)              (SAG_THRESHOLD_VC_Msk & (_UINT32_(value) << SAG_THRESHOLD_VC_Pos))
 
-/* -------- SAG_THRESHOLD_VC : (MET_CONTROL Offset: 0x5C) (R/W  32) Voltage sag threshold for each half cycle of phase-C voltage (uQ0.32) -------- */
-#define SAG_THRESHOLD_VC_Pos                     _UINT32_(0)                                 /* (SAG_THRESHOLD_VC) Voltage sag threshold Position */
-#define SAG_THRESHOLD_VC_Msk                     (_UINT32_(0xFFFFFFFF) << SAG_THRESHOLD_VC_Pos)         /* (SAG_THRESHOLD_VC) Voltage sag threshold Mask */
-#define SAG_THRESHOLD_VC_Val(value)              (SAG_THRESHOLD_VC_Msk & (_UINT32_(value) << SAG_THRESHOLD_VC_Pos))
-
-/* -------- K_IA : (MET_CONTROL Offset: 0x60) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
+/* -------- K_IA : (MET_CONTROL Offset: 0x6C) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
 #define K_IA_Pos                                 _UINT32_(0)                                 /* (K_IA) Current Conversion Factor Position */
 #define K_IA_Msk                                 (_UINT32_(0xFFFFFFFF) << K_IA_Pos)          /* (K_IA) Current Conversion Factor Mask */
 #define K_IA_Val(value)                          (K_IA_Msk & (_UINT32_(value) << K_IA_Pos))
 
-/* -------- K_VA : (MET_CONTROL Offset: 0x64) (R/W  32) Volatge Conversion Factor (uQ22.10) -------- */
+/* -------- K_VA : (MET_CONTROL Offset: 0x70) (R/W  32) Volatge Conversion Factor (uQ22.10) -------- */
 #define K_VA_Pos                                 _UINT32_(0)                                 /* (K_VA) Volatge Conversion Factor Position */
 #define K_VA_Msk                                 (_UINT32_(0xFFFFFFFF) << K_VA_Pos)          /* (K_VA) Volatge Conversion Factor Mask */
 #define K_VA_Val(value)                          (K_VA_Msk & (_UINT32_(value) << K_VA_Pos))
 
-/* -------- K_IB : (MET_CONTROL Offset: 0x68) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
+/* -------- K_IB : (MET_CONTROL Offset: 0x74) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
 #define K_IB_Pos                                 _UINT32_(0)                                 /* (K_IB) Current Conversion Factor Position */
 #define K_IB_Msk                                 (_UINT32_(0xFFFFFFFF) << K_IB_Pos)          /* (K_IB) Current Conversion Factor Mask */
 #define K_IB_Val(value)                          (K_IB_Msk & (_UINT32_(value) << K_IB_Pos))
 
-/* -------- K_VB : (MET_CONTROL Offset: 0x6C) (R/W  32) Volatge Conversion Factor (uQ22.10) -------- */
+/* -------- K_VB : (MET_CONTROL Offset: 0x78) (R/W  32) Volatge Conversion Factor (uQ22.10) -------- */
 #define K_VB_Pos                                 _UINT32_(0)                                 /* (K_VB) Volatge Conversion Factor Position */
 #define K_VB_Msk                                 (_UINT32_(0xFFFFFFFF) << K_VB_Pos)          /* (K_VB) Volatge Conversion Factor Mask */
 #define K_VB_Val(value)                          (K_VB_Msk & (_UINT32_(value) << K_VB_Pos))
 
-/* -------- K_IC : (MET_CONTROL Offset: 0x70) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
+/* -------- K_IC : (MET_CONTROL Offset: 0x7C) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
 #define K_IC_Pos                                 _UINT32_(0)                                 /* (K_IC) Current Conversion Factor Position */
 #define K_IC_Msk                                 (_UINT32_(0xFFFFFFFF) << K_IC_Pos)          /* (K_IC) Current Conversion Factor Mask */
 #define K_IC_Val(value)                          (K_IC_Msk & (_UINT32_(value) << K_IC_Pos))
 
-/* -------- K_VC : (MET_CONTROL Offset: 0x74) (R/W  32) Volatge Conversion Factor (uQ22.10) -------- */
+/* -------- K_VC : (MET_CONTROL Offset: 0x80) (R/W  32) Volatge Conversion Factor (uQ22.10) -------- */
 #define K_VC_Pos                                 _UINT32_(0)                                 /* (K_VC) Volatge Conversion Factor Position */
 #define K_VC_Msk                                 (_UINT32_(0xFFFFFFFF) << K_VC_Pos)          /* (K_VC) Volatge Conversion Factor Mask */
 #define K_VC_Val(value)                          (K_VC_Msk & (_UINT32_(value) << K_VC_Pos))
 
-/* -------- K_IN : (MET_CONTROL Offset: 0x78) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
+/* -------- K_IN : (MET_CONTROL Offset: 0x84) (R/W  32) Current Conversion Factor (uQ22.10) -------- */
 #define K_IN_Pos                                 _UINT32_(0)                                 /* (K_IN) Current Conversion Factor Position */
 #define K_IN_Msk                                 (_UINT32_(0xFFFFFFFF) << K_IN_Pos)          /* (K_IN) Current Conversion Factor Mask */
 #define K_IN_Val(value)                          (K_IN_Msk & (_UINT32_(value) << K_IN_Pos))
 
-/* -------- CAL_M_IA : (MET_CONTROL Offset: 0x7C) (R/W  32) Current magnitude calibration constant, I_A (sQ2.29) -------- */
+/* -------- CAL_M_IA : (MET_CONTROL Offset: 0x88) (R/W  32) Current magnitude calibration constant, I_A (sQ2.29) -------- */
 #define CAL_M_IA_Pos                             _UINT32_(0)                                 /* (CAL_M_IA) Current Conversion Factor Position */
 #define CAL_M_IA_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_IA_Pos)      /* (CAL_M_IA) Current Conversion Factor Mask */
 #define CAL_M_IA_Val(value)                      (CAL_M_IA_Msk & (_UINT32_(value) << CAL_M_IA_Pos))
 
-/* -------- CAL_M_VA : (MET_CONTROL Offset: 0x80) (R/W  32) Voltage magnitude calibration constant, V_A (sQ2.29) -------- */
+/* -------- CAL_M_VA : (MET_CONTROL Offset: 0x8C) (R/W  32) Voltage magnitude calibration constant, V_A (sQ2.29) -------- */
 #define CAL_M_VA_Pos                             _UINT32_(0)                                 /* (CAL_M_VA) Voltage Conversion Factor Position */
 #define CAL_M_VA_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_VA_Pos)      /* (CAL_M_VA) Voltage Conversion Factor Mask */
 #define CAL_M_VA_Val(value)                      (CAL_M_VA_Msk & (_UINT32_(value) << CAL_M_VA_Pos))
 
-/* -------- CAL_M_IB : (MET_CONTROL Offset: 0x84) (R/W  32) Current magnitude calibration constant, I_B (sQ2.29) -------- */
+/* -------- CAL_M_IB : (MET_CONTROL Offset: 0x90) (R/W  32) Current magnitude calibration constant, I_B (sQ2.29) -------- */
 #define CAL_M_IB_Pos                             _UINT32_(0)                                 /* (CAL_M_IB) Current Conversion Factor Position */
 #define CAL_M_IB_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_IB_Pos)      /* (CAL_M_IB) Current Conversion Factor Mask */
 #define CAL_M_IB_Val(value)                      (CAL_M_IB_Msk & (_UINT32_(value) << CAL_M_IB_Pos))
 
-/* -------- CAL_M_VB : (MET_CONTROL Offset: 0x88) (R/W  32) Voltage magnitude calibration constant, V_B (sQ2.29) -------- */
+/* -------- CAL_M_VB : (MET_CONTROL Offset: 0x94) (R/W  32) Voltage magnitude calibration constant, V_B (sQ2.29) -------- */
 #define CAL_M_VB_Pos                             _UINT32_(0)                                 /* (CAL_M_VB) Voltage Conversion Factor Position */
 #define CAL_M_VB_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_VB_Pos)      /* (CAL_M_VB) Voltage Conversion Factor Mask */
 #define CAL_M_VB_Val(value)                      (CAL_M_VB_Msk & (_UINT32_(value) << CAL_M_VB_Pos))
 
-/* -------- CAL_M_IC : (MET_CONTROL Offset: 0x8C) (R/W  32) Current magnitude calibration constant, I_C (sQ2.29) -------- */
+/* -------- CAL_M_IC : (MET_CONTROL Offset: 0x98) (R/W  32) Current magnitude calibration constant, I_C (sQ2.29) -------- */
 #define CAL_M_IC_Pos                             _UINT32_(0)                                 /* (CAL_M_IC) Current Conversion Factor Position */
 #define CAL_M_IC_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_IC_Pos)      /* (CAL_M_IC) Current Conversion Factor Mask */
 #define CAL_M_IC_Val(value)                      (CAL_M_IC_Msk & (_UINT32_(value) << CAL_M_IC_Pos))
 
-/* -------- CAL_M_VC : (MET_CONTROL Offset: 0x90) (R/W  32) Voltage magnitude calibration constant, V_C (sQ2.29) -------- */
+/* -------- CAL_M_VC : (MET_CONTROL Offset: 0x9C) (R/W  32) Voltage magnitude calibration constant, V_C (sQ2.29) -------- */
 #define CAL_M_VC_Pos                             _UINT32_(0)                                 /* (CAL_M_VC) Voltage Conversion Factor Position */
 #define CAL_M_VC_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_VC_Pos)      /* (CAL_M_VC) Voltage Conversion Factor Mask */
 #define CAL_M_VC_Val(value)                      (CAL_M_VC_Msk & (_UINT32_(value) << CAL_M_VC_Pos))
 
-/* -------- CAL_M_IN : (MET_CONTROL Offset: 0x94) (R/W  32) Current magnitude calibration constant, I_N (sQ2.29) -------- */
+/* -------- CAL_M_IN : (MET_CONTROL Offset: 0xA0) (R/W  32) Current magnitude calibration constant, I_N (sQ2.29) -------- */
 #define CAL_M_IN_Pos                             _UINT32_(0)                                 /* (CAL_M_IN) Current Conversion Factor Position */
 #define CAL_M_IN_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_M_IN_Pos)      /* (CAL_M_IN) Current Conversion Factor Mask */
 #define CAL_M_IN_Val(value)                      (CAL_M_IN_Msk & (_UINT32_(value) << CAL_M_IN_Pos))
 
-/* -------- CAL_PH_IA : (MET_CONTROL Offset: 0x98) (R/W  32) Current phase calibration constant, I_A (sQ2.29) -------- */
+/* -------- CAL_PH_IA : (MET_CONTROL Offset: 0xA4) (R/W  32) Current phase calibration constant, I_A (sQ2.29) -------- */
 #define CAL_PH_IA_Pos                             _UINT32_(0)                                 /* (CAL_PH_IA) Current phase calibration constant Position */
 #define CAL_PH_IA_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_IA_Pos)      /* (CAL_PH_IA) Current phase calibration constant Mask */
 #define CAL_PH_IA_Val(value)                      (CAL_PH_IA_Msk & (_UINT32_(value) << CAL_PH_IA_Pos))
 
-/* -------- CAL_PH_VA : (MET_CONTROL Offset: 0x9C) (R/W  32) Voltage phase calibration constant, V_A (sQ2.29) -------- */
+/* -------- CAL_PH_VA : (MET_CONTROL Offset: 0xA8) (R/W  32) Voltage phase calibration constant, V_A (sQ2.29) -------- */
 #define CAL_PH_VA_Pos                             _UINT32_(0)                                 /* (CAL_PH_VA) Voltage phase calibration constant Position */
 #define CAL_PH_VA_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_VA_Pos)      /* (CAL_PH_VA) Voltage phase calibration constant Mask */
 #define CAL_PH_VA_Val(value)                      (CAL_PH_VA_Msk & (_UINT32_(value) << CAL_PH_VA_Pos))
 
-/* -------- CAL_PH_IB : (MET_CONTROL Offset: 0xA0) (R/W  32) Current phase calibration constant, I_B (sQ2.29) -------- */
+/* -------- CAL_PH_IB : (MET_CONTROL Offset: 0xAC) (R/W  32) Current phase calibration constant, I_B (sQ2.29) -------- */
 #define CAL_PH_IB_Pos                             _UINT32_(0)                                 /* (CAL_PH_IB) Current phase calibration constant Position */
 #define CAL_PH_IB_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_IB_Pos)      /* (CAL_PH_IB) Current phase calibration constant Mask */
 #define CAL_PH_IB_Val(value)                      (CAL_PH_IB_Msk & (_UINT32_(value) << CAL_PH_IB_Pos))
 
-/* -------- CAL_PH_VB : (MET_CONTROL Offset: 0xA4) (R/W  32) Voltage phase calibration constant, V_B (sQ2.29) -------- */
+/* -------- CAL_PH_VB : (MET_CONTROL Offset: 0xB0) (R/W  32) Voltage phase calibration constant, V_B (sQ2.29) -------- */
 #define CAL_PH_VB_Pos                             _UINT32_(0)                                 /* (CAL_PH_VB) Voltage phase calibration constant Position */
 #define CAL_PH_VB_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_VB_Pos)      /* (CAL_PH_VB) Voltage phase calibration constant Mask */
 #define CAL_PH_VB_Val(value)                      (CAL_PH_VB_Msk & (_UINT32_(value) << CAL_PH_VB_Pos))
 
-/* -------- CAL_PH_IC : (MET_CONTROL Offset: 0xA8) (R/W  32) Current phase calibration constant, I_C (sQ2.29) -------- */
+/* -------- CAL_PH_IC : (MET_CONTROL Offset: 0xB4) (R/W  32) Current phase calibration constant, I_C (sQ2.29) -------- */
 #define CAL_PH_IC_Pos                             _UINT32_(0)                                 /* (CAL_PH_IC) Current phase calibration constant Position */
 #define CAL_PH_IC_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_IC_Pos)      /* (CAL_PH_IC) Current phase calibration constant Mask */
 #define CAL_PH_IC_Val(value)                      (CAL_PH_IC_Msk & (_UINT32_(value) << CAL_PH_IC_Pos))
 
-/* -------- CAL_PH_VC : (MET_CONTROL Offset: 0xAC) (R/W  32) Voltage phase calibration constant, V_C (sQ2.29) -------- */
+/* -------- CAL_PH_VC : (MET_CONTROL Offset: 0xB8) (R/W  32) Voltage phase calibration constant, V_C (sQ2.29) -------- */
 #define CAL_PH_VC_Pos                             _UINT32_(0)                                 /* (CAL_PH_VC) Voltage phase calibration constant Position */
 #define CAL_PH_VC_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_VC_Pos)      /* (CAL_PH_VC) Voltage phase calibration constant Mask */
 #define CAL_PH_VC_Val(value)                      (CAL_PH_VC_Msk & (_UINT32_(value) << CAL_PH_VC_Pos))
 
-/* -------- CAL_PH_IN : (MET_CONTROL Offset: 0xB0) (R/W  32) Current phase calibration constant, I_N (sQ2.29) -------- */
+/* -------- CAL_PH_IN : (MET_CONTROL Offset: 0xBC) (R/W  32) Current phase calibration constant, I_N (sQ2.29) -------- */
 #define CAL_PH_IN_Pos                             _UINT32_(0)                                 /* (CAL_PH_IN) Current phase calibration constant Position */
 #define CAL_PH_IN_Msk                             (_UINT32_(0xFFFFFFFF) << CAL_PH_IN_Pos)      /* (CAL_PH_IN) Current phase calibration constant Mask */
 #define CAL_PH_IN_Val(value)                      (CAL_PH_IN_Msk & (_UINT32_(value) << CAL_PH_IN_Pos))
 
-/* -------- CAPTURE_CTRL : (MET_CONTROL Offset: 0xB4) (R/W  32) Waveform capture control register -------- */
+/* -------- CAPTURE_CTRL : (MET_CONTROL Offset: 0xC0) (R/W  32) Waveform capture control register -------- */
 #define CAPTURE_CTRL_CAPTURE_TYPE_Pos             _UINT32_(0)                                 /* (CAPTURE_CTRL) Waveform capture control register Position */
 #define CAPTURE_CTRL_CAPTURE_TYPE_Msk             (_UINT32_(0x3) << CAPTURE_CTRL_CAPTURE_TYPE_Pos)         /* (CAPTURE_CTRL) Waveform capture control register Mask */
 #define CAPTURE_CTRL_CAPTURE_TYPE(value)          (CAPTURE_CTRL_CAPTURE_TYPE_Msk & (_UINT32_(value) << CAPTURE_CTRL_CAPTURE_TYPE_Pos))
@@ -659,17 +669,17 @@ Microchip or any third party.
 #define   CAPTURE_CTRL_CAPTURE_EN_DISABLED_Val       _UINT32_(0x0)                   /* (CAPTURE_CTRL) Waveform capture feature is disabled  */
 #define   CAPTURE_CTRL_CAPTURE_EN_ENABLED_Val        _UINT32_(0x1)                   /* (CAPTURE_CTRL) Waveform capture feature is enabled */
 
-/* -------- CAPTURE_BUFF_SIZE : (MET_CONTROL Offset: 0xB8) (R/W  32) Waveform capture buffer size in units of 32-bits -------- */
+/* -------- CAPTURE_BUFF_SIZE : (MET_CONTROL Offset: 0xC4) (R/W  32) Waveform capture buffer size in units of 32-bits -------- */
 #define CAPTURE_BUFF_SIZE_Pos                      _UINT32_(0)                                 /* (CAPTURE_BUFF_SIZE) Waveform capture buffer size Position */
 #define CAPTURE_BUFF_SIZE_Msk                      (_UINT32_(0xFFFFFF) << CAPTURE_BUFF_SIZE_Pos)      /* (CAPTURE_BUFF_SIZE) Waveform capture buffer size Mask */
 #define CAPTURE_BUFF_SIZE_Val(value)               (CAPTURE_BUFF_SIZE_Msk & (_UINT32_(value) << CAPTURE_BUFF_SIZE_Pos))
 
-/* -------- CAPTURE_ADDR_SIZE : (MET_CONTROL Offset: 0xBC) (R/W  32) Waveform capture buffer address pointer -------- */
-#define CAPTURE_ADDR_SIZE_Pos                      _UINT32_(0)                                 /* (CAPTURE_ADDR_SIZE) Waveform capture buffer address pointer Position */
-#define CAPTURE_ADDR_SIZE_Msk                      (_UINT32_(0xFFFFFFFF) << CAPTURE_ADDR_SIZE_Pos)      /* (CAPTURE_ADDR_SIZE) Waveform capture buffer address pointer Mask */
-#define CAPTURE_ADDR_SIZE_Val(value)               (CAPTURE_ADDR_SIZE_Msk & (_UINT32_(value) << CAPTURE_ADDR_SIZE_Pos))
+/* -------- CAPTURE_ADDR : (MET_CONTROL Offset: 0xC8) (R/W  32) Waveform capture buffer address pointer -------- */
+#define CAPTURE_ADDR_Pos                           _UINT32_(0)                                 /* (CAPTURE_ADDR) Waveform capture buffer address pointer Position */
+#define CAPTURE_ADDR_Msk                           (_UINT32_(0xFFFFFFFF) << CAPTURE_ADDR_Pos)      /* (CAPTURE_ADDR) Waveform capture buffer address pointer Mask */
+#define CAPTURE_ADDR_Val(value)                    (CAPTURE_ADDR_Msk & (_UINT32_(value) << CAPTURE_ADDR_Pos))
 
-/* -------- ATSENSE_CTRL_20_23 : (MET_CONTROL Offset: 0xCC) (R/W  32) ATSense control: channels I0,I1,V1,I2 -------- */
+/* -------- ATSENSE_CTRL_20_23 : (MET_CONTROL Offset: 0xD8) (R/W  32) ATSense control: channels I0,I1,V1,I2 -------- */
 #define ATSENSE_CTRL_20_23_I0_ON_Pos                _UINT32_(0)                                 /* (ATSENSE_CTRL_20_23) Enable channel I0 Position */
 #define ATSENSE_CTRL_20_23_I0_ON_Msk                (_UINT32_(0x1) << ATSENSE_CTRL_20_23_I0_ON_Pos)         /* (ATSENSE_CTRL_20_23) Enable channel I0 Mask */
 #define ATSENSE_CTRL_20_23_I0_ON(value)             (ATSENSE_CTRL_20_23_I0_ON_Msk & (_UINT32_(value) << ATSENSE_CTRL_20_23_I0_ON_Pos))
@@ -717,7 +727,7 @@ Microchip or any third party.
 #define   ATSENSE_CTRL_20_23_I2_GAIN_4_Val            _UINT32_(0x2)                   /* (ATSENSE_CTRL_20_23) Channel has a gain of 4 */
 #define   ATSENSE_CTRL_20_23_I2_GAIN_8_Val            _UINT32_(0x3)                   /* (ATSENSE_CTRL_20_23) Channel has a gain of 8 */
 
-/* -------- ATSENSE_CTRL_24_27 : (MET_CONTROL Offset: 0xD0) (R/W  32) ATSense control: channels V2,I3,V3,ANA -------- */
+/* -------- ATSENSE_CTRL_24_27 : (MET_CONTROL Offset: 0xDC) (R/W  32) ATSense control: channels V2,I3,V3,ANA -------- */
 #define ATSENSE_CTRL_24_27_V2_ON_Pos                _UINT32_(0)                                 /* (ATSENSE_CTRL_24_27) Enable channel V2 Position */
 #define ATSENSE_CTRL_24_27_V2_ON_Msk                (_UINT32_(0x1) << ATSENSE_CTRL_24_27_V2_ON_Pos)         /* (ATSENSE_CTRL_24_27) Enable channel V2 Mask */
 #define ATSENSE_CTRL_24_27_V2_ON(value)             (ATSENSE_CTRL_24_27_V2_ON_Msk & (_UINT32_(value) << ATSENSE_CTRL_24_27_V2_ON_Pos))
@@ -756,7 +766,7 @@ Microchip or any third party.
 #define   ATSENSE_CTRL_24_27_ONLDO_DISABLED_Val       _UINT32_(0x0)                   /* (ATSENSE_CTRL_24_27) Internal LDO is disabled  */
 #define   ATSENSE_CTRL_24_27_ONLDO_ENABLED_Val        _UINT32_(0x1)                   /* (ATSENSE_CTRL_24_27) Internal LDO is enabled */
 
-/* -------- ATSENSE_CTRL_28_2B : (MET_CONTROL Offset: 0xD4) (R/W  32) ATSense control: Registers: x28, x2A-2B, x2D -------- */
+/* -------- ATSENSE_CTRL_28_2B : (MET_CONTROL Offset: 0xE0) (R/W  32) ATSense control: Registers: x28, x2A-2B, x2D -------- */
 #define ATSENSE_CTRL_28_2B_OSR_Pos                  _UINT32_(0)                                 /* (ATSENSE_CTRL_28_2B) Over Sampling Ratio Position */
 #define ATSENSE_CTRL_28_2B_OSR_Msk                  (_UINT32_(0x3) << ATSENSE_CTRL_28_2B_OSR_Pos)         /* (ATSENSE_CTRL_28_2B) Over Sampling Ratio Mask */
 #define ATSENSE_CTRL_28_2B_OSR(value)               (ATSENSE_CTRL_28_2B_OSR_Msk & (_UINT32_(value) << ATSENSE_CTRL_28_2B_OSR_Pos))
@@ -770,32 +780,32 @@ Microchip or any third party.
 #define   ATSENSE_CTRL_28_2B_MSB_MODE_32BITS_Val      _UINT32_(0x0)                   /* (ATSENSE_CTRL_28_2B) 32-bits mode  */
 #define   ATSENSE_CTRL_28_2B_MSB_MODE_16BITS_Val      _UINT32_(0x1)                   /* (ATSENSE_CTRL_28_2B) 16-bits mode */
 
-/* -------- POWER_OFFSET_P_A : (MET_CONTROL Offset: 0xDC) (R/W  32) Phase-A active power offset (sQ9.40) -------- */
+/* -------- POWER_OFFSET_P_A : (MET_CONTROL Offset: 0xE8) (R/W  32) Phase-A active power offset (sQ9.40) -------- */
 #define POWER_OFFSET_P_A_Pos                        _UINT32_(0)                                 /* (POWER_OFFSET_P_A) Phase-A active power offset Position */
 #define POWER_OFFSET_P_A_Msk                        (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_P_A_Pos)      /* (POWER_OFFSET_P_A) Phase-A active power offset Mask */
 #define POWER_OFFSET_P_A_Val(value)                 (POWER_OFFSET_P_A_Msk & (_UINT32_(value) << POWER_OFFSET_P_A_Pos))
 
-/* -------- POWER_OFFSET_P_B : (MET_CONTROL Offset: 0xE0) (R/W  32) Phase-B active power offset (sQ9.40) -------- */
+/* -------- POWER_OFFSET_P_B : (MET_CONTROL Offset: 0xEC) (R/W  32) Phase-B active power offset (sQ9.40) -------- */
 #define POWER_OFFSET_P_B_Pos                        _UINT32_(0)                                 /* (POWER_OFFSET_P_B) Phase-B active power offset Position */
 #define POWER_OFFSET_P_B_Msk                        (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_P_B_Pos)      /* (POWER_OFFSET_P_B) Phase-B active power offset Mask */
 #define POWER_OFFSET_P_B_Val(value)                 (POWER_OFFSET_P_B_Msk & (_UINT32_(value) << POWER_OFFSET_P_B_Pos))
 
-/* -------- POWER_OFFSET_P_C : (MET_CONTROL Offset: 0xE4) (R/W  32) Phase-C active power offset (sQ9.40) -------- */
+/* -------- POWER_OFFSET_P_C : (MET_CONTROL Offset: 0xF0) (R/W  32) Phase-C active power offset (sQ9.40) -------- */
 #define POWER_OFFSET_P_C_Pos                        _UINT32_(0)                                 /* (POWER_OFFSET_P_C) Phase-C active power offset Position */
 #define POWER_OFFSET_P_C_Msk                        (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_P_C_Pos)      /* (POWER_OFFSET_P_C) Phase-C active power offset Mask */
 #define POWER_OFFSET_P_C_Val(value)                 (POWER_OFFSET_P_C_Msk & (_UINT32_(value) << POWER_OFFSET_P_C_Pos))
 
-/* -------- POWER_OFFSET_Q_A : (MET_CONTROL Offset: 0xDC) (R/W  32) Phase-A reactive power offset (sQ9.40) -------- */
+/* -------- POWER_OFFSET_Q_A : (MET_CONTROL Offset: 0xF4) (R/W  32) Phase-A reactive power offset (sQ9.40) -------- */
 #define POWER_OFFSET_Q_A_Pos                        _UINT32_(0)                                 /* (POWER_OFFSET_Q_A) Phase-A reactive power offset Position */
 #define POWER_OFFSET_Q_A_Msk                        (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_Q_A_Pos)      /* (POWER_OFFSET_Q_A) Phase-A reactive power offset Mask */
 #define POWER_OFFSET_Q_A_Val(value)                 (POWER_OFFSET_Q_A_Msk & (_UINT32_(value) << POWER_OFFSET_Q_A_Pos))
 
-/* -------- POWER_OFFSET_Q_B : (MET_CONTROL Offset: 0xE0) (R/W  32) Phase-B reactive power offset (sQ9.40) -------- */
+/* -------- POWER_OFFSET_Q_B : (MET_CONTROL Offset: 0xF8) (R/W  32) Phase-B reactive power offset (sQ9.40) -------- */
 #define POWER_OFFSET_Q_B_Pos                        _UINT32_(0)                                 /* (POWER_OFFSET_Q_B) Phase-B reactive power offset Position */
 #define POWER_OFFSET_Q_B_Msk                        (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_Q_B_Pos)      /* (POWER_OFFSET_Q_B) Phase-B reactive power offset Mask */
 #define POWER_OFFSET_Q_B_Val(value)                 (POWER_OFFSET_Q_B_Msk & (_UINT32_(value) << POWER_OFFSET_Q_B_Pos))
 
-/* -------- POWER_OFFSET_Q_C : (MET_CONTROL Offset: 0xE4) (R/W  32) Phase-C reactive power offset (sQ9.40) -------- */
+/* -------- POWER_OFFSET_Q_C : (MET_CONTROL Offset: 0xFC) (R/W  32) Phase-C reactive power offset (sQ9.40) -------- */
 #define POWER_OFFSET_Q_C_Pos                        _UINT32_(0)                                 /* (POWER_OFFSET_Q_C) Phase-C reactive power offset Position */
 #define POWER_OFFSET_Q_C_Msk                        (_UINT32_(0xFFFFFFFF) << POWER_OFFSET_Q_C_Pos)      /* (POWER_OFFSET_Q_C) Phase-C reactive power offset Mask */
 #define POWER_OFFSET_Q_C_Val(value)                 (POWER_OFFSET_Q_C_Msk & (_UINT32_(value) << POWER_OFFSET_Q_C_Pos))
@@ -1303,55 +1313,58 @@ typedef struct
    __IO  uint32_t P_K_t;                   /**< Offset: 0x24 (R/W  32) Meter Active Power Pulse Constant (uQ8.24) */
    __IO  uint32_t Q_K_t;                   /**< Offset: 0x28 (R/W  32) Meter Reactive Power Pulse Constant (uQ8.24) */
    __IO  uint32_t I_K_t;                   /**< Offset: 0x2C (R/W  32) Meter Current Pulse Constant (uQ8.24) */
-   __IO  uint32_t CREEP_THRESHOLD_P;       /**< Offset: 0x30 (R/W  32) Creep Threshold for Active Energy (uQ2.30) */
-   __IO  uint32_t CREEP_THRESHOLD_Q;       /**< Offset: 0x34 (R/W  32) Creep Threshold for Quadergy (uQ2.30) */
-   __IO  uint32_t CREEP_THRESHOLD_I;       /**< Offset: 0x38 (R/W  32) Creep Threshold of Phase Current (uQ2.30) */
-   __IO  uint32_t POWER_OFFSET_CTRL;       /**< Offset: 0x3C (R/W  32) Power offset control */
-   __IO  uint32_t POWER_OFFSET_P;          /**< Offset: 0x40 (R/W  32) Active Power Offset (sQ1.30) */
-   __IO  uint32_t POWER_OFFSET_Q;          /**< Offset: 0x44 (R/W  32) Reactive Power Offset (sQ1.30) */
-   __IO  uint32_t SWELL_THRESHOLD_VA;      /**< Offset: 0x48 (R/W  32) Voltage swell threshold for each half cycle of phase-A voltage (uQ0.32) */
-   __IO  uint32_t SWELL_THRESHOLD_VB;      /**< Offset: 0x4C (R/W  32) Voltage swell threshold for each half cycle of phase-B voltage (uQ0.32) */
-   __IO  uint32_t SWELL_THRESHOLD_VC;      /**< Offset: 0x50 (R/W  32) Voltage swell threshold for each half cycle of phase-C voltage (uQ0.32) */
-   __IO  uint32_t SAG_THRESHOLD_VA;        /**< Offset: 0x54 (R/W  32) Voltage sag threshold for each half cycle of phase-A voltage (uQ0.32) */
-   __IO  uint32_t SAG_THRESHOLD_VB;        /**< Offset: 0x58 (R/W  32) Voltage sag threshold for each half cycle of phase-B voltage (uQ0.32) */
-   __IO  uint32_t SAG_THRESHOLD_VC;        /**< Offset: 0x5C (R/W  32) Voltage sag threshold for each half cycle of phase-B voltage (uQ0.32) */
-   __IO  uint32_t K_IA;                    /**< Offset: 0x60 (R/W  32) ADC input current conversion factor = I_A(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t K_VA;                    /**< Offset: 0x64 (R/W  32) ADC input voltage conversion factor = V_A(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t K_IB;                    /**< Offset: 0x68 (R/W  32) ADC input current conversion factor = I_B(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t K_VB;                    /**< Offset: 0x6C (R/W  32) ADC input voltage conversion factor = V_B(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t K_IC;                    /**< Offset: 0x70 (R/W  32) ADC input current conversion factor = I_C(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t K_VC;                    /**< Offset: 0x74 (R/W  32) ADC input voltage conversion factor = V_C(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t K_IN;                    /**< Offset: 0x78 (R/W  32) ADC input current conversion factor = I_N(rms)/Vadc(rms) (uQ22.10) */
-   __IO  uint32_t CAL_M_IA;                /**< Offset: 0x7C (R/W  32) Current magnitude calibration constant, I_A  (sQ2.29) */
-   __IO  uint32_t CAL_M_VA;                /**< Offset: 0x80 (R/W  32) Voltage magnitude calibration constant, V_A  (sQ2.29) */
-   __IO  uint32_t CAL_M_IB;                /**< Offset: 0x84 (R/W  32) Current magnitude calibration constant, I_B  (sQ2.29) */
-   __IO  uint32_t CAL_M_VB;                /**< Offset: 0x88 (R/W  32) Voltage magnitude calibration constant, V_B  (sQ2.29) */
-   __IO  uint32_t CAL_M_IC;                /**< Offset: 0x8C (R/W  32) Current magnitude calibration constant, I_C  (sQ2.29) */
-   __IO  uint32_t CAL_M_VC;                /**< Offset: 0x90 (R/W  32) Voltage magnitude calibration constant, V_C  (sQ2.29) */
-   __IO  uint32_t CAL_M_IN;                /**< Offset: 0x94 (R/W  32) Current magnitude calibration constant, I_N  (sQ2.29) */
-   __IO  uint32_t CAL_PH_IA;               /**< Offset: 0x98 (R/W  32) Current phase calibration constant, I_A (sQ0.31) */
-   __IO  uint32_t CAL_PH_VA;               /**< Offset: 0x9C (R/W  32) Voltage phase calibration constant, V_A (sQ0.31) */
-   __IO  uint32_t CAL_PH_IB;               /**< Offset: 0xA0 (R/W  32) Current phase calibration constant, I_B (sQ0.31) */
-   __IO  uint32_t CAL_PH_VB;               /**< Offset: 0xA4 (R/W  32) Voltage phase calibration constant, V_B (sQ0.31) */
-   __IO  uint32_t CAL_PH_IC;               /**< Offset: 0xA8 (R/W  32) Current phase calibration constant, I_C (sQ0.31) */
-   __IO  uint32_t CAL_PH_VC;               /**< Offset: 0xAC (R/W  32) Voltage phase calibration constant, V_C (sQ0.31) */
-   __IO  uint32_t CAL_PH_IN;               /**< Offset: 0xB0 (R/W  32) Current phase calibration constant, I_N (sQ0.31) */
-   __IO  uint32_t CAPTURE_CTRL;            /**< Offset: 0xB4 (R/W  32) Waveform capture control register */
-   __IO  uint32_t CAPTURE_BUFF_SIZE;       /**< Offset: 0xB8 (R/W  32) Waveform capture buffer size in units of 32-bits */
-   __IO  uint32_t CAPTURE_ADDR;            /**< Offset: 0xBC (R/W  32) Waveform capture buffer address pointer */
+   __IO  uint32_t S_K_t;                   /**< Offset: 0x30 (R/W  32) Meter Apparent Power Pulse Constant (uQ8.24) */
+   __IO  uint32_t CREEP_THRESHOLD_P;       /**< Offset: 0x34 (R/W  32) Creep Threshold for Active Energy (uQ2.30) */
+   __IO  uint32_t CREEP_THRESHOLD_Q;       /**< Offset: 0x38 (R/W  32) Creep Threshold for Quadergy (uQ2.30) */
+   __IO  uint32_t CREEP_THRESHOLD_I;       /**< Offset: 0x3C (R/W  32) Creep Threshold of Phase Current (uQ2.30) */
+   __IO  uint32_t CREEP_THRESHOLD_S;       /**< Offset: 0x40 (R/W  32) Creep Threshold of Phase Apparent Power (uQ2.30) */
+   __IO  uint32_t POWER_OFFSET_CTRL;       /**< Offset: 0x44 (R/W  32) Power offset control */
+   __IO  uint32_t POWER_OFFSET_P;          /**< Offset: 0x48 (R/W  32) Active Power Offset (sQ1.30) */
+   __IO  uint32_t POWER_OFFSET_Q;          /**< Offset: 0x4C (R/W  32) Reactive Power Offset (sQ1.30) */
+   __IO  uint32_t POWER_OFFSET_S;          /**< Offset: 0x50 (R/W  32) Apparent Power Offset (sQ1.30) */
+   __IO  uint32_t SWELL_THRESHOLD_VA;      /**< Offset: 0x54 (R/W  32) Voltage swell threshold for each half cycle of phase-A voltage (uQ0.32) */
+   __IO  uint32_t SWELL_THRESHOLD_VB;      /**< Offset: 0x58 (R/W  32) Voltage swell threshold for each half cycle of phase-B voltage (uQ0.32) */
+   __IO  uint32_t SWELL_THRESHOLD_VC;      /**< Offset: 0x5C (R/W  32) Voltage swell threshold for each half cycle of phase-C voltage (uQ0.32) */
+   __IO  uint32_t SAG_THRESHOLD_VA;        /**< Offset: 0x60 (R/W  32) Voltage sag threshold for each half cycle of phase-A voltage (uQ0.32) */
+   __IO  uint32_t SAG_THRESHOLD_VB;        /**< Offset: 0x64 (R/W  32) Voltage sag threshold for each half cycle of phase-B voltage (uQ0.32) */
+   __IO  uint32_t SAG_THRESHOLD_VC;        /**< Offset: 0x68 (R/W  32) Voltage sag threshold for each half cycle of phase-B voltage (uQ0.32) */
+   __IO  uint32_t K_IA;                    /**< Offset: 0x6C (R/W  32) ADC input current conversion factor = I_A(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t K_VA;                    /**< Offset: 0x70 (R/W  32) ADC input voltage conversion factor = V_A(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t K_IB;                    /**< Offset: 0x74 (R/W  32) ADC input current conversion factor = I_B(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t K_VB;                    /**< Offset: 0x78 (R/W  32) ADC input voltage conversion factor = V_B(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t K_IC;                    /**< Offset: 0x7C (R/W  32) ADC input current conversion factor = I_C(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t K_VC;                    /**< Offset: 0x80 (R/W  32) ADC input voltage conversion factor = V_C(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t K_IN;                    /**< Offset: 0x84 (R/W  32) ADC input current conversion factor = I_N(rms)/Vadc(rms) (uQ22.10) */
+   __IO  uint32_t CAL_M_IA;                /**< Offset: 0x88 (R/W  32) Current magnitude calibration constant, I_A  (sQ2.29) */
+   __IO  uint32_t CAL_M_VA;                /**< Offset: 0x8C (R/W  32) Voltage magnitude calibration constant, V_A  (sQ2.29) */
+   __IO  uint32_t CAL_M_IB;                /**< Offset: 0x90 (R/W  32) Current magnitude calibration constant, I_B  (sQ2.29) */
+   __IO  uint32_t CAL_M_VB;                /**< Offset: 0x94 (R/W  32) Voltage magnitude calibration constant, V_B  (sQ2.29) */
+   __IO  uint32_t CAL_M_IC;                /**< Offset: 0x98 (R/W  32) Current magnitude calibration constant, I_C  (sQ2.29) */
+   __IO  uint32_t CAL_M_VC;                /**< Offset: 0x9C (R/W  32) Voltage magnitude calibration constant, V_C  (sQ2.29) */
+   __IO  uint32_t CAL_M_IN;                /**< Offset: 0xA0 (R/W  32) Current magnitude calibration constant, I_N  (sQ2.29) */
+   __IO  uint32_t CAL_PH_IA;               /**< Offset: 0xA4 (R/W  32) Current phase calibration constant, I_A (sQ0.31) */
+   __IO  uint32_t CAL_PH_VA;               /**< Offset: 0xA8 (R/W  32) Voltage phase calibration constant, V_A (sQ0.31) */
+   __IO  uint32_t CAL_PH_IB;               /**< Offset: 0xAC (R/W  32) Current phase calibration constant, I_B (sQ0.31) */
+   __IO  uint32_t CAL_PH_VB;               /**< Offset: 0xB0 (R/W  32) Voltage phase calibration constant, V_B (sQ0.31) */
+   __IO  uint32_t CAL_PH_IC;               /**< Offset: 0xB4 (R/W  32) Current phase calibration constant, I_C (sQ0.31) */
+   __IO  uint32_t CAL_PH_VC;               /**< Offset: 0xB8 (R/W  32) Voltage phase calibration constant, V_C (sQ0.31) */
+   __IO  uint32_t CAL_PH_IN;               /**< Offset: 0xBC (R/W  32) Current phase calibration constant, I_N (sQ0.31) */
+   __IO  uint32_t CAPTURE_CTRL;            /**< Offset: 0xC0 (R/W  32) Waveform capture control register */
+   __IO  uint32_t CAPTURE_BUFF_SIZE;       /**< Offset: 0xC4 (R/W  32) Waveform capture buffer size in units of 32-bits */
+   __IO  uint32_t CAPTURE_ADDR;            /**< Offset: 0xC8 (R/W  32) Waveform capture buffer address pointer */
    __IO  uint32_t Reserved1;
    __IO  uint32_t Reserved2;
    __IO  uint32_t Reserved3;
-   __IO  uint32_t ATSENSE_CTRL_20_23;      /**< Offset: 0xCC (R/W  32) ATSense control: channels I0,I1,V1,I2 */
-   __IO  uint32_t ATSENSE_CTRL_24_27;      /**< Offset: 0xD0 (R/W  32) ATSense control: channels V2,I3,V3,ANA */
-   __IO  uint32_t ATSENSE_CTRL_28_2B;      /**< Offset: 0xD4 (R/W  32) ATSense control: Registers: x28, x2A-2B, x2D */
+   __IO  uint32_t ATSENSE_CTRL_20_23;      /**< Offset: 0xD8 (R/W  32) ATSense control: channels I0,I1,V1,I2 */
+   __IO  uint32_t ATSENSE_CTRL_24_27;      /**< Offset: 0xDC (R/W  32) ATSense control: channels V2,I3,V3,ANA */
+   __IO  uint32_t ATSENSE_CTRL_28_2B;      /**< Offset: 0xE0 (R/W  32) ATSense control: Registers: x28, x2A-2B, x2D */
    __IO  uint32_t Reserved4;
-   __IO  uint32_t POWER_OFFSET_P_A;        /**< Offset: 0xDC (R/W  32) Phase-A active power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_P_B;        /**< Offset: 0xE0 (R/W  32) Phase-B active power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_P_C;        /**< Offset: 0xE4 (R/W  32) Phase-C active power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_Q_A;        /**< Offset: 0xE8 (R/W  32) Phase-A reactive power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_Q_B;        /**< Offset: 0xEC (R/W  32) Phase-B reactive power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_Q_C;        /**< Offset: 0xF0 (R/W  32) Phase-C reactive power offset (sQ9.40) */
+   __IO  uint32_t POWER_OFFSET_P_A;        /**< Offset: 0xE8 (R/W  32) Phase-A active power offset (sQ9.40) */
+   __IO  uint32_t POWER_OFFSET_P_B;        /**< Offset: 0xEC (R/W  32) Phase-B active power offset (sQ9.40) */
+   __IO  uint32_t POWER_OFFSET_P_C;        /**< Offset: 0xF0 (R/W  32) Phase-C active power offset (sQ9.40) */
+   __IO  uint32_t POWER_OFFSET_Q_A;        /**< Offset: 0xF4 (R/W  32) Phase-A reactive power offset (sQ9.40) */
+   __IO  uint32_t POWER_OFFSET_Q_B;        /**< Offset: 0xF8 (R/W  32) Phase-B reactive power offset (sQ9.40) */
+   __IO  uint32_t POWER_OFFSET_Q_C;        /**< Offset: 0xFC (R/W  32) Phase-C reactive power offset (sQ9.40) */
 } DRV_METROLOGY_REGS_CONTROL;
 
 /** \brief METROLOGY register API structure */

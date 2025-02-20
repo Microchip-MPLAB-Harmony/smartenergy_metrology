@@ -93,59 +93,62 @@ static const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
     (uint32_t)(DRV_METROLOGY_CONF_PKT),               /* 09 P_K_T */
     (uint32_t)(DRV_METROLOGY_CONF_PKT),               /* 10 Q_K_T */
     (uint32_t)(DRV_METROLOGY_CONF_PKT),               /* 11 I_K_T */
-    (uint32_t)(DRV_METROLOGY_CONF_CREEP_P),           /* 12 CREEP_THR_P */
-    (uint32_t)(DRV_METROLOGY_CONF_CREEP_Q),           /* 13 CREEP_THR_Q */
-    (uint32_t)(DRV_METROLOGY_CONF_CREEP_I),           /* 14 CREEP_THR_I */
-    (uint32_t)(0x00000000UL),                         /* 15 POWER_OFFSET_CTRL */
-    (uint32_t)(0x00000000UL),                         /* 16 POWER_OFFSET_P */
-    (uint32_t)(0x00000000UL),                         /* 17 POWER_OFFSET_Q */
-    (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 18 SWELL_THR_VA */
-    (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 19 SWELL_THR_VB */
-    (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 20 SWELL_THR_VC */
-    (uint32_t)(DRV_METROLOGY_CONF_SAG),               /* 21 SAG_THR_VA */
-    (uint32_t)(DRV_METROLOGY_CONF_SAG),               /* 22 SAG_THR_VB */
-    (uint32_t)(DRV_METROLOGY_CONF_SAG),               /* 23 SAG_THR_VC */
-    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 24 K_IA */
-    (uint32_t)(DRV_METROLOGY_CONF_KV),                /* 25 K_VA */
-    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 26 K_IB */
-    (uint32_t)(DRV_METROLOGY_CONF_KV),                /* 27 K_VB */
-    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 28 K_IC */
-    (uint32_t)(DRV_METROLOGY_CONF_KV),                /* 29 K_VC */
-    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 30 K_IN */
-    (uint32_t)(0x20000000UL),                         /* 31 CAL_M_IA */
-    (uint32_t)(0x20000000UL),                         /* 32 CAL_M_VA */
-    (uint32_t)(0x20000000UL),                         /* 33 CAL_M_IB */
-    (uint32_t)(0x20000000UL),                         /* 34 CAL_M_VB */
-    (uint32_t)(0x20000000UL),                         /* 35 CAL_M_IC */
-    (uint32_t)(0x20000000UL),                         /* 36 CAL_M_VC */
-    (uint32_t)(0x20000000UL),                         /* 37 CAL_M_IN */
-    (uint32_t)(0x00000000UL),                         /* 38 CAL_PH_IA */
-    (uint32_t)(0x00000000UL),                         /* 39 CAL_PH_VA */
-    (uint32_t)(0x00000000UL),                         /* 40 CAL_PH_IB */
-    (uint32_t)(0x00000000UL),                         /* 41 CAL_PH_VB */
-    (uint32_t)(0x00000000UL),                         /* 42 CAL_PH_IC */
-    (uint32_t)(0x00000000UL),                         /* 43 CAL_PH_VC */
-    (uint32_t)(0x00000000UL),                         /* 44 CAL_PH_IN */
-    (uint32_t)(DRV_METROLOGY_CONF_WAVEFORM),          /* 45 CAPTURE_CTRL */
-    (uint32_t)(DRV_METROLOGY_CAPTURE_BUF_SIZE),       /* 46 CAPTURE_BUFF_SIZE */
+    (uint32_t)(DRV_METROLOGY_CONF_PKT),               /* 12 S_K_T */
+    (uint32_t)(DRV_METROLOGY_CONF_CREEP_P),           /* 13 CREEP_THR_P */
+    (uint32_t)(DRV_METROLOGY_CONF_CREEP_Q),           /* 14 CREEP_THR_Q */
+    (uint32_t)(DRV_METROLOGY_CONF_CREEP_I),           /* 15 CREEP_THR_I */
+    (uint32_t)(DRV_METROLOGY_CONF_CREEP_P),           /* 16 CREEP_THR_S */
+    (uint32_t)(0x00000000UL),                         /* 17 POWER_OFFSET_CTRL */
+    (uint32_t)(0x00000000UL),                         /* 18 POWER_OFFSET_P */
+    (uint32_t)(0x00000000UL),                         /* 19 POWER_OFFSET_Q */
+    (uint32_t)(0x00000000UL),                         /* 20 POWER_OFFSET_S */
+    (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 21 SWELL_THR_VA */
+    (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 22 SWELL_THR_VB */
+    (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 23 SWELL_THR_VC */
+    (uint32_t)(DRV_METROLOGY_CONF_SAG),               /* 24 SAG_THR_VA */
+    (uint32_t)(DRV_METROLOGY_CONF_SAG),               /* 25 SAG_THR_VB */
+    (uint32_t)(DRV_METROLOGY_CONF_SAG),               /* 26 SAG_THR_VC */
+    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 27 K_IA */
+    (uint32_t)(DRV_METROLOGY_CONF_KV),                /* 28 K_VA */
+    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 29 K_IB */
+    (uint32_t)(DRV_METROLOGY_CONF_KV),                /* 30 K_VB */
+    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 31 K_IC */
+    (uint32_t)(DRV_METROLOGY_CONF_KV),                /* 32 K_VC */
+    (uint32_t)(DRV_METROLOGY_CONF_KI),                /* 33 K_IN */
+    (uint32_t)(0x20000000UL),                         /* 34 CAL_M_IA */
+    (uint32_t)(0x20000000UL),                         /* 35 CAL_M_VA */
+    (uint32_t)(0x20000000UL),                         /* 36 CAL_M_IB */
+    (uint32_t)(0x20000000UL),                         /* 37 CAL_M_VB */
+    (uint32_t)(0x20000000UL),                         /* 38 CAL_M_IC */
+    (uint32_t)(0x20000000UL),                         /* 39 CAL_M_VC */
+    (uint32_t)(0x20000000UL),                         /* 40 CAL_M_IN */
+    (uint32_t)(0x00000000UL),                         /* 41 CAL_PH_IA */
+    (uint32_t)(0x00000000UL),                         /* 42 CAL_PH_VA */
+    (uint32_t)(0x00000000UL),                         /* 43 CAL_PH_IB */
+    (uint32_t)(0x00000000UL),                         /* 44 CAL_PH_VB */
+    (uint32_t)(0x00000000UL),                         /* 45 CAL_PH_IC */
+    (uint32_t)(0x00000000UL),                         /* 46 CAL_PH_VC */
+    (uint32_t)(0x00000000UL),                         /* 47 CAL_PH_IN */
+    (uint32_t)(DRV_METROLOGY_CONF_WAVEFORM),          /* 48 CAPTURE_CTRL */
+    (uint32_t)(DRV_METROLOGY_CAPTURE_BUF_SIZE),       /* 49 CAPTURE_BUFF_SIZE */
 <#if DRV_MET_WAVEFORM_CAPTURE == true>
-    (uint32_t)(sCaptureBuffer),                       /* 47 CAPTURE_ADDR */
+    (uint32_t)(sCaptureBuffer),                       /* 50 CAPTURE_ADDR */
 <#else>
-    (uint32_t)(0x00000000UL),                         /* 47 CAPTURE_ADDR */
+    (uint32_t)(0x00000000UL),                         /* 50 CAPTURE_ADDR */
 </#if>
-    (uint32_t)(0x00000000UL),                         /* 48 RESERVED_C48 */
-    (uint32_t)(0x00000000UL),                         /* 49 RESERVED_C49 */
-    (uint32_t)(0x00000000UL),                         /* 50 RESERVED_C50 */
-    (uint32_t)(DRV_METROLOGY_CONF_ATS2023),           /* 51 ATSENSE_CTRL_20_23 */
-    (uint32_t)(DRV_METROLOGY_CONF_ATS2427),           /* 52 ATSENSE_CTRL_24_27 */
-    (uint32_t)(0x00000003UL),                         /* 53 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
-    (uint32_t)(0x00000000UL),                         /* 54 RESERVED_C54 */
-    (uint32_t)(0x00000000UL),                         /* 55 POWER_OFFSET_P_A */
-    (uint32_t)(0x00000000UL),                         /* 56 POWER_OFFSET_P_B */
-    (uint32_t)(0x00000000UL),                         /* 57 POWER_OFFSET_P_C */
-    (uint32_t)(0x00000000UL),                         /* 58 POWER_OFFSET_Q_A */
-    (uint32_t)(0x00000000UL),                         /* 59 POWER_OFFSET_Q_B */
-    (uint32_t)(0x00000000UL)                          /* 60 POWER_OFFSET_Q_C */
+    (uint32_t)(0x00000000UL),                         /* 51 RESERVED_C48 */
+    (uint32_t)(0x00000000UL),                         /* 52 RESERVED_C49 */
+    (uint32_t)(0x00000000UL),                         /* 53 RESERVED_C50 */
+    (uint32_t)(DRV_METROLOGY_CONF_ATS2023),           /* 54 ATSENSE_CTRL_20_23 */
+    (uint32_t)(DRV_METROLOGY_CONF_ATS2427),           /* 55 ATSENSE_CTRL_24_27 */
+    (uint32_t)(0x00000003UL),                         /* 56 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
+    (uint32_t)(0x00000000UL),                         /* 57 RESERVED_C54 */
+    (uint32_t)(0x00000000UL),                         /* 58 POWER_OFFSET_P_A */
+    (uint32_t)(0x00000000UL),                         /* 59 POWER_OFFSET_P_B */
+    (uint32_t)(0x00000000UL),                         /* 60 POWER_OFFSET_P_C */
+    (uint32_t)(0x00000000UL),                         /* 61 POWER_OFFSET_Q_A */
+    (uint32_t)(0x00000000UL),                         /* 62 POWER_OFFSET_Q_B */
+    (uint32_t)(0x00000000UL)                          /* 63 POWER_OFFSET_Q_C */
 };
 
 // *****************************************************************************
@@ -1616,6 +1619,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     pControl->P_K_t = reg;
     pControl->Q_K_t = reg;
     pControl->I_K_t = reg;
+    pControl->S_K_t = reg;
 
     reg = pControl->METER_TYPE;
     reg &= ~(METER_TYPE_SENSOR_TYPE_I_A_Msk | METER_TYPE_SENSOR_TYPE_I_B_Msk | METER_TYPE_SENSOR_TYPE_I_C_Msk);
