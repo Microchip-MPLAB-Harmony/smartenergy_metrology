@@ -97,7 +97,7 @@ static const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
     (uint32_t)(DRV_METROLOGY_CONF_CREEP_P),           /* 13 CREEP_THR_P */
     (uint32_t)(DRV_METROLOGY_CONF_CREEP_Q),           /* 14 CREEP_THR_Q */
     (uint32_t)(DRV_METROLOGY_CONF_CREEP_I),           /* 15 CREEP_THR_I */
-    (uint32_t)(DRV_METROLOGY_CONF_CREEP_P),           /* 16 CREEP_THR_S */
+    (uint32_t)(DRV_METROLOGY_CONF_CREEP_S),           /* 16 CREEP_THR_S */
     (uint32_t)(0x00000000UL),                         /* 17 POWER_OFFSET_CTRL */
     (uint32_t)(0x00000000UL),                         /* 18 POWER_OFFSET_P */
     (uint32_t)(0x00000000UL),                         /* 19 POWER_OFFSET_Q */

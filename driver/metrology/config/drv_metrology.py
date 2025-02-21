@@ -143,9 +143,23 @@ def updateConfigSwellSag(symbol, event):
     m = int(m * 2**32)
     symbol.setValue(m)
 
-def updateConfigCreepPQ(symbol, event):
+def updateConfigCreepP(symbol, event):
     freq = Database.getSymbolValue("drvMet", "DRV_MET_CONF_F")
     creep = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_P")
+    m = float(creep) / (freq * 3600)
+    m = int(m * 2**30)
+    symbol.setValue(m)
+
+def updateConfigCreepQ(symbol, event):
+    freq = Database.getSymbolValue("drvMet", "DRV_MET_CONF_F")
+    creep = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_Q")
+    m = float(creep) / (freq * 3600)
+    m = int(m * 2**30)
+    symbol.setValue(m)
+
+def updateConfigCreepS(symbol, event):
+    freq = Database.getSymbolValue("drvMet", "DRV_MET_CONF_F")
+    creep = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_S")
     m = float(creep) / (freq * 3600)
     m = int(m * 2**30)
     symbol.setValue(m)
@@ -161,9 +175,10 @@ def updateConfigFeatCtrl(symbol, event):
     pA = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I1") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V1")
     pB = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I2") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V2")
     pC = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I3") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V3")
-    
+
     pEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_P_EN")
     qEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_Q_EN")
+    sEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_S_EN")
     iEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_I_EN")
 
     iAHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IA")
@@ -173,11 +188,12 @@ def updateConfigFeatCtrl(symbol, event):
     iCHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IC")
     vCHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_VC")
     iNHarmDis = not Database.getSymbolValue("drvMet", "DRV_MET_CONF_HARMONICS_CHN_IN")
-    
+
     reg = symbol.getValue()
-    reg = reg & 0x00FF18FF
+    reg = reg & 0x000718FF
     reg = reg | (iNHarmDis << 30) | (vCHarmDis << 29) | (iCHarmDis << 28) | (vBHarmDis << 27) | (iBHarmDis << 26) | (vAHarmDis << 25) | (iAHarmDis << 24)
-    reg = reg | (pEn << 15) | (qEn << 14) | (iEn << 13) | (pC << 10) | (pB << 9) | (pA << 8)
+    reg = reg | (sEn << 23) | (pEn << 22) | (qEn << 21) | (iEn << 20)
+    reg = reg | (pC << 10) | (pB << 9) | (pA << 8)
     symbol.setValue(reg)
 
 def updateConfigHarmonicCtrl(symbol, event):
@@ -193,7 +209,7 @@ def updateConfigHarmonicCtrl(symbol, event):
 
     if harmonicCtrl > 0:
         harmonicCtrl |= (1 << 31)
-    
+
     symbol.setValue(harmonicCtrl)
 
 def updateConfigPulseXCtrl(symbol, event):
@@ -557,6 +573,19 @@ def instantiateComponent(metComponentCommon):
     drvMetConfCreepQ.setHelp(srv_met_helpkeyword)
     drvMetConfCreepQ.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_CONF_CREEP_Q_EN"])
 
+    drvMetConfCreepSEn = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_CREEP_S_EN", drvMetConfByfDef)
+    drvMetConfCreepSEn.setLabel("Apparent Power Creep Threshold Enable")
+    drvMetConfCreepSEn.setDefaultValue(0)
+    drvMetConfCreepSEn.setHelp(srv_met_helpkeyword)
+    featCtrlDependencies.append("DRV_MET_CONF_CREEP_S_EN")
+
+    drvMetConfCreepS = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_S", drvMetConfCreepSEn)
+    drvMetConfCreepS.setLabel("Creep Apparent Energy (VAh)")
+    drvMetConfCreepS.setDefaultValue(2)
+    drvMetConfCreepS.setVisible(False)
+    drvMetConfCreepS.setHelp(srv_met_helpkeyword)
+    drvMetConfCreepS.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_CONF_CREEP_S_EN"])
+
     drvMetConfCreepIEn = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_CREEP_I_EN", drvMetConfByfDef)
     drvMetConfCreepIEn.setLabel("Current Creep Threshold Enable")
     drvMetConfCreepIEn.setDefaultValue(0)
@@ -859,14 +888,21 @@ def instantiateComponent(metComponentCommon):
     drvMetRegCreepP.setVisible(False)
     drvMetRegCreepP.setDefaultValue(0x00002E9A)
     drvMetRegCreepP.setReadOnly(True)
-    drvMetRegCreepP.setDependencies(updateConfigCreepPQ, ["DRV_MET_CONF_CREEP_P", "DRV_MET_CONF_F"])
+    drvMetRegCreepP.setDependencies(updateConfigCreepP, ["DRV_MET_CONF_CREEP_P", "DRV_MET_CONF_F"])
 
     drvMetRegCreepQ = metComponentCommon.createHexSymbol("DRV_MET_CTRL_CREEP_Q", None)
     drvMetRegCreepQ.setLabel("CREEP_Q")
     drvMetRegCreepQ.setVisible(False)
     drvMetRegCreepQ.setDefaultValue(0x00002E9A)
     drvMetRegCreepQ.setReadOnly(True)
-    drvMetRegCreepQ.setDependencies(updateConfigCreepPQ, ["DRV_MET_CONF_CREEP_Q", "DRV_MET_CONF_F"])
+    drvMetRegCreepQ.setDependencies(updateConfigCreepQ, ["DRV_MET_CONF_CREEP_Q", "DRV_MET_CONF_F"])
+
+    drvMetRegCreepS = metComponentCommon.createHexSymbol("DRV_MET_CTRL_CREEP_S", None)
+    drvMetRegCreepS.setLabel("CREEP_S")
+    drvMetRegCreepS.setVisible(False)
+    drvMetRegCreepS.setDefaultValue(0x00002E9A)
+    drvMetRegCreepS.setReadOnly(True)
+    drvMetRegCreepS.setDependencies(updateConfigCreepS, ["DRV_MET_CONF_CREEP_S", "DRV_MET_CONF_F"])
 
     drvMetRegCreepI = metComponentCommon.createHexSymbol("DRV_MET_CTRL_CREEP_I", None)
     drvMetRegCreepI.setLabel("CREEP_I")
@@ -906,7 +942,7 @@ def instantiateComponent(metComponentCommon):
     drvMetRegPulse2Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_2", None)
     drvMetRegPulse2Ctrl.setLabel("PULSE2_CTRL")
     drvMetRegPulse2Ctrl.setVisible(False)
-    drvMetRegPulse2Ctrl.setDefaultValue(0x0)
+    drvMetRegPulse2Ctrl.setDefaultValue(0x110401D0)
     drvMetRegPulse2Ctrl.setReadOnly(True)
     drvMetRegPulse2Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P2", "DRV_MET_CONF_DET_P2", "DRV_MET_CONF_POL_P2", "DRV_MET_CONF_TYP_P2", "DRV_MET_CONF_WID_P2"])
 
