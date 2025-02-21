@@ -26,12 +26,11 @@ def loadModule():
 
     print("Load Module: Harmony Smart Energy Metrology")
 
-    processor = Variables.get("__PROCESSOR")
+    series = ATDF.getNode("/avr-tools-device-file/devices/device").getAttribute("series")
 
     ## Metrology Driver
-    if (("MTSH" in processor) or ("MTC" in processor)):
+    if series == "PIC32CXMTC" or series == "PIC32CXMTSH":
         drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Drivers/", "driver/metrology/config/drv_metrology.py")
         drvMetrologyComponent.addDependency("drvMet_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-        drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)
         drvMetrologyComponent.setDisplayType("Metrology")
         drvMetrologyComponent.setHelpKeyword("drv_metrology")
