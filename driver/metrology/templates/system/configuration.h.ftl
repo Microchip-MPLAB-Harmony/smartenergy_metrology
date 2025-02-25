@@ -21,10 +21,10 @@
 #define DRV_METROLOGY_CONF_CREEP_P            0x${DRV_MET_CTRL_CREEP_P?string}UL
 /* Metrology Default Config: CREEP Q */
 #define DRV_METROLOGY_CONF_CREEP_Q            0x${DRV_MET_CTRL_CREEP_Q?string}UL
-/* Metrology Default Config: CREEP I */
-#define DRV_METROLOGY_CONF_CREEP_I            0x${DRV_MET_CTRL_CREEP_I?string}UL
 /* Metrology Default Config: CREEP S */
 #define DRV_METROLOGY_CONF_CREEP_S            0x${DRV_MET_CTRL_CREEP_S?string}UL
+/* Metrology Default Config: CREEP I */
+#define DRV_METROLOGY_CONF_CREEP_I            0x${DRV_MET_CTRL_CREEP_I?string}UL
 /* Metrology Default Config: FEATURE_CTRL */
 #define DRV_METROLOGY_CONF_FCTRL              0x${DRV_MET_CTRL_FEATCTRL?string}UL
 /* Metrology Default Config: HARMONIC_CTRL */

@@ -460,6 +460,11 @@ Microchip or any third party.
 #define POWER_OFFSET_CTRL_P_OFFSET_ACC_C(value)    (POWER_OFFSET_CTRL_P_OFFSET_ACC_C_Msk & (_UINT32_(value) << POWER_OFFSET_CTRL_P_OFFSET_ACC_C_Pos))
 #define   POWER_OFFSET_CTRL_P_OFFSET_ACC_C_DISABLED_Val        _UINT32_(0x0)                   /* (POWER_OFFSET_CTRL) Active Power Offset disabled */
 #define   POWER_OFFSET_CTRL_P_OFFSET_ACC_C_ENABLED_Val         _UINT32_(0x1)                   /* (POWER_OFFSET_CTRL) Active Power Offset enabled */
+#define POWER_OFFSET_CTRL_S_OFFSET_PUL_Pos         _UINT32_(24)                                /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable Position */
+#define POWER_OFFSET_CTRL_S_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_S_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable Mask */
+#define POWER_OFFSET_CTRL_S_OFFSET_PUL(value)      (POWER_OFFSET_S_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_Q_OFFSET_PUL_Pos))
+#define   POWER_OFFSET_CTRL_S_OFFSET_PUL_DISABLED_Val      _UINT32_(0x0)                            /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable disabled */
+#define   POWER_OFFSET_CTRL_S_OFFSET_PUL_ENABLED_Val       _UINT32_(0x1)                            /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable enabled */
 #define POWER_OFFSET_CTRL_Q_OFFSET_PUL_Pos         _UINT32_(27)                                /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable Position */
 #define POWER_OFFSET_CTRL_Q_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_Q_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable Mask */
 #define POWER_OFFSET_CTRL_Q_OFFSET_PUL(value)      (POWER_OFFSET_Q_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_Q_OFFSET_PUL_Pos))
@@ -907,6 +912,11 @@ Microchip or any third party.
 #define STATUS_STATE_FLAG_PC_OUT_OF_RANGE(value)         (STATUS_STATE_FLAG_PC_OUT_OF_RANGE_Msk & (_UINT32_(value) << STATUS_STATE_FLAG_PC_OUT_OF_RANGE_Pos))
 #define   STATUS_STATE_FLAG_PC_OUT_OF_RANGE_IN_Val         _UINT32_(0x0)                   /* (STATUS) Requested phase correction values in range  */
 #define   STATUS_STATE_FLAG_PC_OUT_OF_RANGE_OUT_Val        _UINT32_(0x1)                   /* (STATUS) Requested phase correction values out of range */
+#define STATUS_STATE_FLAG_CREEP_DET_S_Pos            _UINT32_(23)                       /* (STATUS) Total Apparent Power Creep Detected Flag Position */
+#define STATUS_STATE_FLAG_CREEP_DET_S_Msk            (_UINT32_(0x01) << STATUS_STATE_FLAG_CREEP_DET_S_Pos)      /* (STATUS) Total Apparent Power Creep Detected Flag Mask */
+#define STATUS_STATE_FLAG_CREEP_DET_S(value)         (STATUS_STATE_FLAG_CREEP_DET_S_Msk & (_UINT32_(value) << STATUS_STATE_FLAG_CREEP_DET_S_Pos))
+#define   STATUS_STATE_FLAG_CREEP_DET_S_NO_DETECT_Val   _UINT32_(0x0)                   /* (STATUS) Apparent power creep isn?t detected in the current full line cycle  */
+#define   STATUS_STATE_FLAG_CREEP_DET_S_DETECT_Val      _UINT32_(0x1)                   /* (STATUS) Apparent power creep is detected in the current full line cycle */
 #define STATUS_STATE_FLAG_SAG_DET_VA_Pos                 _UINT32_(24)                       /* (STATUS) Voltage Sag Detected Flag for Channel A Position */
 #define STATUS_STATE_FLAG_SAG_DET_VA_Msk                 (_UINT32_(0x01) << STATUS_STATE_FLAG_SAG_DET_VA_Pos)      /* (STATUS) Voltage Sag Detected Flag for Channel A Mask */
 #define STATUS_STATE_FLAG_SAG_DET_VA(value)              (STATUS_STATE_FLAG_SAG_DET_VA_Msk & (_UINT32_(value) << STATUS_STATE_FLAG_SAG_DET_VA_Pos))

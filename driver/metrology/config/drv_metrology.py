@@ -640,6 +640,9 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP0Type.addKey("Q_T_F", "3", "Q_T_F")
     drvMetConfP0Type.addKey("I_T", "4", "I_T")
     drvMetConfP0Type.addKey("I_T_F", "5", "I_T_F")
+    drvMetConfP0Type.addKey("S_T", "6", "S_T")
+    drvMetConfP0Type.addKey("S_T_F", "7", "S_T_F")
+    drvMetConfP0Type.addKey("S2_T", "8", "S2_T")
 
     drvMetConfP0Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P0", drvMetConfPulse0)
     drvMetConfP0Width.setLabel("Width")
@@ -688,6 +691,9 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP1Type.addKey("Q_T_F", "3", "Q_T_F")
     drvMetConfP1Type.addKey("I_T", "4", "I_T")
     drvMetConfP1Type.addKey("I_T_F", "5", "I_T_F")
+    drvMetConfP1Type.addKey("S_T", "6", "S_T")
+    drvMetConfP1Type.addKey("S_T_F", "7", "S_T_F")
+    drvMetConfP1Type.addKey("S2_T", "8", "S2_T")
 
     drvMetConfP1Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P1", drvMetConfPulse1)
     drvMetConfP1Width.setLabel("Width")
@@ -736,6 +742,9 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP2Type.addKey("Q_T_F", "3", "Q_T_F")
     drvMetConfP2Type.addKey("I_T", "4", "I_T")
     drvMetConfP2Type.addKey("I_T_F", "5", "I_T_F")
+    drvMetConfP2Type.addKey("S_T", "6", "S_T")
+    drvMetConfP2Type.addKey("S_T_F", "7", "S_T_F")
+    drvMetConfP2Type.addKey("S2_T", "8", "S2_T")
 
     drvMetConfP2Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P2", drvMetConfPulse2)
     drvMetConfP2Width.setLabel("Width")
