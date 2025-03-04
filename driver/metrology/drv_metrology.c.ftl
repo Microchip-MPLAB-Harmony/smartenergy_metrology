@@ -186,6 +186,13 @@ void IPC1_InterruptHandler (void)
         {
             /* Update Accumulators Data */
             (void) memcpy(&gDrvMetObj.metAccData, &gDrvMetObj.metRegisters->MET_ACCUMULATORS, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
+            /* Store samples in period */
+            gDrvMetObj.samplesInPeriod = gDrvMetObj.metRegisters->MET_STATUS.N;
+            /* Update Frequency Data */
+            gDrvMetObj.metFreqData.freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ;
+            gDrvMetObj.metFreqData.freqA = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VA;
+            gDrvMetObj.metFreqData.freqB = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VB;
+            gDrvMetObj.metFreqData.freqC = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VC;
             if (gDrvMetObj.harmonicAnalysisData.holdRegs == false)
             {
                 /* Update Harmonics Data */
@@ -320,7 +327,7 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     {
         res = sqrt(res);
         res *= sqrt(2);
-        res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+        res /= (double)gDrvMetObj.samplesInPeriod;
     }
 
     return res;
@@ -332,7 +339,7 @@ static uint32_t lDRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
 
     m = (double)val;
     m = (m / (double)DIV_Q_FACTOR);
-    m = (m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
+    m = (m / (double)gDrvMetObj.samplesInPeriod);
     if (m < 0.0)
     {
         m = 0.0;
@@ -353,7 +360,7 @@ static uint32_t lDRV_Metrology_GetInxRMS(uint64_t val)
 
     m = (double)val;
     m = (m / (double)DIV_Inx_Q_FACTOR);
-    m = (m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
+    m = (m / (double)gDrvMetObj.samplesInPeriod);
     if (m < 0.0)
     {
         m = 0.0;
@@ -375,7 +382,7 @@ static uint32_t lDRV_Metrology_GetPQ(int64_t val, uint32_t k_ix, uint32_t k_vx)
     m = lDRV_Metrology_GetDouble(val);
 
     m = m / (double)DIV_Q_FACTOR;
-    m = m / (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    m = m / (double)gDrvMetObj.samplesInPeriod;
     mult = (double)k_ix * (double)k_vx;
     divisor = (double)DIV_GAIN * (double)DIV_GAIN;
     m = (m * mult) / divisor;
@@ -407,8 +414,8 @@ static uint32_t lDRV_Metrology_GetS(uint64_t i_val, uint64_t v_val, uint32_t k_i
     i_m = (i_m / (double)DIV_Q_FACTOR);
     v_m = (v_m / (double)DIV_Q_FACTOR);
     /* Accumulated to mean value */
-    i_m = (i_m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
-    v_m = (v_m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
+    i_m = (i_m / (double)gDrvMetObj.samplesInPeriod);
+    v_m = (v_m / (double)gDrvMetObj.samplesInPeriod);
 
     /* Obtain RMS value for Current */
     if (i_m < 0.0)
@@ -609,7 +616,6 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeMeasure = NULL;
     uint32_t stateFlagReg;
-    uint32_t freq;
 
     /* Get State Flag Register */
     stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
@@ -691,14 +697,10 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     afeMeasure[MEASURE_STF]  = afeMeasure[MEASURE_SAF] + afeMeasure[MEASURE_SBF] + afeMeasure[MEASURE_SCF];
 
-    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ;
-    afeMeasure[MEASURE_FREQ]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
-    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VA;
-    afeMeasure[MEASURE_FREQA]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
-    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VB;
-    afeMeasure[MEASURE_FREQB]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
-    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VC;
-    afeMeasure[MEASURE_FREQC]  = (freq * FREQ_ACCURACY_INT) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQ]  = (gDrvMetObj.metFreqData.freq * FREQ_ACCURACY_INT) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQA]  = (gDrvMetObj.metFreqData.freqA * FREQ_ACCURACY_INT) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQB]  = (gDrvMetObj.metFreqData.freqB * FREQ_ACCURACY_INT) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQC]  = (gDrvMetObj.metFreqData.freqC * FREQ_ACCURACY_INT) >> FREQ_Q;
 
     afeMeasure[MEASURE_ANGLEA]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
     afeMeasure[MEASURE_ANGLEB]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);

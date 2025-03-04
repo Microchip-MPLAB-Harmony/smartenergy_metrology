@@ -71,6 +71,31 @@ Microchip or any third party.
 // *****************************************************************************
 
 // *****************************************************************************
+/* Metrology Driver Frequencies Object
+
+  Summary:
+    Object used to store frequency values measured by Metrology.
+
+  Description:
+    None.
+
+  Remarks:
+    None.
+*/
+
+typedef struct
+{
+    /* Frequency of dominant phase */
+    uint32_t freq;
+    /* Frequency of phase A */
+    uint32_t freqA;
+    /* Frequency of phase B */
+    uint32_t freqB;
+    /* Frequency of phase C */
+    uint32_t freqC;
+} DRV_METROLOGY_FREQS;
+
+// *****************************************************************************
 /* Metrology Driver Instance Object
 
   Summary:
@@ -108,6 +133,9 @@ typedef struct
     /* Address where PLC binary file is located */
     uint32_t                                      binStartAddress;
 
+    /* Number of samples for accumulators in last Integration Period */
+    uint32_t                                      samplesInPeriod;
+
     /* Metrology Control interface */
     MET_REGISTERS *                               metRegisters;
 
@@ -119,6 +147,9 @@ typedef struct
 
     /* Metrology Analog Front End Data */
     DRV_METROLOGY_AFE_DATA                        metAFEData;
+
+    /* Metrology Frequency values */
+    DRV_METROLOGY_FREQS                           metFreqData;
 
     /* Metrology Calibration interface */
     DRV_METROLOGY_CALIBRATION                     calibrationData;
