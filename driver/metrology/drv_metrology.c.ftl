@@ -1600,7 +1600,7 @@ DRV_METROLOGY_MEASURE_SIGN DRV_METROLOGY_GetMeasureSign(DRV_METROLOGY_MEASURE_TY
 
 void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 {
-    double res;
+    double res, divisor;
     uint64_t m;
     DRV_METROLOGY_REGS_CONTROL *pControl;
     uint32_t i;
@@ -1644,37 +1644,41 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     gain = 1UL << gain;
     if (config->st == SENSOR_CT)
     {
-        double divisor;
-
         res = config->tr * 1000000.0; /* improve accuracy * (ohm -> uohm) */
-        divisor = config->rl * 1000000.0; /* improve accuracy * (ohm -> uohm) */
-        divisor *= (double)gain;
+        divisor = config->rl * (double)gain;
         res = res / divisor;
+        m = (uint64_t)res;
+        m = m << GAIN_VI_Q; /* format Q22.10 */
+        m = m / 1000000; /* restore accuracy */
+        i = (uint32_t)m;
     }
     else if (config->st == SENSOR_ROGOWSKI)
     {
-        double divisor;
-
         res = 1000000.0 / config->tr;
         divisor = 60.0 / config->freq;
         divisor *= (double)gain;
         res = res / divisor;
+        res *= 10000.0; /* improve accuracy */
+        m = (uint64_t)res;
+        m = m << GAIN_VI_Q; /* format Q22.10 */
+        m = m / 10000; /* restore accuracy */
+        i = (uint32_t)m;
     }
     else if (config->st == SENSOR_SHUNT)
     {
-        double divisor;
-
         divisor = (double)gain * config->rl;
         res = 1000000.0 / divisor;
+        res *= 10000.0; /* improve accuracy */
+        m = (uint64_t)res;
+        m = m << GAIN_VI_Q; /* format Q22.10 */
+        m = m / 10000; /* restore accuracy */
+        i = (uint32_t)m;
     }
     else
     {
         res = 0.0;
+        i = 0;
     }
-
-    m = (uint64_t)res;
-    m = m << GAIN_VI_Q; /* format Q22.10 */
-    i = (uint32_t) m;
 
     pControl->K_IA = i;
     pControl->K_IB = i;
@@ -1685,6 +1689,22 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     pControl->K_VA = i;
     pControl->K_VB = i;
     pControl->K_VC = i;
+
+    /* Set CAL registers to default value before calibration */
+    pControl->CAL_M_IA = 0x20000000;
+    pControl->CAL_M_VA = 0x20000000;
+    pControl->CAL_M_IB = 0x20000000;
+    pControl->CAL_M_VB = 0x20000000;
+    pControl->CAL_M_IC = 0x20000000;
+    pControl->CAL_M_VC = 0x20000000;
+    pControl->CAL_M_IN = 0x20000000;
+    pControl->CAL_PH_IA = 0;
+    pControl->CAL_PH_VA = 0;
+    pControl->CAL_PH_IB = 0;
+    pControl->CAL_PH_VB = 0;
+    pControl->CAL_PH_IC = 0;
+    pControl->CAL_PH_VC = 0;
+    pControl->CAL_PH_IN = 0;
 
     gDrvMetObj.metRegisters->MET_CONTROL = *pControl;
 
