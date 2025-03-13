@@ -91,19 +91,19 @@ static const DRV_MCMETROLOGY_REGS_CONTROL gDrvMCMetControlDefault =
     DRV_MCMETROLOGY_CONF_PULSE1_CTRL,                      /* 26 PULSE1_CTRL */
     DRV_MCMETROLOGY_CONF_PULSE2_CTRL,                      /* 27 PULSE2_CTRL */
     0x00000000UL,                                          /* 28 Reserved */
-    DRV_MCMETROLOGY_CONF_PULSE_CONT_PW,                    /* 29 PULSE_CONTRIBUTION_PW */
-    DRV_MCMETROLOGY_CONF_PULSE_CONT_I,                     /* 30 PULSE_CONTRIBUTION_I */
+    DRV_MCMETROLOGY_CONF_PULSE_PW,                         /* 29 PULSE_CONTRIBUTION_PW */
+    DRV_MCMETROLOGY_CONF_PULSE_I,                          /* 30 PULSE_CONTRIBUTION_I */
     0x00000000UL,                                          /* 31 Reserved */
     DRV_MCMETROLOGY_CONF_PKT,                              /* 32 P_K_T */
     DRV_MCMETROLOGY_CONF_QKT,                              /* 33 Q_K_T */
     DRV_MCMETROLOGY_CONF_IKT,                              /* 34 I_K_T */
-    DRV_MCMETROLOGY_CONF_CREEP_THR_P,                      /* 35 CREEP_THRESHOLD_P */
-    DRV_MCMETROLOGY_CONF_CREEP_THR_Q,                      /* 36 CREEP_THRESHOLD_Q */
-    DRV_MCMETROLOGY_CONF_CREEP_THR_I,                      /* 37 CREEP_THRESHOLD_I */
+    DRV_MCMETROLOGY_CONF_CREEP_P,                          /* 35 CREEP_THRESHOLD_P */
+    DRV_MCMETROLOGY_CONF_CREEP_Q,                          /* 36 CREEP_THRESHOLD_Q */
+    DRV_MCMETROLOGY_CONF_CREEP_I,                          /* 37 CREEP_THRESHOLD_I */
     DRV_MCMETROLOGY_CONF_P_POWER_OFFSET_CTRL,              /* 38 P_POWER_OFFSET_CTRL */
     DRV_MCMETROLOGY_CONF_Q_POWER_OFFSET_CTRL,              /* 39 Q_POWER_OFFSET_CTRL */
-    DRV_MCMETROLOGY_CONF_POWER_OFFSET_P,                   /* 40 POWER_OFFSET_P */
-    DRV_MCMETROLOGY_CONF_POWER_OFFSET_Q,                   /* 41 POWER_OFFSET_Q */
+    DRV_MCMETROLOGY_CONF_POFFSET_P,                        /* 40 POWER_OFFSET_P */
+    DRV_MCMETROLOGY_CONF_POFFSET_Q,                        /* 41 POWER_OFFSET_Q */
     DRV_MCMETROLOGY_CONF_SWELL_OVERC_THRS_CHx,             /* 42 SWELL_OVERCURRENT_THRESHOLD_CHx */
     DRV_MCMETROLOGY_CONF_SAG_THRS_CHx,                     /* 74 SAG_THRESHOLD_CHx */
     DRV_MCMETROLOGY_CONF_K_CHx,                            /* 106 K_CH_x */
@@ -119,13 +119,11 @@ static const DRV_MCMETROLOGY_REGS_CONTROL gDrvMCMetControlDefault =
     DRV_MCMETROLOGY_CONF_MCP3914_GAIN,                     /* 209 MCP3914_GAIN */
     DRV_MCMETROLOGY_CONF_MCP3914_CONFIG,                   /* 213 MCP3914_CONFIG0 */
     0x00000000UL,                                          /* 217 RESERVED */
-    DRV_MCMETROLOGY_CONF_POWER_OFFSET_P_x,                 /* 218 POWER_OFFSET_P_x */
+    DRV_MCMETROLOGY_CONF_OFFSET_P_x,                       /* 218 POWER_OFFSET_P_x */
     0x00000000UL,                                          /* 249 RESERVED */
-    DRV_MCMETROLOGY_CONF_POWER_OFFSET_Q_x,                 /* 250 POWER_OFFSET_Q_x */
+    DRV_MCMETROLOGY_CONF_OFFSET_Q_x,                       /* 250 POWER_OFFSET_Q_x */
     0x00000000UL                                           /* 281 RESERVED */
 };
-
-DRV_MCMETROLOGY_AFE_TYPE gDrvAFEType = 0;
 
 static const char gDrvChannel0Name[] = "V0";
 static const char gDrvChannel1Name[] = "V1";
@@ -135,6 +133,7 @@ static const char gDrvChannel4Name[] = "I2";
 static const char gDrvChannel5Name[] = "I3";
 static const char gDrvChannel6Name[] = "I4";
 static const char gDrvChannel7Name[] = "I5";
+
 static const DRV_MCMETROLOGY_CHANNEL gDrvMCMetChannelsDefault[DRV_MCMETROLOGY_CHANNELS_NUMBER] =
 {
     {(char *)&gDrvChannel0Name, GAIN_1, SENSOR_VRD},
@@ -177,21 +176,21 @@ void IPC1_InterruptHandler (void)
     {
         if (gDrvMCMetObj.metRegisters->MET_STATUS.STATUS == STATUS_STATUS_DSP_RUNNING)
         {
+            uint8_t index;
+
             /* Update Accumulators Data */
-            (void) memcpy((uint8_t *)&gDrvMCMetObj.metAccData, 
-                          (uint8_t *)&gDrvMCMetObj.metRegisters->MET_ACCUMULATORS, 
+            (void) memcpy(&gDrvMCMetObj.metAccData, 
+                          &gDrvMCMetObj.metRegisters->MET_ACCUMULATORS, 
                           sizeof(DRV_MCMETROLOGY_REGS_ACCUMULATORS));
             /* Store samples in period */
             gDrvMCMetObj.samplesInPeriod = gDrvMCMetObj.metRegisters->MET_STATUS.N;
 
             /* Update Channel Data */
-            (void) memcpy((uint8_t *)gDrvMCMetObj.freqChx, 
-                          (uint8_t *)&gDrvMCMetObj.metRegisters->MET_STATUS.FREQ_CHx[0], 
-                          sizeof(gDrvMCMetObj.freqChx));
-            
-            (void) memcpy((uint8_t *)gDrvMCMetObj.maxChx, 
-                          (uint8_t *)&gDrvMCMetObj.metRegisters->MET_STATUS.CHx_MAX[0], 
-                          sizeof(gDrvMCMetObj.maxChx));
+            for (index = 0; index < DRV_MCMETROLOGY_CHANNELS_NUMBER; index++)
+            {
+                gDrvMCMetObj.freqChx[index] = gDrvMCMetObj.metRegisters->MET_STATUS.FREQ_CHx[index];
+                gDrvMCMetObj.maxChx[index] = gDrvMCMetObj.metRegisters->MET_STATUS.CHx_MAX[index];
+            }
 
             /* Update Frequency Data */
             gDrvMCMetObj.freq = gDrvMCMetObj.metRegisters->MET_STATUS.FREQ;
@@ -217,14 +216,21 @@ void IPC1_InterruptHandler (void)
 static double lDRV_Mcmetrology_GetHarmonicRMS(int32_t real, int32_t imag)
 {
     double rmsRe, rmsIm, rms;
-    uint32_t div;
+    uint32_t divisor;
 
     rmsRe = (double)real;
     rmsIm = (double)imag;
-    rms = 2 * (rmsRe * rmsRe + rmsIm * rmsIm);
-    rms = sqrt(rms);
-    div = (1UL << 6) * gDrvMCMetObj.samplesInPeriod;
-    rms = rms / (double)div;
+    rms = 2.0f * (rmsRe * rmsRe + rmsIm * rmsIm);
+    if (rms > 0.0f)
+    {
+        rms = sqrt(rms);
+        divisor = (1UL << 6) * gDrvMCMetObj.samplesInPeriod;
+        rms = rms / (double)divisor;
+    }
+    else
+    {
+        rms = 0.0f;
+    }
 
     return rms;
 }
@@ -233,15 +239,25 @@ static float lDRV_Mcmetrology_GetVIRMS(uint64_t val, uint32_t k_x)
 {
     double m;
     double k;
+    uint64_t divisor;
 
     // Convert uQ24.40 format to double
-    m = (double)val / (double)(1LL << FORMAT_CONST_uQ2440);
+    divisor = (1ULL << FORMAT_CONST_uQ2440);
+    m = (double)val / (double)divisor;
     // Convert uQ22.10 format to double
-    k = (double)k_x / (double)(1UL << FORMAT_CONST_uQ2210);
+    divisor = (1ULL << FORMAT_CONST_uQ2210);
+    k = (double)k_x / (double)divisor;
 
     m = m / (double)gDrvMCMetObj.samplesInPeriod;
-    m = sqrt(m);
-    m = m * k;
+    if (m > 0.0f)
+    {
+        m = sqrt(m);
+        m = m * k;
+    }
+    else
+    {
+        m = 0.0f;
+    }
 
     return (float)m;
 }
@@ -250,13 +266,16 @@ static float lDRV_Mcmetrology_GetPQ(int64_t val, uint32_t k_ix, uint32_t k_vx)
 {
     double m;
     double mult;
+    uint64_t divisor;
 
     // Convert sQ23.40 format to double
-    m = (double)val / (double)(1LL << FORMAT_CONST_sQ2340);
+    divisor = (1ULL << FORMAT_CONST_sQ2340);
+    m = (double)val / (double)divisor;
 
     m = m / (double)gDrvMCMetObj.samplesInPeriod;
     mult = (double)k_ix * (double)k_vx;
-    m = (m * mult) / (double)(1UL << (FORMAT_CONST_uQ2210 << 1));
+    divisor = (1UL << (FORMAT_CONST_uQ2210 << 1));
+    m = (m * mult) / (double)divisor;
 
     return (float)m;
 }
@@ -268,7 +287,7 @@ static float lDRV_Mcmetrology_GetAngle(int64_t p, int64_t q)
     pd = (double)p;
     qd = (double)q;
     angle = atan2(qd, pd);
-    angle = 180.0 * angle;
+    angle = 180.0f * angle;
     angle = angle / CONST_Pi;
 
     return (float)angle;
@@ -279,7 +298,7 @@ static float lDRV_Mcmetrology_GetEnergy(DRV_MCMETROLOGY_ENERGY_TYPE id)
     double energy;
     uint8_t index;
     
-    energy = 0.0;
+    energy = 0.0f;
     for (index = 0; index < DRV_MCMETROLOGY_POWERS_NUMBER; index++)
     {
         energy += gDrvMCMetObj.metAFEData.powMeasure[index][id];
@@ -305,10 +324,11 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
     DRV_MCMETROLOGY_REGS_CONTROL *pMetControl = NULL;
     DRV_MCMETROLOGY_AFE_EVENTS *pAFEEvents = NULL;
     float *pDstData = NULL;
-    float pt = 0;
-    float ptf = 0;
-    float qt = 0;
-    float qtf = 0;
+    float pt = 0.0f;
+    float ptf = 0.0f;
+    float qt = 0.0f;
+    float qtf = 0.0f;
+    uint32_t divisor;
     uint32_t kxData;
     uint8_t index;
 
@@ -322,12 +342,14 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
         pDstData = (float *)&gDrvMCMetObj.metAFEData.chnMeasure[index];
 
         /* Improve accuracy and apply format values to Freq and Max values */
-        *(pDstData + CHN_MEASURE_FREQ) = (float)gDrvMCMetObj.freqChx[index] / (1 << FORMAT_CONST_uQ2012);
-        *(pDstData + CHN_MEASURE_MAX) = (float)gDrvMCMetObj.maxChx[index] / (1 << FORMAT_CONST_sQ229);
+        divisor = (1UL << FORMAT_CONST_uQ2012);
+        *(pDstData + (uint8_t)CHN_MEASURE_FREQ) = (float)gDrvMCMetObj.freqChx[index] / (float)divisor;
+        divisor = (1UL << FORMAT_CONST_sQ229);
+        *(pDstData + (uint8_t)CHN_MEASURE_MAX) = (float)gDrvMCMetObj.maxChx[index] / (float)divisor;
 
         kxData = pMetControl->K_CHx[index];
-        *(pDstData + CHN_MEASURE_RMS) = lDRV_Mcmetrology_GetVIRMS(pAccData->CHx[index], kxData);
-        *(pDstData + CHN_MEASURE_RMS_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->CHx_F[index], kxData);
+        *(pDstData + (uint8_t)CHN_MEASURE_RMS) = lDRV_Mcmetrology_GetVIRMS(pAccData->CHx[index], kxData);
+        *(pDstData + (uint8_t)CHN_MEASURE_RMS_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->CHx_F[index], kxData);
     }
 
     /* Update Accumulated Active/Reactive Quantities per Power */
@@ -346,51 +368,53 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
         kIData = pMetControl->K_CHx[channel];
 
         value = lDRV_Mcmetrology_GetPQ(pAccData->P_CHx[index], kIData, kxData);
-        *(pDstData + POW_MEASURE_P) = value;
+        *(pDstData + (uint8_t)POW_MEASURE_P) = value;
         pt += value;
 
         value = lDRV_Mcmetrology_GetPQ(pAccData->P_CHx_F[index], kIData, kxData);
-        *(pDstData + POW_MEASURE_P_F) = value;
+        *(pDstData + (uint8_t)POW_MEASURE_P_F) = value;
         ptf += value;
 
         value = lDRV_Mcmetrology_GetPQ(pAccData->Q_CHx[index], kIData, kxData);
-        *(pDstData + POW_MEASURE_Q) = value;
+        *(pDstData + (uint8_t)POW_MEASURE_Q) = value;
         qt += value;
 
         value = lDRV_Mcmetrology_GetPQ(pAccData->Q_CHx_F[index], kIData, kxData);
-        *(pDstData + POW_MEASURE_Q_F) = value;
+        *(pDstData + (uint8_t)POW_MEASURE_Q_F) = value;
         qtf += value;
 
-        *(pDstData + POW_MEASURE_ANGLE) = lDRV_Mcmetrology_GetAngle(pAccData->P_CHx[index], pAccData->Q_CHx[index]);
+        *(pDstData + (uint8_t)POW_MEASURE_ANGLE) = lDRV_Mcmetrology_GetAngle(pAccData->P_CHx[index], pAccData->Q_CHx[index]);
     }
 
     pDstData = gDrvMCMetObj.metAFEData.measure;
 
     /* Update Accumulated Voltage Quantities Between Phases. It assumes all KVx are the same */
     kxData = pMetControl->K_CHx[gDrvMCMetPowersDefault[0].vChannel];
-    *(pDstData + MEASURE_V_AB) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_AB, kxData);
-    *(pDstData + MEASURE_V_BC) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_BC, kxData);
-    *(pDstData + MEASURE_V_CA) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_CA, kxData);
-    *(pDstData + MEASURE_V_AB_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_AB_F, kxData);
-    *(pDstData + MEASURE_V_BC_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_BC_F, kxData);
-    *(pDstData + MEASURE_V_CA_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_CA_F, kxData);
+    *(pDstData + (uint8_t)MEASURE_V_AB) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_AB, kxData);
+    *(pDstData + (uint8_t)MEASURE_V_BC) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_BC, kxData);
+    *(pDstData + (uint8_t)MEASURE_V_CA) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_CA, kxData);
+    *(pDstData + (uint8_t)MEASURE_V_AB_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_AB_F, kxData);
+    *(pDstData + (uint8_t)MEASURE_V_BC_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_BC_F, kxData);
+    *(pDstData + (uint8_t)MEASURE_V_CA_F) = lDRV_Mcmetrology_GetVIRMS(pAccData->V_CA_F, kxData);
 
     /* Update Frequency */
-    *(pDstData + MEASURE_FREQ) = (float)gDrvMCMetObj.freq / (1 << FORMAT_CONST_uQ2012);
+    divisor = (1UL << FORMAT_CONST_uQ2012);
+    *(pDstData + (uint8_t)MEASURE_FREQ) = (float)gDrvMCMetObj.freq / (float)divisor;
 
     /* Update Total Accumulated Quantities */
-    *(pDstData + MEASURE_ACC_TO) = (float)pAccData->ACC_T0 / (1 << FORMAT_CONST_sQ3330);
-    *(pDstData + MEASURE_ACC_T1) = (float)pAccData->ACC_T1 / (1 << FORMAT_CONST_sQ3330);
-    *(pDstData + MEASURE_ACC_T2) = (float)pAccData->ACC_T2 / (1 << FORMAT_CONST_sQ3330);
+    divisor = (1UL << FORMAT_CONST_sQ3330);
+    *(pDstData + (uint8_t)MEASURE_ACC_TO) = (float)pAccData->ACC_T0 / (float)divisor;
+    *(pDstData + (uint8_t)MEASURE_ACC_T1) = (float)pAccData->ACC_T1 / (float)divisor;
+    *(pDstData + (uint8_t)MEASURE_ACC_T2) = (float)pAccData->ACC_T2 / (float)divisor;
 
     /* Update Active/Reactive Total Accumulated Quantities */
-    *(pDstData + MEASURE_PT) = pt;
-    *(pDstData + MEASURE_PT_F) = ptf;
-    *(pDstData + MEASURE_QT) = qt;
-    *(pDstData + MEASURE_QT_F) = qtf;
+    *(pDstData + (uint8_t)MEASURE_PT) = pt;
+    *(pDstData + (uint8_t)MEASURE_PT_F) = ptf;
+    *(pDstData + (uint8_t)MEASURE_QT) = qt;
+    *(pDstData + (uint8_t)MEASURE_QT_F) = qtf;
 
     /* Update Total Accumulated Energy */
-    *(pDstData + MEASURE_ENERGY) += lDRV_Mcmetrology_GetEnergy(PENERGY);
+    *(pDstData + (uint8_t)MEASURE_ENERGY) += lDRV_Mcmetrology_GetEnergy(PENERGY);
 
     /* Update events */
     pAFEEvents->swell = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.SWELL_OVERCURRENT_FLAG;
@@ -408,8 +432,8 @@ static void lDRV_MCMETROLOGY_UpdateHarmonicAnalysisValues(void)
 
     for (channel = 0; channel < DRV_MCMETROLOGY_CHANNELS_NUMBER; channel++)
     {
-        real = pHarData->CHx_m_R[channel];
-        imag = pHarData->CHx_m_I[channel];
+        real = (int32_t)(pHarData->CHx_m_R[channel]);
+        imag = (int32_t)(pHarData->CHx_m_I[channel]);
         pHarmonicsRsp->CHx_m_RMS[channel] = lDRV_Mcmetrology_GetHarmonicRMS(real, imag);
     }
 }
@@ -787,7 +811,7 @@ float DRV_MCMETROLOGY_GetEnergyValue(bool restartEnergy)
 
     if (restartEnergy == true)
     {
-        gDrvMCMetObj.metAFEData.measure[MEASURE_ENERGY] = 0.0;
+        gDrvMCMetObj.metAFEData.measure[MEASURE_ENERGY] = 0.0f;
     }
 
     return energy;
@@ -797,13 +821,13 @@ float DRV_MCMETROLOGY_GetChannelMeasureValue(uint8_t channel, DRV_MCMETROLOGY_CH
 {
     float value;
 
-    if ((channel < DRV_MCMETROLOGY_CHANNELS_NUMBER) & (type < CHN_MEASURE_TYPE_NUM))
+    if ((channel < DRV_MCMETROLOGY_CHANNELS_NUMBER) && (type < CHN_MEASURE_TYPE_NUM))
     {
         value = gDrvMCMetObj.metAFEData.chnMeasure[channel][type];
     }
     else
     {
-        value = 0.0;
+        value = 0.0f;
     }
 
     return value;
@@ -813,22 +837,33 @@ float DRV_MCMETROLOGY_GetPowerMeasureValue(uint8_t power, DRV_MCMETROLOGY_POWER_
 {
     float value;
 
-    if ((power < DRV_MCMETROLOGY_POWERS_NUMBER) & (type < POW_MEASURE_TYPE_NUM))
+    if ((power < DRV_MCMETROLOGY_POWERS_NUMBER) && (type < POW_MEASURE_TYPE_NUM))
     {
         value = gDrvMCMetObj.metAFEData.powMeasure[power][type];
 
         if (type == POW_MEASURE_ANGLE)
         {
             /* Absolute value should be between 0 and 180 degrees */
-            while ((value > 180.0) == true)
+            while (true)
             {
-                value -= 360.0;
+                if (value < -180.0f)
+                {
+                    value += 360.0f;
+                }
+                else if (value > 180.0f)
+                {
+                    value -= 360.0f;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
     else
     {
-        value = 0.0;
+        value = 0.0f;
     }
 
     return value;
@@ -844,7 +879,7 @@ float DRV_MCMETROLOGY_GetMeasureValue(DRV_MCMETROLOGY_MEASURE_TYPE type)
     }
     else
     {
-        value = 0.0;
+        value = 0.0f;
     }
 
     return value;
@@ -865,9 +900,9 @@ void DRV_MCMETROLOGY_StartCalibration(void)
     /* Not supported yet */
 }
 
-bool DRV_MCMETROLOGY_StartHarmonicAnalysis(uint32_t harmonicNumReq, DRV_MCMETROLOGY_HARMONICS_RMS *pHarmonicResponse)
+bool DRV_MCMETROLOGY_StartHarmonicAnalysis(uint32_t harmonicNum, DRV_MCMETROLOGY_HARMONICS_RMS *pHarmonicResponse)
 {
-    if (harmonicNumReq == 0 || harmonicNumReq > DRV_MCMETROLOGY_HARMONICS_MAX_ORDER)
+    if (harmonicNum == 0U || harmonicNum > DRV_MCMETROLOGY_HARMONICS_MAX_ORDER)
     {
         /* Requested harmonics out of bounds */
         return false;
@@ -881,14 +916,14 @@ bool DRV_MCMETROLOGY_StartHarmonicAnalysis(uint32_t harmonicNumReq, DRV_MCMETROL
 
     gDrvMCMetObj.harmonicAnalysisData.running = true;
     gDrvMCMetObj.harmonicAnalysisData.integrationPeriods = 2;
-    gDrvMCMetObj.harmonicAnalysisData.harmonicNumReq = harmonicNumReq;
+    gDrvMCMetObj.harmonicAnalysisData.harmonicNumReq = harmonicNum;
 
     /* Set Data pointer to store the Harmonic data result */
     gDrvMCMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse = pHarmonicResponse;
 
     /* Set Number of Harmonic for Analysis */
     gDrvMCMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_m_REQ_Msk;
-    gDrvMCMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_m_REQ(harmonicNumReq);
+    gDrvMCMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_m_REQ(harmonicNum);
     /* Enable Harmonic Analysis */
     gDrvMCMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_EN_Msk;
 

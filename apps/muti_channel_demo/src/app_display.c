@@ -554,47 +554,6 @@ static void APP_DISPLAY_Process(void)
     {
         DRV_MCMETROLOGY_AFE_EVENTS eventFlags;
         APP_EVENTS_GetLastEventFlags(&eventFlags);
-
-//        if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_A) && (eventFlags.sagA))
-//        {
-//            /* "A alarm" phase */
-//            cl010_show_icon(CL010_ICON_PHASE_1);
-//        }
-//
-//        if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_B) && (eventFlags.sagB))
-//        {
-//            /* "A alarm" phase */
-//            cl010_show_icon(CL010_ICON_PHASE_2);
-//        }
-//
-//        if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_C) && (eventFlags.sagC))
-//        {
-//            /* "A alarm" phase */
-//            cl010_show_icon(CL010_ICON_PHASE_3);
-//        }
-//
-//        if (eventFlags.ptDir)
-//        {
-//            /* active power is reverse */
-//            cl010_show_icon(CL010_ICON_P_MINUS);
-//        }
-//        else
-//        {
-//            /* active power is forward */
-//            cl010_show_icon(CL010_ICON_P_PLUS);
-//        }
-//
-//        if (eventFlags.qtDir)
-//        {
-//            /* reactive power is reverse */
-//            cl010_show_icon(CL010_ICON_Q_MINUS);
-//        }
-//        else
-//        {
-//            /* reactive power is forward */
-//            cl010_show_icon(CL010_ICON_Q_PLUS);
-//        }
-
     }
 
     /* Display MCHP logo */
@@ -656,10 +615,10 @@ void APP_DISPLAY_Initialize ( void )
     app_displayData.comm_signal = APP_DISPLAY_COM_SIGNAL_OFF;
 
     /* Configure Switches */
-    PIO_PinInterruptCallbackRegister(SWITCH_SCRUP_PIN,
+    PIO_PinInterruptCallbackRegister(SCR_UP_BUTTON_PIN,
             _APP_DISPLAY_ScrollUp_Callback, (uintptr_t)NULL);
 
-    PIO_PinInterruptCallbackRegister(SWITCH_SCRDOWN_PIN,
+    PIO_PinInterruptCallbackRegister(SCR_DOWN_BUTTON_PIN,
             _APP_DISPLAY_ScrollDown_Callback, (uintptr_t)NULL);
 
     /* Reload DWDT0 at startup */
@@ -706,8 +665,8 @@ void APP_DISPLAY_Tasks ( void )
                 APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU4_MAX_DEMAND);
 
                 /* Enable Switches interrupts */
-                PIO_PinInterruptEnable(SWITCH_SCRUP_PIN);
-                PIO_PinInterruptEnable(SWITCH_SCRDOWN_PIN);
+                PIO_PinInterruptEnable(SCR_UP_BUTTON_PIN);
+                PIO_PinInterruptEnable(SCR_DOWN_BUTTON_PIN);
 
                 /* Configure display timer loop */
                 APP_DISPLAY_SetTimerLoop(3);
@@ -724,7 +683,7 @@ void APP_DISPLAY_Tasks ( void )
                 /* If any button has been pressed, change the information */
                 if (app_displayData.scrdown_pressed)
                 {
-                    if (SWITCH_SCRUP_Get() == 0)
+                    if (SCR_UP_BUTTON_Get() == 0)
                     {
                         SYS_CMD_MESSAGE("Entering Low Power... Press FWUP/TAMPER switch to wake up.\r\n");
 
@@ -744,7 +703,7 @@ void APP_DISPLAY_Tasks ( void )
 
                 if (app_displayData.scrup_pressed)
                 {
-                    if (SWITCH_SCRDOWN_Get() == 0)
+                    if (SCR_DOWN_BUTTON_Get() == 0)
                     {
                         SYS_CMD_MESSAGE("Emulating application holds ... Resetting by DWDT0.\r\n");
 

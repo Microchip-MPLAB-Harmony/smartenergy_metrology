@@ -61,9 +61,9 @@ Microchip or any third party.
 /* Metrology Default Config: PULSE2_CTRL */
 #define DRV_MCMETROLOGY_CONF_PULSE2_CTRL            0x${REG_MCMET_CTRL_PULSE_CTRL_2?left_pad(8, "0")}UL
 /* Metrology Default Config: PULSE_CONTRIBUTION_PW */
-#define DRV_MCMETROLOGY_CONF_PULSE_CONT_PW          0x${REG_MCMET_CTRL_PULSE_CONT_PW?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_PULSE_PW               0x${REG_MCMET_CTRL_PULSE_CONT_PW?left_pad(8, "0")}UL
 /* Metrology Default Config: PULSE_CONTRIBUTION_I */
-#define DRV_MCMETROLOGY_CONF_PULSE_CONT_I           0x${REG_MCMET_CTRL_PULSE_CONT_I?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_PULSE_I                0x${REG_MCMET_CTRL_PULSE_CONT_I?left_pad(8, "0")}UL
 /* Metrology Default Config: Meter Active Power Pulse Constant */
 #define DRV_MCMETROLOGY_CONF_PKT                    0x${REG_MCMET_CONF_PKT?left_pad(8, "0")}UL
 /* Metrology Default Config: Meter Reactive Power Pulse Constant */
@@ -71,19 +71,19 @@ Microchip or any third party.
 /* Metrology Default Config: Meter Current Pulse Constant */
 #define DRV_MCMETROLOGY_CONF_IKT                    0x${REG_MCMET_CONF_IKT?left_pad(8, "0")}UL
 /* Metrology Default Config: Creep Threshold for Active Energy */
-#define DRV_MCMETROLOGY_CONF_CREEP_THR_P            0x${REG_MCMET_CREEP_THRESHOLD_P?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_CREEP_P                0x${REG_MCMET_CREEP_THRESHOLD_P?left_pad(8, "0")}UL
 /* Metrology Default Config: Creep Threshold for Reactive Energy */
-#define DRV_MCMETROLOGY_CONF_CREEP_THR_Q            0x${REG_MCMET_CREEP_THRESHOLD_Q?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_CREEP_Q                0x${REG_MCMET_CREEP_THRESHOLD_Q?left_pad(8, "0")}UL
 /* Metrology Default Config: Creep Threshold of Phase Current */
-#define DRV_MCMETROLOGY_CONF_CREEP_THR_I            0x${REG_MCMET_CREEP_THRESHOLD_I?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_CREEP_I                0x${REG_MCMET_CREEP_THRESHOLD_I?left_pad(8, "0")}UL
 /* Metrology Default Config: Active Power Offset Control Register */
 #define DRV_MCMETROLOGY_CONF_P_POWER_OFFSET_CTRL    0x${REG_MCMET_CTRL_P_POWER_OFFSET_CTRL?left_pad(8, "0")}UL
 /* Metrology Default Config: Reactive Power Offset Control Register */
 #define DRV_MCMETROLOGY_CONF_Q_POWER_OFFSET_CTRL    0x${REG_MCMET_CTRL_Q_POWER_OFFSET_CTRL?left_pad(8, "0")}UL
 /* Metrology Default Config: Active Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POWER_OFFSET_P         0x${REG_MCMET_POWER_OFFSET_P?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_POFFSET_P              0x${REG_MCMET_POWER_OFFSET_P?left_pad(8, "0")}UL
 /* Metrology Default Config: Rective Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POWER_OFFSET_Q         0x${REG_MCMET_POWER_OFFSET_Q?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_POFFSET_Q              0x${REG_MCMET_POWER_OFFSET_Q?left_pad(8, "0")}UL
 /* Metrology Default Config: Voltage Swell and Overcurrent Threshold */
 #define DRV_MCMETROLOGY_CONF_SWELL_OVERC_THRS_CHx   {0x${REG_MCMET_SWELL_TH_0?left_pad(8, "0")}UL, \
                                                      0x${REG_MCMET_SWELL_TH_1?left_pad(8, "0")}UL, \
@@ -267,7 +267,7 @@ Microchip or any third party.
                                                      0x00000000UL, \
                                                      0x00000000UL}
 /* Metrology Default Config: Per-Power Active Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POWER_OFFSET_P_x       {0x${DRV_MCMET_CONF_P_OFFSET_0?left_pad(8, "0")}UL, \
+#define DRV_MCMETROLOGY_CONF_OFFSET_P_x             {0x${DRV_MCMET_CONF_P_OFFSET_0?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_P_OFFSET_1?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_P_OFFSET_2?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_P_OFFSET_3?left_pad(8, "0")}UL, \
@@ -299,7 +299,7 @@ Microchip or any third party.
                                                      0x${DRV_MCMET_CONF_P_OFFSET_29?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_P_OFFSET_30?left_pad(8, "0")}UL}
 /* Metrology Default Config: Per-Power Reactive Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POWER_OFFSET_Q_x       {0x${DRV_MCMET_CONF_Q_OFFSET_0?left_pad(8, "0")}UL, \
+#define DRV_MCMETROLOGY_CONF_OFFSET_Q_x             {0x${DRV_MCMET_CONF_Q_OFFSET_0?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_Q_OFFSET_1?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_Q_OFFSET_2?left_pad(8, "0")}UL, \
                                                      0x${DRV_MCMET_CONF_Q_OFFSET_3?left_pad(8, "0")}UL, \

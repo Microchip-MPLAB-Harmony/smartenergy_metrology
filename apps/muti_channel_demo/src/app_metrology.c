@@ -378,7 +378,7 @@ bool APP_METROLOGY_GetControlRegister(CONTROL_REG_ID regId, uint32_t * regValue,
         return false;
     }
 
-    pData = (uint32_t *) app_metrologyData.pMetControl;
+    pData = (uint32_t *)app_metrologyData.pMetControl;
     pData += regId;
     *regValue = *pData;
 
@@ -400,7 +400,7 @@ bool APP_METROLOGY_SetControlRegister(CONTROL_REG_ID regId, uint32_t value)
         return false;
     }
 
-    pData = (uint32_t *) app_metrologyData.pMetControl;
+    pData = (uint32_t *)app_metrologyData.pMetControl;
     pData += regId;
     *pData = value;
 
@@ -420,7 +420,7 @@ bool APP_METROLOGY_GetStatusRegister(STATUS_REG_ID regId, uint32_t * regValue, c
         return false;
     }
 
-    pData = (uint32_t *) app_metrologyData.pMetStatus;
+    pData = (uint32_t *)app_metrologyData.pMetStatus;
     pData += regId;
     *regValue = *pData;
 
@@ -469,7 +469,7 @@ bool APP_METROLOGY_GetHarmonicRegister(HARMONICS_REG_ID regId, uint32_t *regValu
         return false;
     }
 
-    pData = (uint32_t *) app_metrologyData.pMetHarData;
+    pData = (uint32_t *)app_metrologyData.pMetHarData;
     pData += regId;
     *regValue = *pData;
 

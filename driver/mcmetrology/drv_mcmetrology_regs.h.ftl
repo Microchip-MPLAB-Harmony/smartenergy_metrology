@@ -192,14 +192,14 @@ Microchip or any third party.
 /* -------- PULSE_CONTRIBUTION_PW : (MET_CONTROL) (R/W 32) Pulse Contribution Power Register -------- */
 #define PULSE_CONTRIBUTION_PW_Pos                       _UINT32_(0)                               /* (PULSE_CONTRIBUTION_PW) Enable Power x for pulse computation Position */
 #define PULSE_CONTRIBUTION_PW_Msk                       (_UINT32_(0x1) << PULSE_CONTRIBUTION_PW_Pos)    /* (PULSE_CONTRIBUTION_PW) Enable Power x for pulse computation Mask */
-#define PULSE_CONTRIBUTION_PW(psource, value)           ((PULSE_CONTRIBUTION_PW_Msk & (_UINT32_(value) << PULSE_CONTRIBUTION_PW_Pos)) << psource)
+#define PULSE_CONTRIBUTION_PW_VALUE(psource, value)     ((PULSE_CONTRIBUTION_PW_Msk & (_UINT32_(value) << PULSE_CONTRIBUTION_PW_Pos)) << psource)
 #define   PULSE_CONTRIBUTION_PW_DISABLED_Val              _UINT32_(0x0)                             /* (PULSE_CONTRIBUTION_PW) Disable power */
 #define   PULSE_CONTRIBUTION_PW_ENABLED_Val               _UINT32_(0x1)                             /* (PULSE_CONTRIBUTION_PW) Enable power */
 
 /* -------- PULSE_CONTRIBUTION_I : (MET_CONTROL) (R/W 32) Pulse Contribution Power Register -------- */
 #define PULSE_CONTRIBUTION_I_Pos                       _UINT32_(0)                               /* (PULSE_CONTRIBUTION_I) Enable current x for pulse computation Position */
 #define PULSE_CONTRIBUTION_I_Msk                       (_UINT32_(0x1) << PULSE_CONTRIBUTION_I_Pos)    /* (PULSE_CONTRIBUTION_I) Enable current x for pulse computation Mask */
-#define PULSE_CONTRIBUTION_I(psource, value)           ((PULSE_CONTRIBUTION_I_Msk & (_UINT32_(value) << PULSE_CONTRIBUTION_I_Pos)) << psource)
+#define PULSE_CONTRIBUTION_I_VALUE(psource, value)     ((PULSE_CONTRIBUTION_I_Msk & (_UINT32_(value) << PULSE_CONTRIBUTION_I_Pos)) << psource)
 #define   PULSE_CONTRIBUTION_I_DISABLED_Val               _UINT32_(0x0)                             /* (PULSE_CONTRIBUTION_I) Disable current */
 #define   PULSE_CONTRIBUTION_I_ENABLED_Val                _UINT32_(0x1)                             /* (PULSE_CONTRIBUTION_I) Enable current */
 
@@ -230,7 +230,7 @@ Microchip or any third party.
 /* -------- CAPTURE_SH_SEL : (MET_CONTROL) (R/W 32) Waveform Capture Channel Selection Register -------- */
 #define CAPTURE_SH_SEL_Pos                       _UINT32_(0)                              /* (CAPTURE_SH_SEL) Capture Channel x Select Position */
 #define CAPTURE_SH_SEL_Msk                       (_UINT32_(0x1) << CAPTURE_SH_SEL_Pos)    /* (CAPTURE_SH_SEL) Capture Channel x Select Mask */
-#define CAPTURE_SH_SEL(channel, value)           ((CAPTURE_SH_SEL_Msk & (_UINT32_(value) << CAPTURE_SH_SEL_Pos)) << channel)
+#define CAPTURE_SH_SEL_VALUE(channel, value)     ((CAPTURE_SH_SEL_Msk & (_UINT32_(value) << CAPTURE_SH_SEL_Pos)) << channel)
 #define   CAPTURE_SH_SEL_DISABLED_Val               _UINT32_(0x0)                             /* (CAPTURE_SH_SEL) Waveform capture is disabled for channel x */
 #define   CAPTURE_SH_SEL_ENABLED_Val                _UINT32_(0x1)                             /* (CAPTURE_SH_SEL) Waveform capture is enabled for channel x */
 
@@ -335,28 +335,28 @@ Microchip or any third party.
 /* -------- SWELL_OVERCURRENT_FLAG : (MET_STATUS) (R/W 32) Waveform Capture Channel Selection Register -------- */
 #define SWELL_OVERCURRENT_FLAG_Pos                       _UINT32_(0)                       /* (SWELL_OVERCURRENT_FLAG) Voltage Swell (for voltage channels) or Overcurrent (for current channels) Detected Flag for Channel x. Position */
 #define SWELL_OVERCURRENT_FLAG_Msk                       (_UINT32_(0x1) << SWELL_OVERCURRENT_FLAG_Pos)    /* (SWELL_OVERCURRENT_FLAG) Voltage Swell (for voltage channels) or Overcurrent (for current channels) Detected Flag for Channel x. Mask */
-#define SWELL_OVERCURRENT_FLAG(channel, value)           ((SWELL_OVERCURRENT_FLAG_Msk & (_UINT32_(value) << SWELL_OVERCURRENT_FLAG_Pos)) << channel)
+#define SWELL_OVERCURRENT_FLAG_VALUE(channel, value)     ((SWELL_OVERCURRENT_FLAG_Msk & (_UINT32_(value) << SWELL_OVERCURRENT_FLAG_Pos)) << channel)
 #define   SWELL_OVERCURRENT_FLAG_DISABLED_Val               _UINT32_(0x0)                             /* (SWELL_OVERCURRENT_FLAG) Voltage swell or overcurrent is not detected for the current half line cycle */
 #define   SWELL_OVERCURRENT_FLAG_ENABLED_Val                _UINT32_(0x1)                             /* (SWELL_OVERCURRENT_FLAG) Voltage swell or overcurrent is detected for the current half line cycle */
 
 /* -------- SAG_FLAG : (MET_STATUS) (R/W 32) Waveform Capture Channel Selection Register -------- */
 #define SAG_FLAG_Pos                                    _UINT32_(0)                        /* (SAG_FLAG) Voltage Sag Detected Flag for Channel x Position */
 #define SAG_FLAG_Msk                                    (_UINT32_(0x1) << SAG_FLAG_Pos)    /* (SAG_FLAG) Voltage Sag Detected Flag for Channel x Mask */
-#define SAG_FLAG(channel, value)                        ((SAG_FLAG_Msk & (_UINT32_(value) << SAG_FLAG_Pos)) << channel)
+#define SAG_FLAG_VALUE(channel, value)                  ((SAG_FLAG_Msk & (_UINT32_(value) << SAG_FLAG_Pos)) << channel)
 #define   SAG_FLAG_DISABLED_Val                            _UINT32_(0x0)                             /* (SAG_FLAG) Voltage sag is not detected for the current half line cycle */
 #define   SAG_FLAG_ENABLED_Val                             _UINT32_(0x1)                             /* (SAG_FLAG) Voltage sag is detected for the current half line cycle */
 
 /* -------- CREEP_FLAG : (MET_STATUS) (R/W 32) Waveform Capture Channel Selection Register -------- */
 #define CREEP_FLAG_Pos                                    _UINT32_(0)                          /* (CREEP_FLAG) Channel x Current Creep Detected Position */
 #define CREEP_FLAG_Msk                                    (_UINT32_(0x1) << CREEP_FLAG_Pos)    /* (CREEP_FLAG) Channel x Current Creep Detected Mask */
-#define CREEP_FLAG(channel, value)                        ((CREEP_FLAG_Msk & (_UINT32_(value) << CREEP_FLAG_Pos)) << channel)
+#define CREEP_FLAG_VALUE(channel, value)                  ((CREEP_FLAG_Msk & (_UINT32_(value) << CREEP_FLAG_Pos)) << channel)
 #define   CREEP_FLAG_DISABLED_Val                            _UINT32_(0x0)                             /* (CREEP_FLAG) Channel x current creep is not detected in the current full line cycle */
 #define   CREEP_FLAG_ENABLED_Val                             _UINT32_(0x1)                             /* (CREEP_FLAG) Channel x current creep is detected in the current full line cycle */
 
 /* -------- PH_ACTIVE_FLAG : (MET_STATUS) (R/W 32) Waveform Capture Channel Selection Register -------- */
 #define PH_ACTIVE_FLAG_Pos                                _UINT32_(0)                          /* (PH_ACTIVE_FLAG) Phase x is active Position */
 #define PH_ACTIVE_FLAG_Msk                                (_UINT32_(0x1) << PH_ACTIVE_FLAG_Pos)    /* (PH_ACTIVE_FLAG) Phase x is active Mask */
-#define PH_ACTIVE_FLAG(psource, value)                    ((PH_ACTIVE_FLAG_Msk & (_UINT32_(value) << PH_ACTIVE_FLAG_Pos)) << chpsourceannel)
+#define PH_ACTIVE_FLAG_VALUE(psource, value)              ((PH_ACTIVE_FLAG_Msk & (_UINT32_(value) << PH_ACTIVE_FLAG_Pos)) << chpsourceannel)
 #define   PH_ACTIVE_FLAG_DISABLED_Val                        _UINT32_(0x0)                             /* (PH_ACTIVE_FLAG) Phase x is inactive (the channel x, if configured as voltage, is inactive) */
 #define   PH_ACTIVE_FLAG_ENABLED_Val                         _UINT32_(0x1)                             /* (PH_ACTIVE_FLAG) Phase x is active (the channel x, if configured as voltage, is active) */
 

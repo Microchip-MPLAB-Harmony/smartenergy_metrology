@@ -91,7 +91,7 @@
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.5.5-a"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.5.5-b"/>
    </usedLibraries>
    <tokenMap class="java.util.TreeMap">
       <entry>
@@ -10409,12 +10409,10 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_111_FUNCTION_NAME"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_111_FUNCTION_NAME&quot;&gt;
-    &lt;Attributes dnOrder=&quot;0&quot;&gt;
-      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
-      &lt;/Boolean&gt;
-    &lt;/Attributes&gt;
-    &lt;Values dnOrder=&quot;1&quot;/&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SCROLL_UP_BUTTON&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;SCRL_UP_BTN&quot;/&gt;
+    &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
 </value>
@@ -10966,12 +10964,10 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_3_FUNCTION_NAME"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_3_FUNCTION_NAME&quot;&gt;
-    &lt;Attributes dnOrder=&quot;0&quot;&gt;
-      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
-      &lt;/Boolean&gt;
-    &lt;/Attributes&gt;
-    &lt;Values dnOrder=&quot;1&quot;/&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SCROLL_DOWN_BUTTON&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;SCRL_DOWN_BTN&quot;/&gt;
+    &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
 </value>
@@ -29174,7 +29170,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\definitions.h</file>
-         <hash>06d76dc080842f13a9da92d19e3d5e7279122db78f787085ce9c82614c335264</hash>
+         <hash>25caa2c99fd72c58f98c7bf4b877c2804bd4502cd20808912e24264ce94b9fd3</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\device.h</file>
@@ -29218,11 +29214,11 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_definitions.h</file>
-         <hash>17d0ea621ddc181737a95bea98f89e0835e62b2e40e54f54752e803b879c2d81</hash>
+         <hash>df8713fe7fe17390d1f2a9b23871d2333046f3ffbc2adf07a9aebc000172415a</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_local.h</file>
-         <hash>73dcf036a74fbff032d2a67440493248be1f1f6ba9075ad1627479347093d1da</hash>
+         <hash>bae981eee3c0f1c5ee4c725d7803942a1785fe265309b657b2d317ab0ad0212d</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_regs.h</file>
@@ -29298,7 +29294,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\initialization.c</file>
-         <hash>5ec4f96bd26a43b0d4b05d1bcab4d5ed80e94232cd1071f0cbfa1d0cacc9f4bb</hash>
+         <hash>b283018227a2f1d97429bffa3587795812fc6a6f394c3fedfe55e7456f59d089</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\interrupts.c</file>
@@ -29374,7 +29370,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\peripheral\pio\plib_pio.h</file>
-         <hash>c592df65ad0e396361e8f64eb69d8b6c5bc82dad4ffa3f6b3c19e1744d72b488</hash>
+         <hash>f754f39175aed7f937f24eae465859f44296bd4b334628639efd7d6c44e2a79a</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\peripheral\qspi\plib_qspi.c</file>
@@ -29454,7 +29450,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\pin_configurations.csv</file>
-         <hash>f6e4abd2c7a5e3eb323a62b9351f010a95916b1f919c98c6771486cadb19749e</hash>
+         <hash>3ae8ef0b8bc0c0cb88a36da4d42e62bad4f2027a24c8523fe8dcf6e1a4416d6a</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\startup_xc32.c</file>
