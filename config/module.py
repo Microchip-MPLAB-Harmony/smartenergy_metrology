@@ -34,3 +34,10 @@ def loadModule():
         drvMetrologyComponent.addDependency("drvMet_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
         drvMetrologyComponent.setDisplayType("Metrology")
         drvMetrologyComponent.setHelpKeyword("SE_drv_metrology")
+
+    ## Multi-Channel Metrology Driver
+    if series == "PIC32CXMTC":
+        drvMCMetrologyComponent = Module.CreateComponent("drvMCMet", "MULTI-CHANNEL METROLOGY", "/SmartEnergy/Drivers/", "driver/mcmetrology/config/drv_mcmetrology.py")
+        drvMCMetrologyComponent.addDependency("drvMCMet_coreDep", "Core Service", "Core Service", True, True)
+        drvMCMetrologyComponent.setDisplayType("Multi-Channel Metrology")
+        drvMCMetrologyComponent.setHelpKeyword("SE_drv_mcmetrology")
