@@ -70,6 +70,7 @@ typedef struct
 #define CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY      100
 #define CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES   10
 #define CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT       30
+#define CONSOLE_TASK_DELAY_MS_BETWEEN_HAR_REGS_PRINT   50
 
 
 // *****************************************************************************
@@ -2592,7 +2593,8 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_ALL_HARMONICS_REGS:
         {
-            if (app_consoleData.numRegsPending == HARMONICS_REG_NUM)
+            if ((app_consoleData.numRegsPending == HARMONICS_REG_NUM) &&
+                (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER))
             {
                 // Remove Prompt symbol
                 _removePrompt();
@@ -2614,63 +2616,66 @@ void APP_CONSOLE_Tasks ( void )
                 harmonicNum = DRV_METROLOGY_HARMONICS_MAX_ORDER - app_consoleData.numHarmsPending;
 
                 // Read and print harmonic values
-                if (app_consoleData.numHarmsPending >= 4)
+                while (app_consoleData.numHarmsPending > 0)
                 {
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 2, &regValue32[2], regName[2]);
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 3, &regValue32[3], regName[3]);
-
-                    if (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER)
+                    if (app_consoleData.numHarmsPending >= 4)
                     {
-                        SYS_CMD_PRINT("%-19s\r\n", regName[0]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 2, &regValue32[2], regName[2]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 3, &regValue32[3], regName[3]);
+
+                        if (app_consoleData.numHarmsPending == DRV_METROLOGY_HARMONICS_MAX_ORDER)
+                        {
+                            SYS_CMD_PRINT("%-19s\r\n", regName[0]);
+                        }
+
+                        SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
+
+                        // Advance to next harmonic group
+                        app_consoleData.numHarmsPending -= 4;
                     }
+                    else if (app_consoleData.numHarmsPending == 3)
+                    {
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 2, &regValue32[2], regName[2]);
 
-                    SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2]);
 
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 4;
+                        // Advance to next harmonic group
+                        app_consoleData.numHarmsPending -= 3;
+                    }
+                    else if (app_consoleData.numHarmsPending == 2)
+                    {
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
+
+                        SYS_CMD_PRINT("%-19X%-19X\r\n", regValue32[0], regValue32[1]);
+
+                        // Advance to next harmonic group
+                        app_consoleData.numHarmsPending -= 2;
+                    }
+                    else if (app_consoleData.numHarmsPending == 1)
+                    {
+                        APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
+
+                        SYS_CMD_PRINT("%-19X\r\n", regValue32[0]);
+
+                        // Advance to next harmonic group
+                        app_consoleData.numHarmsPending--;
+                    }
+                    // Update harmonic number
+                    harmonicNum = DRV_METROLOGY_HARMONICS_MAX_ORDER - app_consoleData.numHarmsPending;
                 }
-                else if (app_consoleData.numHarmsPending == 3)
-                {
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 2, &regValue32[2], regName[2]);
 
-                    SYS_CMD_PRINT("%-19X%-19X%-19X\r\n", regValue32[0], regValue32[1], regValue32[2]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 3;
-                }
-                else if (app_consoleData.numHarmsPending == 2)
-                {
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum + 1, &regValue32[1], regName[1]);
-
-                    SYS_CMD_PRINT("%-19X%-19X\r\n", regValue32[0], regValue32[1]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending -= 2;
-                }
-                else if (app_consoleData.numHarmsPending == 1)
-                {
-                    APP_METROLOGY_GetHarmonicRegister(numRegId, harmonicNum, &regValue32[0], regName[0]);
-
-                    SYS_CMD_PRINT("%-19X\r\n", regValue32[0]);
-
-                    // Advance to next harmonic group
-                    app_consoleData.numHarmsPending--;
-                }
-                else
-                {
-                    // Advance to next register group
-                    app_consoleData.numHarmsPending = DRV_METROLOGY_HARMONICS_MAX_ORDER;
-                    app_consoleData.numRegsPending--;
-                }
+                // Advance to next register group
+                app_consoleData.numHarmsPending = DRV_METROLOGY_HARMONICS_MAX_ORDER;
+                app_consoleData.numRegsPending--;
 
                 app_consoleData.nextState = app_consoleData.state;
                 app_consoleData.state = APP_CONSOLE_STATE_DELAY;
-                app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
+                app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_HAR_REGS_PRINT;
             }
 
             break;
