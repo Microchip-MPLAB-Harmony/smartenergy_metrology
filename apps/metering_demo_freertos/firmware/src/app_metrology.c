@@ -191,7 +191,7 @@ const char * _met_acc_desc[] =
   "06 I_B_F",
   "07 I_C_F",
   "08 I_Nmi",
-  "09 RESERVED_A09",
+  "09 I_Nm_F",
   "10 RESERVED_A10",
   "11 RESERVED_A11",
   "12 RESERVED_A12",
