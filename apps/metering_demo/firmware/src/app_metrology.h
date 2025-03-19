@@ -451,6 +451,7 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK 
         DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse);
 void APP_METROLOGY_Restart(void);
 void APP_METROLOGY_SetLowPowerMode (void);
+void APP_METROLOGY_StopMetrology (void);
 bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase);
 
 //DOM-IGNORE-BEGIN

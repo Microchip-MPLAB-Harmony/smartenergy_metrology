@@ -3387,6 +3387,8 @@ void APP_CONSOLE_Tasks ( void )
                 }
                 else if (app_consoleData.nextState == APP_CONSOLE_STATE_SW_RESET)
                 {
+                    // Stop Metrology and its peripherals before reset
+                    APP_METROLOGY_StopMetrology();
                     // Perform Reset
                     RSTC_Reset(RSTC_PROCESSOR_RESET);
 

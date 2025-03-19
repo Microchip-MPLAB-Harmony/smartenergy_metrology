@@ -906,6 +906,11 @@ void APP_METROLOGY_SetLowPowerMode (void)
     SUPC_BackupModeEnter();
 }
 
+void APP_METROLOGY_StopMetrology (void)
+{
+    DRV_METROLOGY_Close();
+}
+
 bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase)
 {
     uint32_t regValue = app_metrologyData.pMetControl->FEATURE_CTRL;

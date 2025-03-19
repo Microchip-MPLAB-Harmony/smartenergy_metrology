@@ -3339,6 +3339,9 @@ void APP_CONSOLE_Tasks ( void )
         {
             /* Wait time to show message through the Console */
             vTaskDelay(100 / portTICK_PERIOD_MS);
+            // Stop Metrology and its peripherals before reset
+            APP_METROLOGY_StopMetrology();
+            // Perform Reset
             RSTC_Reset(RSTC_PROCESSOR_RESET);
         }
 
