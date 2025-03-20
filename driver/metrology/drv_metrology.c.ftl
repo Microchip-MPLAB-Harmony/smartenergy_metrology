@@ -1014,7 +1014,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         uint32_t *pDst;
         uint32_t tmp;
 
-        /* Assert reset of the coprocessor and its peripherals */
+        /* Assert reset of the coprocessor */
         tmp = RSTC_REGS->RSTC_MR;
         tmp &= ~RSTC_MR_CPROCEN_Msk;
         RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
@@ -1083,11 +1083,16 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
 
     /* Assert reset of the coprocessor and its peripherals */
     tmp = RSTC_REGS->RSTC_MR;
-    tmp &= ~RSTC_MR_CPROCEN_Msk;
+    tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
     RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
 
     /* Disable coprocessor Clocks */
     PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
+
+    /* De-assert reset of the coprocessor peripherals */
+    tmp = RSTC_REGS->RSTC_MR;
+    tmp |= RSTC_MR_CPEREN_Msk;
+    RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
 
     gDrvMetObj.binStartAddress = metInit->binStartAddress;
     gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
