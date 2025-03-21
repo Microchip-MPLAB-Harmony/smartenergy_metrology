@@ -82,19 +82,28 @@ extern uint8_t met_bin_end;
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
 
-#define  FREQ_Q         12U
-#define  GAIN_P_K_T_Q   24U
-#define  GAIN_VI_Q      10U
-#define  RMS_DIV_G      1024U    /* (1<<GAIN_VI_Q) */
-#define  CAL_VI_Q       29U
-#define  CAL_PH_Q       31U
-#define  RMS_Q          40U
-#define  RMS_DIV_Q      0x10000000000ULL  /* (1<<RMS_Q) */
-#define  RMS_Inx_Q      20U
-#define  RMS_DIV_Inx_Q  0x100000UL /* (1<< RMS_Inx_Q) */
-#define  RMS_PQ_SYMB    0x8000000000000000ULL       /* p/q symbol bit */
-#define  RMS_HARMONIC   0x80000000UL
-#define  CONST_Pi       3.1415926
+#define FREQ_Q                 12U
+#define GAIN_P_K_T_Q           24U
+#define GAIN_VI_Q              10U
+#define DIV_GAIN               1024U /* (1 << GAIN_VI_Q) */
+#define CAL_VI_Q               29U
+#define CAL_PH_Q               31U
+#define Q_FACTOR               40U
+#define DIV_Q_FACTOR           0x10000000000ULL /* (1 << Q_FACTOR) */
+#define Inx_Q_FACTOR           20U
+#define DIV_Inx_Q_FACTOR       0x100000UL /* (1 << Inx_Q_FACTOR) */
+#define PQ_SYMB                0x8000000000000000ULL /* p/q symbol bit */
+#define HARMONIC_FACTOR        0x80000000UL
+#define CONST_Pi               3.1415926
+#define SAMPLING_FREQ          4000.0
+#define VI_ACCURACY_DOUBLE     10000.0
+#define VI_ACCURACY_INT        10000U
+#define SECS_IN_HOUR_DOUBLE    3600.0
+#define PQS_ACCURACY_DOUBLE    10.0
+#define PQS_ACCURACY_INT       10U
+#define FREQ_ACCURACY_INT      100U
+#define ANGLE_ACCURACY_DOUBLE  100000.0
+#define ANGLE_ACCURACY_INT     100000U
 
 /* Metrology Driver Sensor Type
 
@@ -139,8 +148,10 @@ typedef enum {
     PHASE_A        = 1,
     PHASE_B        = 2,
     PHASE_C        = 3,
+    PHASE_N        = 4,
     PHASE_T        = 5,
-    PHASE_ID_NUM   = PHASE_T
+    PHASE_TN       = 6,
+    PHASE_ID_NUM   = PHASE_TN
 } DRV_METROLOGY_PHASE_ID;
 
 
@@ -165,6 +176,8 @@ typedef struct {
     double aimVC;
     double aimIC;
     double angleC;
+    double aimIN;
+    double angleN;
     DRV_METROLOGY_PHASE_ID lineId;
 } DRV_METROLOGY_CALIBRATION_REFS;
 
@@ -195,13 +208,14 @@ typedef struct {
     uint64_t dspAccUa;
     uint64_t dspAccUb;
     uint64_t dspAccUc;
-    uint64_t dspAccUn;
     int64_t  dspAccPa;
     int64_t  dspAccPb;
     int64_t  dspAccPc;
+    int64_t  dspAccPn;
     int64_t  dspAccQa;
     int64_t  dspAccQb;
     int64_t  dspAccQc;
+    int64_t  dspAccQn;
     bool  running;
     bool  result;
 } DRV_METROLOGY_CALIBRATION;
@@ -233,13 +247,13 @@ typedef struct {
 
   Description:
     - pHarmonicAnalysisResponse. Pointer to store the result of the Harmonic Analysis.
-    - harmonicNum: Store the harmonic number to be analyzed.
+    - harmonicBitmap: Store the harmonics to be analyzed.
     - integrationPeriods: Indicate the number of integration periods that must be waited until get the response
     - running: Flag to indicate that harmonic analysis is in process.
 */
 typedef struct {
     DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;
-    uint8_t harmonicNum;
+    uint32_t harmonicBitmap;
     uint8_t integrationPeriods;
     bool  running;
     bool holdRegs;
@@ -265,60 +279,89 @@ typedef struct {
     unsigned int qbDir : 1;
     unsigned int qcDir : 1;
     unsigned int qtDir : 1;
+    unsigned int pafDir : 1;
+    unsigned int pbfDir : 1;
+    unsigned int pcfDir : 1;
+    unsigned int ptfDir : 1;
+    unsigned int qafDir : 1;
+    unsigned int qbfDir : 1;
+    unsigned int qcfDir : 1;
+    unsigned int qtfDir : 1;
     unsigned int sagA : 1;
     unsigned int sagB : 1;
     unsigned int sagC : 1;
-    unsigned int reserved1 : 1;
     unsigned int swellA : 1;
     unsigned int swellB : 1;
     unsigned int swellC : 1;
-    unsigned int reserved2 : 17;
+    unsigned int reserved : 10;
 } DRV_METROLOGY_AFE_EVENTS;
 
-/* Metrology Driver RMS type
+/* Metrology Driver Measurements type
 
   Summary:
-    Identifies the all RMS types of measurements.
+    Identifies all types of measurements.
 
   Description:
-    RMS values are calculated including all harmonics of each phase, where:
+    Values are calculated both including all harmonics and fundamental only (F added at the end of magnitude name), where:
         - U = Voltage RMS value
         - I = Current RMS value
-        - P = Active power RMS value
-        - Q = Reactive power RMS value
-        - S = Aparent power RMS value
+        - P = Active power value
+        - Q = Reactive power value
+        - S = Aparent power value
         - FREQ = Frequency of the line voltage fundamental harmonic component determined by the Metrology library using the dominant phase
         - ANGLE = Angle between the voltage and current vectors
 */
 typedef enum {
-    RMS_UA = 0,
-    RMS_UB,
-    RMS_UC,
-    RMS_IA,
-    RMS_IB,
-    RMS_IC,
-    RMS_INI,
-    RMS_INM,
-    RMS_INMI,
-    RMS_PT,
-    RMS_PA,
-    RMS_PB,
-    RMS_PC,
-    RMS_QT,
-    RMS_QA,
-    RMS_QB,
-    RMS_QC,
-    RMS_ST,
-    RMS_SA,
-    RMS_SB,
-    RMS_SC,
-    RMS_FREQ,
-    RMS_ANGLEA,
-    RMS_ANGLEB,
-    RMS_ANGLEC,
-    RMS_ANGLEN,
-    RMS_TYPE_NUM
-} DRV_METROLOGY_RMS_TYPE;
+    MEASURE_UA_RMS = 0,
+    MEASURE_UB_RMS,
+    MEASURE_UC_RMS,
+    MEASURE_IA_RMS,
+    MEASURE_IB_RMS,
+    MEASURE_IC_RMS,
+    MEASURE_INI_RMS,
+    MEASURE_INM_RMS,
+    MEASURE_INMI_RMS,
+    MEASURE_PT,
+    MEASURE_PA,
+    MEASURE_PB,
+    MEASURE_PC,
+    MEASURE_QT,
+    MEASURE_QA,
+    MEASURE_QB,
+    MEASURE_QC,
+    MEASURE_ST,
+    MEASURE_SA,
+    MEASURE_SB,
+    MEASURE_SC,
+    MEASURE_UAF_RMS,
+    MEASURE_UBF_RMS,
+    MEASURE_UCF_RMS,
+    MEASURE_IAF_RMS,
+    MEASURE_IBF_RMS,
+    MEASURE_ICF_RMS,
+    MEASURE_IMNF_RMS,
+    MEASURE_PTF,
+    MEASURE_PAF,
+    MEASURE_PBF,
+    MEASURE_PCF,
+    MEASURE_QTF,
+    MEASURE_QAF,
+    MEASURE_QBF,
+    MEASURE_QCF,
+    MEASURE_STF,
+    MEASURE_SAF,
+    MEASURE_SBF,
+    MEASURE_SCF,
+    MEASURE_FREQ,
+    MEASURE_FREQA,
+    MEASURE_FREQB,
+    MEASURE_FREQC,
+    MEASURE_ANGLEA,
+    MEASURE_ANGLEB,
+    MEASURE_ANGLEC,
+    MEASURE_ANGLEN,
+    MEASURE_TYPE_NUM
+} DRV_METROLOGY_MEASURE_TYPE;
 
 /* Metrology Driver AFE calculated data
 
@@ -328,12 +371,12 @@ typedef enum {
   Description:
     - energy. Active energy calculated value.
     - afeEvents. AFE events data.
-    - RMS[RMS_TYPE_NUM]. RMS calculated values.
+    - measure[MEASURE_TYPE_NUM]. Measure calculated values.
 */
 typedef struct {
     uint32_t energy;
     DRV_METROLOGY_AFE_EVENTS afeEvents;
-    uint32_t RMS[RMS_TYPE_NUM];
+    uint32_t measure[MEASURE_TYPE_NUM];
 } DRV_METROLOGY_AFE_DATA;
 
 /* Metrology Driver Configuration

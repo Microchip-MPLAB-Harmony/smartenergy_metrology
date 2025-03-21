@@ -104,18 +104,18 @@ typedef enum {
 } DRV_METROLOGY_START_MODE;
 
 // *****************************************************************************
-/* Metrology Driver RMS sign
+/* Metrology Driver Measure sign
 
   Summary:
     Describes the sign of some metrology measurements.
 
   Description:
-    This quality only affects to some RMS measurements.
+    This quality only affects to some measurements.
 */
 typedef enum {
-    RMS_SIGN_POSITIVE = 0,
-    RMS_SIGN_NEGATIVE = 1,
-} DRV_METROLOGY_RMS_SIGN;
+    MEASURE_SIGN_POSITIVE = 0,
+    MEASURE_SIGN_NEGATIVE = 1,
+} DRV_METROLOGY_MEASURE_SIGN;
 
 // *****************************************************************************
 /* Metrology Callback Function Pointer
@@ -165,13 +165,13 @@ typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result);
     when the Harmonics analysis has been completed.
 
   Parameters:
-    harmonicNum  - The number of the harmonic that has been analyzed. If 0, all
-                    harmonics from 0 to 31 have been processed.
+    harmonicBitmap  - Bitmap defining analyzed harmonics.
+                      Each bit set represents one harmonic.
 
   Remarks:
     None.
 */
-typedef void (* DRV_METROLOGY_HARMONICS_CALLBACK) (uint8_t harmonicNum);
+typedef void (* DRV_METROLOGY_HARMONICS_CALLBACK) (uint32_t harmonicBitmap);
 
 // *****************************************************************************
 
@@ -528,12 +528,12 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CAL
 
   Example:
     <code>
-        static void lAPP_METROLOGY_HarmonicAnalysisCallback(uint8_t harmonicNum)
+        static void lAPP_METROLOGY_HarmonicAnalysisCallback(uint32_t harmonicBitmap)
         {
             if (app_metrologyData.pHarmonicAnalysisCallback)
             {
                 app_metrologyData.harmonicAnalysisPending = false;
-                app_metrologyData.pHarmonicAnalysisCallback(harmonicNum);
+                app_metrologyData.pHarmonicAnalysisCallback(harmonicBitmap);
             }
         }
 
@@ -699,20 +699,23 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData(void);
             (uint32_t)(DRV_METROLOGY_CONF_FCTRL),
             (uint32_t)(DRV_METROLOGY_CONF_HARMONIC_CTRL),
             (uint32_t)(DRV_METROLOGY_CONF_MT),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00001130),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00001130UL),
             (uint32_t)(DRV_METROLOGY_CONF_PULSE0_CTRL),
             (uint32_t)(DRV_METROLOGY_CONF_PULSE1_CTRL),
             (uint32_t)(DRV_METROLOGY_CONF_PULSE2_CTRL),
             (uint32_t)(DRV_METROLOGY_CONF_PKT),
             (uint32_t)(DRV_METROLOGY_CONF_PKT),
             (uint32_t)(DRV_METROLOGY_CONF_PKT),
+            (uint32_t)(DRV_METROLOGY_CONF_PKT),
             (uint32_t)(DRV_METROLOGY_CONF_CREEP_P),
             (uint32_t)(DRV_METROLOGY_CONF_CREEP_Q),
             (uint32_t)(DRV_METROLOGY_CONF_CREEP_I),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
+            (uint32_t)(DRV_METROLOGY_CONF_CREEP_S),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
             (uint32_t)(DRV_METROLOGY_CONF_SWELL),
             (uint32_t)(DRV_METROLOGY_CONF_SWELL),
             (uint32_t)(DRV_METROLOGY_CONF_SWELL),
@@ -726,35 +729,36 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData(void);
             (uint32_t)(DRV_METROLOGY_CONF_KI),
             (uint32_t)(DRV_METROLOGY_CONF_KV),
             (uint32_t)(DRV_METROLOGY_CONF_KI),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x20000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x20000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
             (uint32_t)(DRV_METROLOGY_CONF_WAVEFORM),
             (uint32_t)(DRV_METROLOGY_CAPTURE_BUF_SIZE),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
             (uint32_t)(DRV_METROLOGY_CONF_ATS2023),
             (uint32_t)(DRV_METROLOGY_CONF_ATS2427),
-            (uint32_t)(0x00000003),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000),
-            (uint32_t)(0x00000000)
+            (uint32_t)(0x00000003UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL),
+            (uint32_t)(0x00000000UL)
         };
 
         (...)
@@ -939,7 +943,7 @@ void DRV_METROLOGY_SetControl(DRV_METROLOGY_REGS_CONTROL * pControl);
         if (app_metrologyData.queueFree)
         {
             newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-            newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
+            newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
             xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
         }
         else
@@ -955,14 +959,14 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
 
 // *****************************************************************************
 /* Function:
-    uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
+    uint32_t DRV_METROLOGY_GetMeasureValue(DRV_METROLOGY_MEASURE_TYPE type);
 
   Summary:
-    Gets the last RMS value of the selected measurement type.
+    Gets the last value of the selected measurement type.
 
   Description:
-    RMS values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
-    For further information about RMS types, refer to DRV_METROLOGY_RMS_TYPE definition.
+    Values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    For further information about Measurement types, refer to DRV_METROLOGY_MEASURE_TYPE definition.
 
   Precondition:
     None.
@@ -971,7 +975,7 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
     type - Indicate what type of measurement is obtained.
 
   Returns:
-    The RMS value of the selected type.
+    The value of the selected type.
 
   Example:
     <code>
@@ -981,7 +985,7 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
         if (app_metrologyData.queueFree)
         {
             newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-            newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
+            newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
             xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
         }
         else
@@ -993,18 +997,18 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
   Remarks:
     None.
 */
-uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
+uint32_t DRV_METROLOGY_GetMeasureValue(DRV_METROLOGY_MEASURE_TYPE type);
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
+    DRV_METROLOGY_MEASURE_SIGN DRV_METROLOGY_GetMeasureSign(DRV_METROLOGY_MEASURE_TYPE type);
 
   Summary:
-    Gets the sign of the last RMS value of the selected measurement type.
+    Gets the sign of the last value of the selected measurement type.
 
   Description:
-    RMS sign values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
-    For further information about RMS types, refer to DRV_METROLOGY_RMS_TYPE definition.
+    Sign values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    For further information about Measurement types, refer to DRV_METROLOGY_MEASURE_TYPE definition.
 
   Precondition:
     None.
@@ -1013,7 +1017,8 @@ uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
     type - Indicate what type of measurement is obtained.
 
   Returns:
-    The RMS sign of the last RMS value. Positive sign is identified as RMS_SIGN_POSITIVE (0), negative sign as RMS_SIGN_NEGATIVE (1).
+    The sign of the last value for the selected type.
+    Positive sign is identified as MEASURE_SIGN_POSITIVE (0), negative sign as MEASURE_SIGN_NEGATIVE (1).
 
   Example:
     <code>
@@ -1023,7 +1028,7 @@ uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
   Remarks:
     None.
 */
-DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
+DRV_METROLOGY_MEASURE_SIGN DRV_METROLOGY_GetMeasureSign(DRV_METROLOGY_MEASURE_TYPE type);
 
 // *****************************************************************************
 /* Function:
@@ -1121,7 +1126,7 @@ void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
     calibration process of the metrology library.
 
   Description:
-    These internal calibration values are used to obtain the RMS values correctly.
+    These internal calibration values are used to obtain the measurement values correctly.
     They also includes the result of the calibration process to be checked by the main application.
 
   Precondition:
@@ -1149,6 +1154,8 @@ void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
             pCalibrationRefs->aimIC = calibration->aimIC;
             pCalibrationRefs->aimVC = calibration->aimVC;
             pCalibrationRefs->angleC = calibration->angleC;
+            pCalibrationRefs->aimIN = calibration->aimIN;
+            pCalibrationRefs->angleN = calibration->angleN;
             pCalibrationRefs->lineId = calibration->lineId;
 
             app_metrologyData.state = APP_METROLOGY_STATE_CHECK_CALIBRATION;
@@ -1202,8 +1209,8 @@ void DRV_METROLOGY_StartCalibration(void);
 
 // *****************************************************************************
 /* Function:
-    void DRV_METROLOGY_StartHarmonicAnalysis(
-        uint8_t harmonicNum,
+    bool DRV_METROLOGY_StartHarmonicAnalysis(
+        uint32_t harmonicBitmap,
         DRV_METROLOGY_HARMONIC *pHarmonicResponse
     );
 
@@ -1212,31 +1219,67 @@ void DRV_METROLOGY_StartCalibration(void);
 
   Description:
     This routine configures the metrology library to enable the harmonics computation
-    and to calculate the data corresponding to the harmonic number n.
+    and to calculate the data corresponding to the harmonics active in harmonicBitmap.
     Then, the metrology driver receives the data from the metrology library and
-    computes the RMS currents and voltages of the selected harmonic.
+    computes the RMS currents and voltages of the selected harmonics.
 
   Precondition:
     None.
 
   Parameters:
-    harmonicNum - Harmonic number. If 0, all harmonics from 0 to 31 will be processed.
+    harmonicBitmap - Bitmap defining harmonics to be processed. Each bit set represents one harmonic.
     pHarmonicResponse - Pointer to the harmonic analysis struct data to store the harmonic data result.
+
+  Returns:
+    True if Harmonic Analysis is successfully triggered. Otherwise False.
+
+  Example:
+    <code>
+        DRV_METROLOGY_HARMONIC harmonicAnalysisResponse;
+
+        if (DRV_METROLOGY_StartHarmonicAnalysis(3, &harmonicAnalysisResponse))
+        {
+            waitForResponse();
+        }
+    </code>
+
+  Remarks:
+    None.
+*/
+bool DRV_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse);
+
+// *****************************************************************************
+/* Function:
+    void DRV_METROLOGY_StopHarmonicAnalysis(void);
+
+  Summary:
+    Stops the harmonic Analysis process.
+
+  Description:
+    This routine configures the metrology library to disable the harmonics
+    computation.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
 
   Returns:
     None.
 
   Example:
     <code>
-        DRV_METROLOGY_HARMONIC harmonicAnalysisResponse;
-
-        DRV_METROLOGY_StartHarmonicAnalysis(3, &harmonicAnalysisResponse);
+        if (harmonicAnalysisCompleted)
+        {
+            DRV_METROLOGY_StopHarmonicAnalysis();
+        }
     </code>
 
   Remarks:
     None.
 */
-void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse);
+void DRV_METROLOGY_StopHarmonicAnalysis(void);
 
 #ifdef __cplusplus
  }

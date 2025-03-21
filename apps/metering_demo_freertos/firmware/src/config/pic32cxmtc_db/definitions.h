@@ -14,7 +14,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -58,10 +58,10 @@
 #include "peripheral/supc/plib_supc.h"
 #include "driver/memory/drv_memory.h"
 #include "bsp/bsp.h"
-#include "peripheral/tc/plib_tc0.h"
 #include "peripheral/rtc/plib_rtc.h"
-#include "driver/sst26/drv_sst26.h"
+#include "peripheral/tc/plib_tc0.h"
 #include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
+#include "driver/sst26/drv_sst26.h"
 #include "peripheral/sefc/plib_sefc0.h"
 #include "system/time/sys_time.h"
 #include "peripheral/sefc/plib_sefc1.h"
@@ -103,13 +103,13 @@ extern "C" {
 // DOM-IGNORE-END
 
 /* Device Information */
-#define DEVICE_NAME			 "PIC32CX2051MTC128"
-#define DEVICE_ARCH			 "CORTEX-M4"
-#define DEVICE_FAMILY		 "PIC32CX_MT"
-#define DEVICE_SERIES		 "PIC32CXMTC"
+#define DEVICE_NAME          "PIC32CX2051MTC128"
+#define DEVICE_ARCH          "CORTEX-M4"
+#define DEVICE_FAMILY        "PIC32CX_MT"
+#define DEVICE_SERIES        "PIC32CXMTC"
 
 /* CPU clock frequency */
-#define CPU_CLOCK_FREQUENCY 200000000
+#define CPU_CLOCK_FREQUENCY 200000000U
 
 // *****************************************************************************
 // *****************************************************************************
@@ -221,6 +221,8 @@ Remarks:
 
 typedef struct
 {
+    SYS_MODULE_OBJ sysCommand;
+
     SYS_MODULE_OBJ  drvSST26;
     SYS_MODULE_OBJ  sysTime;
     SYS_MODULE_OBJ  drvMemory0;

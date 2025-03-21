@@ -177,6 +177,8 @@ extern "C" {
 #define DRV_METROLOGY_CONF_CREEP_P            0x2e9aUL
 /* Metrology Default Config: CREEP Q */
 #define DRV_METROLOGY_CONF_CREEP_Q            0x2e9aUL
+/* Metrology Default Config: CREEP S */
+#define DRV_METROLOGY_CONF_CREEP_S            0x2e9aUL
 /* Metrology Default Config: CREEP I */
 #define DRV_METROLOGY_CONF_CREEP_I            0x212dUL
 /* Metrology Default Config: FEATURE_CTRL */
@@ -188,7 +190,7 @@ extern "C" {
 /* Metrology Default Config: PULSE1_CTRL */
 #define DRV_METROLOGY_CONF_PULSE1_CTRL        0x810201d0UL
 /* Metrology Default Config: PULSE2_CTRL */
-#define DRV_METROLOGY_CONF_PULSE2_CTRL        0x0UL
+#define DRV_METROLOGY_CONF_PULSE2_CTRL        0x110401d0UL
 /* Metrology Default Config: Waveform Capture */
 #define DRV_METROLOGY_CONF_WAVEFORM           0xf00UL
 /* Metrology Default Config: Capture Buffer Size */
