@@ -59,6 +59,8 @@ Microchip or any third party.
 #include "osal/osal.h"
 </#if>
 #include "peripheral/pio/plib_pio.h"
+#include "peripheral/rstc/plib_rstc.h"
+#include "peripheral/clk/plib_clk.h"
 #include "interrupts.h"
 
 // *****************************************************************************
@@ -1012,15 +1014,12 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
     {
         uint32_t *pSrc;
         uint32_t *pDst;
-        uint32_t tmp;
 
         /* Assert reset of the coprocessor */
-        tmp = RSTC_REGS->RSTC_MR;
-        tmp &= ~RSTC_MR_CPROCEN_Msk;
-        RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+        RSTC_CoProcessorEnable(false);
 
         /* Disable coprocessor Clocks */
-        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
+        CLK_Core1ProcessorClkDisable();
 
         gDrvMetObj.binStartAddress = metInit->binStartAddress;
         gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
@@ -1069,7 +1068,6 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     </#if>
 </#if>
     /* MISRA C-2012 deviation block end */
-    uint32_t tmp;
     uint32_t *pSrc;
     uint32_t *pDst;
 
@@ -1082,17 +1080,14 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
     /* Assert reset of the coprocessor and its peripherals */
-    tmp = RSTC_REGS->RSTC_MR;
-    tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
-    RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+    RSTC_CoProcessorEnable(false);
+    RSTC_CoProcessorPeripheralEnable(false);
 
     /* Disable coprocessor Clocks */
-    PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
+    CLK_Core1ProcessorClkDisable();
 
     /* De-assert reset of the coprocessor peripherals */
-    tmp = RSTC_REGS->RSTC_MR;
-    tmp |= RSTC_MR_CPEREN_Msk;
-    RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+    RSTC_CoProcessorPeripheralEnable(true);
 
     gDrvMetObj.binStartAddress = metInit->binStartAddress;
     gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
@@ -1138,11 +1133,11 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode, DRV_METR
 
     if (mode == DRV_METROLOGY_START_HARD)
     {
-        /* De-assert the reset of the coprocessor (Core 1) */
-        RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPROCEN_Msk);
-
         /* Enable the coprocessor clock (Core 1) */
-        PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPCK_Msk);
+        CLK_Core1ProcessorClkEnable();
+
+        /* De-assert the reset of the coprocessor (Core 1) */
+        RSTC_CoProcessorEnable(true);
 
         /* Wait IPC Init interrupt */
         while(gDrvMetObj.status == DRV_METROLOGY_STATUS_WAITING_IPC)
