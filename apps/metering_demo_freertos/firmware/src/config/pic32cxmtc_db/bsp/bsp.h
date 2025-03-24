@@ -17,7 +17,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -54,35 +54,52 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "device.h"
+#include "peripheral/pio/plib_pio.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: BSP Macros
 // *****************************************************************************
 // *****************************************************************************
-#define pic32cxmtc_db
-#define BSP_NAME             "pic32cxmtc_db"
+#define PIC32CXMTC_DB
+#define BOARD_NAME    "PIC32CXMTC-DB"
 
-/*PIOA base address */
-#define PIOA_REGS   ((pio_group_registers_t*)(&(PIO0_REGS->PIO_GROUP[0])))
-/*PIOB base address */
-#define PIOB_REGS   ((pio_group_registers_t*)(&(PIO0_REGS->PIO_GROUP[1])))
-/*PIOC base address */
-#define PIOC_REGS   ((pio_group_registers_t*)(&(PIO0_REGS->PIO_GROUP[2])))
-/*PIOD base address */
-#define PIOD_REGS   ((pio_group_registers_t*)(&(PIO1_REGS->PIO_GROUP[0])))
+/*** OUTPUT PIO Macros for RED_LED_PD17 ***/
+#define BSP_RED_LED_PD17_PIN        PIO_PIN_PD17
+#define BSP_RED_LED_PD17_Get()      ((PIOD_REGS->PIO_PDSR >> 17) & 0x1)
+#define BSP_RED_LED_PD17_On()       (PIOD_REGS->PIO_SODR = (1UL<<17))
+#define BSP_RED_LED_PD17_Off()      (PIOD_REGS->PIO_CODR = (1UL<<17))
+#define BSP_RED_LED_PD17_Toggle()   do {\
+                                    PIOD_REGS->PIO_MSKR = (1<<17); \
+                                    PIOD_REGS->PIO_ODSR ^= (1<<17);\
+                                } while (0)
 
-/*** LED Macros for LED_RED ***/
-#define LED_RED_Toggle() do { PIOD_REGS->PIO_MSKR = (1UL<<17); (PIOD_REGS->PIO_ODSR ^= (1UL<<17)); } while (0)
-#define LED_RED_Get() ((PIOD_REGS->PIO_PDSR >> 17) & 0x1U)
-#define LED_RED_On() (PIOD_REGS->PIO_SODR = (1UL<<17))
-#define LED_RED_Off() (PIOD_REGS->PIO_CODR = (1UL<<17))
-/*** LED Macros for LED_IR ***/
-#define LED_IR_Toggle() do { PIOD_REGS->PIO_MSKR = (1UL<<18); (PIOD_REGS->PIO_ODSR ^= (1UL<<18)); } while (0)
-#define LED_IR_Get() ((PIOD_REGS->PIO_PDSR >> 18) & 0x1U)
-#define LED_IR_On() (PIOD_REGS->PIO_SODR = (1UL<<18))
-#define LED_IR_Off() (PIOD_REGS->PIO_CODR = (1UL<<18))
+/*** OUTPUT PIO Macros for RED_LED_PD18 ***/
+#define BSP_RED_LED_PD18_PIN        PIO_PIN_PD18
+#define BSP_RED_LED_PD18_Get()      ((PIOD_REGS->PIO_PDSR >> 18) & 0x1)
+#define BSP_RED_LED_PD18_On()       (PIOD_REGS->PIO_SODR = (1UL<<18))
+#define BSP_RED_LED_PD18_Off()      (PIOD_REGS->PIO_CODR = (1UL<<18))
+#define BSP_RED_LED_PD18_Toggle()   do {\
+                                    PIOD_REGS->PIO_MSKR = (1<<18); \
+                                    PIOD_REGS->PIO_ODSR ^= (1<<18);\
+                                } while (0)
 
+
+/*** INPUT PIO Macros for SCROLL_DOWN_BUTTON ***/
+#define BSP_SCROLL_DOWN_BUTTON_PIN                    PIO_PIN_PC22
+#define BSP_SCROLL_DOWN_BUTTON_Get()                  ((PIOC_REGS->PIO_PDSR >> 22) & 0x1)
+#define BSP_SCROLL_DOWN_BUTTON_STATE_PRESSED          0
+#define BSP_SCROLL_DOWN_BUTTON_STATE_RELEASED         1
+#define BSP_SCROLL_DOWN_BUTTON_InterruptEnable()      (PIOC_REGS->PIO_IER = (1UL<<22))
+#define BSP_SCROLL_DOWN_BUTTON_InterruptDisable()     (PIOC_REGS->PIO_IDR = (1UL<<22))
+
+/*** INPUT PIO Macros for SCROLL_UP_BUTTON ***/
+#define BSP_SCROLL_UP_BUTTON_PIN                    PIO_PIN_PC4
+#define BSP_SCROLL_UP_BUTTON_Get()                  ((PIOC_REGS->PIO_PDSR >> 4) & 0x1)
+#define BSP_SCROLL_UP_BUTTON_STATE_PRESSED          0
+#define BSP_SCROLL_UP_BUTTON_STATE_RELEASED         1
+#define BSP_SCROLL_UP_BUTTON_InterruptEnable()      (PIOC_REGS->PIO_IER = (1UL<<4))
+#define BSP_SCROLL_UP_BUTTON_InterruptDisable()     (PIOC_REGS->PIO_IDR = (1UL<<4))
 
 
 

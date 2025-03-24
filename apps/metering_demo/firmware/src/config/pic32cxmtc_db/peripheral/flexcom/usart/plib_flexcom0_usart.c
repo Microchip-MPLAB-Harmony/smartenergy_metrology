@@ -58,7 +58,7 @@
 #define FLEXCOM_USART_THR_9BIT_REG      (*(volatile uint16_t* const)((FLEXCOM0_BASE_ADDRESS + FLEX_US_THR_REG_OFST)))
 
 #define FLEXCOM0_USART_HW_RX_FIFO_THRES                 1U
-#define FLEXCOM0_USART_HW_TX_FIFO_THRES                 0U
+#define FLEXCOM0_USART_HW_TX_FIFO_THRES                 1U
 
 /* Disable Read, Overrun, Parity and Framing error interrupts */
 #define FLEXCOM0_USART_RX_INT_DISABLE()      do { \
