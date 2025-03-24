@@ -280,11 +280,14 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
 {
     double res, dre, dim, kd;
     double intPart, decPart;
+    uint32_t intPartU, decPartU;
     uint32_t measure;
 
     /* k [uQ22.10] */
-    intPart = (double)(k >> 10);
-    decPart = (double)(k & 0x3FF);
+    intPartU = (k >> 10);
+    decPartU = (k & 0x3FFUL);
+    intPart = (double)intPartU;
+    decPart = (double)decPartU;
     kd = decPart / 1024.0;
     kd += intPart;
 
@@ -299,8 +302,10 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     }
 
     /* 13.18 */
-    intPart = (double)(measure >> 18);
-    decPart = (double)(measure & 0x3FFFF);
+    intPartU = (measure >> 18);
+    decPartU = (measure & 0x3FFFFUL);
+    intPart = (double)intPartU;
+    decPart = (double)decPartU;
     dre = decPart / 262144.0;
     dre += intPart;
     dre *= kd;
@@ -317,8 +322,10 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     }
 
     /* 13.18 */
-    intPart = (double)(measure >> 18);
-    decPart = (double)(measure & 0x3FFFF);
+    intPartU = (measure >> 18);
+    decPartU = (measure & 0x3FFFFUL);
+    intPart = (double)intPartU;
+    decPart = (double)decPartU;
     dim = decPart / 262144.0;
     dim += intPart;
     dim *= kd;
@@ -328,7 +335,7 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     if (res > 0.0)
     {
         res = sqrt(res);
-        res *= sqrt(2);
+        res *= sqrt(2.0);
         res /= (double)gDrvMetObj.samplesInPeriod;
     }
 
@@ -904,58 +911,59 @@ static void lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
 {
     DRV_METROLOGY_HARMONICS_RMS *pHarmonicsRsp = gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse;
     DRV_METROLOGY_REGS_HARMONICS *pHarData = &gDrvMetObj.metHarData;
-    int32_t real, imag, k;
+    int32_t real, imag;
+    uint32_t k;
     uint8_t index;
     uint32_t harmonicBitmap = gDrvMetObj.harmonicAnalysisData.harmonicBitmap;
 
     for (index = 0; index < DRV_METROLOGY_HARMONICS_MAX_ORDER; index++)
     {
-        if ((harmonicBitmap & (1 << index)) != 0U)
+        if ((harmonicBitmap & (1UL << index)) != 0U)
         {
-            real = pHarData->I_A_m_R[index];
-            imag = pHarData->I_A_m_I[index];
+            real = (int32_t)pHarData->I_A_m_R[index];
+            imag = (int32_t)pHarData->I_A_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
             pHarmonicsRsp->Irms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->I_B_m_R[index];
-            imag = pHarData->I_B_m_I[index];
+            real = (int32_t)pHarData->I_B_m_R[index];
+            imag = (int32_t)pHarData->I_B_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
             pHarmonicsRsp->Irms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->I_C_m_R[index];
-            imag = pHarData->I_C_m_I[index];
+            real = (int32_t)pHarData->I_C_m_R[index];
+            imag = (int32_t)pHarData->I_C_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
             pHarmonicsRsp->Irms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->I_N_m_R[index];
-            imag = pHarData->I_N_m_I[index];
+            real = (int32_t)pHarData->I_N_m_R[index];
+            imag = (int32_t)pHarData->I_N_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IN;
             pHarmonicsRsp->Irms_N_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->V_A_m_R[index];
-            imag = pHarData->V_A_m_I[index];
+            real = (int32_t)pHarData->V_A_m_R[index];
+            imag = (int32_t)pHarData->V_A_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
             pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->V_B_m_R[index];
-            imag = pHarData->V_B_m_I[index];
+            real = (int32_t)pHarData->V_B_m_R[index];
+            imag = (int32_t)pHarData->V_B_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
             pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->V_C_m_R[index];
-            imag = pHarData->V_C_m_I[index];
+            real = (int32_t)pHarData->V_C_m_R[index];
+            imag = (int32_t)pHarData->V_C_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
             pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
         }
         else
         {
-            pHarmonicsRsp->Irms_A_m = 0;
-            pHarmonicsRsp->Irms_B_m = 0;
-            pHarmonicsRsp->Irms_C_m = 0;
-            pHarmonicsRsp->Irms_N_m = 0;
-            pHarmonicsRsp->Vrms_A_m = 0;
-            pHarmonicsRsp->Vrms_B_m = 0;
-            pHarmonicsRsp->Vrms_C_m = 0;
+            pHarmonicsRsp->Irms_A_m = 0.0;
+            pHarmonicsRsp->Irms_B_m = 0.0;
+            pHarmonicsRsp->Irms_C_m = 0.0;
+            pHarmonicsRsp->Irms_N_m = 0.0;
+            pHarmonicsRsp->Vrms_A_m = 0.0;
+            pHarmonicsRsp->Vrms_B_m = 0.0;
+            pHarmonicsRsp->Vrms_C_m = 0.0;
         }
 
         pHarmonicsRsp++;
@@ -1649,7 +1657,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         res = res / divisor;
         m = (uint64_t)res;
         m = m << GAIN_VI_Q; /* format Q22.10 */
-        m = m / 1000000; /* restore accuracy */
+        m = m / 1000000UL; /* restore accuracy */
         i = (uint32_t)m;
     }
     else if (config->st == SENSOR_ROGOWSKI)
@@ -1661,7 +1669,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         res *= 10000.0; /* improve accuracy */
         m = (uint64_t)res;
         m = m << GAIN_VI_Q; /* format Q22.10 */
-        m = m / 10000; /* restore accuracy */
+        m = m / 10000UL; /* restore accuracy */
         i = (uint32_t)m;
     }
     else if (config->st == SENSOR_SHUNT)
@@ -1671,12 +1679,11 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         res *= 10000.0; /* improve accuracy */
         m = (uint64_t)res;
         m = m << GAIN_VI_Q; /* format Q22.10 */
-        m = m / 10000; /* restore accuracy */
+        m = m / 10000UL; /* restore accuracy */
         i = (uint32_t)m;
     }
     else
     {
-        res = 0.0;
         i = 0;
     }
 
