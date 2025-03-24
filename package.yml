@@ -1,7 +1,7 @@
 package:
   format-version: "1.0.0"
   name: "smartenergy_metrology"
-  version: "v1.0.0-E1"
+  version: "v1.0.0"
   type: "api"
   status: "production"
   required: false
@@ -9,7 +9,10 @@ package:
   dependencies:
     - name: "core"
       type: "package"
-      version: "v3.14.0-E1"
+      version: "v3.15.1"
+    - name: "shd"
+      type: "package"
+      version: "v1.1.0"
     - name: "gfx"
       type: "package"
       version: "v3.15.3"
