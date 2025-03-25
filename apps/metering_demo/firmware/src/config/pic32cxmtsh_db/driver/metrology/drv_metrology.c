@@ -56,6 +56,8 @@ Microchip or any third party.
 #include "drv_metrology_definitions.h"
 #include "drv_metrology_local.h"
 #include "peripheral/pio/plib_pio.h"
+#include "peripheral/rstc/plib_rstc.h"
+#include "peripheral/clk/plib_clk.h"
 #include "interrupts.h"
 
 // *****************************************************************************
@@ -204,11 +206,14 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
 {
     double res, dre, dim, kd;
     double intPart, decPart;
+    uint32_t intPartU, decPartU;
     uint32_t measure;
 
     /* k [uQ22.10] */
-    intPart = (double)(k >> 10);
-    decPart = (double)(k & 0x3FF);
+    intPartU = (k >> 10);
+    decPartU = (k & 0x3FFUL);
+    intPart = (double)intPartU;
+    decPart = (double)decPartU;
     kd = decPart / 1024.0;
     kd += intPart;
 
@@ -223,8 +228,10 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     }
 
     /* 13.18 */
-    intPart = (double)(measure >> 18);
-    decPart = (double)(measure & 0x3FFFF);
+    intPartU = (measure >> 18);
+    decPartU = (measure & 0x3FFFFUL);
+    intPart = (double)intPartU;
+    decPart = (double)decPartU;
     dre = decPart / 262144.0;
     dre += intPart;
     dre *= kd;
@@ -241,8 +248,10 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     }
 
     /* 13.18 */
-    intPart = (double)(measure >> 18);
-    decPart = (double)(measure & 0x3FFFF);
+    intPartU = (measure >> 18);
+    decPartU = (measure & 0x3FFFFUL);
+    intPart = (double)intPartU;
+    decPart = (double)decPartU;
     dim = decPart / 262144.0;
     dim += intPart;
     dim *= kd;
@@ -252,7 +261,7 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t
     if (res > 0.0)
     {
         res = sqrt(res);
-        res *= sqrt(2);
+        res *= sqrt(2.0);
         res /= (double)gDrvMetObj.samplesInPeriod;
     }
 
@@ -810,58 +819,59 @@ static void lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
 {
     DRV_METROLOGY_HARMONICS_RMS *pHarmonicsRsp = gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse;
     DRV_METROLOGY_REGS_HARMONICS *pHarData = &gDrvMetObj.metHarData;
-    int32_t real, imag, k;
+    int32_t real, imag;
+    uint32_t k;
     uint8_t index;
     uint32_t harmonicBitmap = gDrvMetObj.harmonicAnalysisData.harmonicBitmap;
 
     for (index = 0; index < DRV_METROLOGY_HARMONICS_MAX_ORDER; index++)
     {
-        if ((harmonicBitmap & (1 << index)) != 0U)
+        if ((harmonicBitmap & (1UL << index)) != 0U)
         {
-            real = pHarData->I_A_m_R[index];
-            imag = pHarData->I_A_m_I[index];
+            real = (int32_t)pHarData->I_A_m_R[index];
+            imag = (int32_t)pHarData->I_A_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
             pHarmonicsRsp->Irms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->I_B_m_R[index];
-            imag = pHarData->I_B_m_I[index];
+            real = (int32_t)pHarData->I_B_m_R[index];
+            imag = (int32_t)pHarData->I_B_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
             pHarmonicsRsp->Irms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->I_C_m_R[index];
-            imag = pHarData->I_C_m_I[index];
+            real = (int32_t)pHarData->I_C_m_R[index];
+            imag = (int32_t)pHarData->I_C_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
             pHarmonicsRsp->Irms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->I_N_m_R[index];
-            imag = pHarData->I_N_m_I[index];
+            real = (int32_t)pHarData->I_N_m_R[index];
+            imag = (int32_t)pHarData->I_N_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_IN;
             pHarmonicsRsp->Irms_N_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->V_A_m_R[index];
-            imag = pHarData->V_A_m_I[index];
+            real = (int32_t)pHarData->V_A_m_R[index];
+            imag = (int32_t)pHarData->V_A_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
             pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->V_B_m_R[index];
-            imag = pHarData->V_B_m_I[index];
+            real = (int32_t)pHarData->V_B_m_R[index];
+            imag = (int32_t)pHarData->V_B_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
             pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
 
-            real = pHarData->V_C_m_R[index];
-            imag = pHarData->V_C_m_I[index];
+            real = (int32_t)pHarData->V_C_m_R[index];
+            imag = (int32_t)pHarData->V_C_m_I[index];
             k = gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
             pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(real, imag, k);
         }
         else
         {
-            pHarmonicsRsp->Irms_A_m = 0;
-            pHarmonicsRsp->Irms_B_m = 0;
-            pHarmonicsRsp->Irms_C_m = 0;
-            pHarmonicsRsp->Irms_N_m = 0;
-            pHarmonicsRsp->Vrms_A_m = 0;
-            pHarmonicsRsp->Vrms_B_m = 0;
-            pHarmonicsRsp->Vrms_C_m = 0;
+            pHarmonicsRsp->Irms_A_m = 0.0;
+            pHarmonicsRsp->Irms_B_m = 0.0;
+            pHarmonicsRsp->Irms_C_m = 0.0;
+            pHarmonicsRsp->Irms_N_m = 0.0;
+            pHarmonicsRsp->Vrms_A_m = 0.0;
+            pHarmonicsRsp->Vrms_B_m = 0.0;
+            pHarmonicsRsp->Vrms_C_m = 0.0;
         }
 
         pHarmonicsRsp++;
@@ -899,15 +909,12 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
     {
         uint32_t *pSrc;
         uint32_t *pDst;
-        uint32_t tmp;
 
         /* Assert reset of the coprocessor */
-        tmp = RSTC_REGS->RSTC_MR;
-        tmp &= ~RSTC_MR_CPROCEN_Msk;
-        RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+        RSTC_CoProcessorEnable(false);
 
         /* Disable coprocessor Clocks */
-        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
+        CLK_Core1ProcessorClkDisable();
 
         gDrvMetObj.binStartAddress = metInit->binStartAddress;
         gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
@@ -943,7 +950,6 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
     DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
     /* MISRA C-2012 deviation block end */
-    uint32_t tmp;
     uint32_t *pSrc;
     uint32_t *pDst;
 
@@ -956,17 +962,14 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
     /* Assert reset of the coprocessor and its peripherals */
-    tmp = RSTC_REGS->RSTC_MR;
-    tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
-    RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+    RSTC_CoProcessorEnable(false);
+    RSTC_CoProcessorPeripheralEnable(false);
 
     /* Disable coprocessor Clocks */
-    PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
+    CLK_Core1ProcessorClkDisable();
 
     /* De-assert reset of the coprocessor peripherals */
-    tmp = RSTC_REGS->RSTC_MR;
-    tmp |= RSTC_MR_CPEREN_Msk;
-    RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+    RSTC_CoProcessorPeripheralEnable(true);
 
     gDrvMetObj.binStartAddress = metInit->binStartAddress;
     gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
@@ -1012,11 +1015,11 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode, DRV_METR
 
     if (mode == DRV_METROLOGY_START_HARD)
     {
-        /* De-assert the reset of the coprocessor (Core 1) */
-        RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPROCEN_Msk);
-
         /* Enable the coprocessor clock (Core 1) */
-        PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPCK_Msk);
+        CLK_Core1ProcessorClkEnable();
+
+        /* De-assert the reset of the coprocessor (Core 1) */
+        RSTC_CoProcessorEnable(true);
 
         /* Wait IPC Init interrupt */
         while(gDrvMetObj.status == DRV_METROLOGY_STATUS_WAITING_IPC)
@@ -1419,7 +1422,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         res = res / divisor;
         m = (uint64_t)res;
         m = m << GAIN_VI_Q; /* format Q22.10 */
-        m = m / 1000000; /* restore accuracy */
+        m = m / 1000000UL; /* restore accuracy */
         i = (uint32_t)m;
     }
     else if (config->st == SENSOR_ROGOWSKI)
@@ -1431,7 +1434,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         res *= 10000.0; /* improve accuracy */
         m = (uint64_t)res;
         m = m << GAIN_VI_Q; /* format Q22.10 */
-        m = m / 10000; /* restore accuracy */
+        m = m / 10000UL; /* restore accuracy */
         i = (uint32_t)m;
     }
     else if (config->st == SENSOR_SHUNT)
@@ -1441,12 +1444,11 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         res *= 10000.0; /* improve accuracy */
         m = (uint64_t)res;
         m = m << GAIN_VI_Q; /* format Q22.10 */
-        m = m / 10000; /* restore accuracy */
+        m = m / 10000UL; /* restore accuracy */
         i = (uint32_t)m;
     }
     else
     {
-        res = 0.0;
         i = 0;
     }
 
