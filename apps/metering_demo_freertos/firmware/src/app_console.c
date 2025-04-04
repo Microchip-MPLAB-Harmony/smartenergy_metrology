@@ -2008,7 +2008,7 @@ static void _commandRLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Correct password, Reset System
             SYS_CMD_MESSAGE("Reloading Metrology...\r\n\r\n");
             // Reload Metrology coprocessor
-            APP_METROLOGY_Restart();
+            APP_METROLOGY_Restart(true);
 
             /* Show console communication icon */
             APP_DISPLAY_SetSerialCommunication();

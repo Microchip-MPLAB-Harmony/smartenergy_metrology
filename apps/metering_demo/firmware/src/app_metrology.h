@@ -449,7 +449,7 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint32_t harmonicBitmap, bool singleMod
 void APP_METROLOGY_StopHarmonicAnalysis(void);
 void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK callback,
         DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse);
-void APP_METROLOGY_Restart(void);
+void APP_METROLOGY_Restart(bool reloadRegsFromMemory);
 void APP_METROLOGY_SetLowPowerMode (void);
 void APP_METROLOGY_StopMetrology (void);
 bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase);
