@@ -240,10 +240,11 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, bool singleMode);
 void APP_METROLOGY_StopHarmonicAnalysis(void);
 void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_MCMETROLOGY_HARMONICS_CALLBACK callback,
         DRV_MCMETROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse);
-void APP_METROLOGY_Restart(void);
+void APP_METROLOGY_Restart(bool reloadRegsFromMemory);
 void APP_METROLOGY_SetLowPowerMode (void);
 bool APP_METROLOGY_CheckIsVoltageChannel(uint8_t channel);
 void APP_METROLOGY_StopMetrology (void);
+DRV_MCMETROLOGY_AFE_TYPE APP_METROLOGY_GetAFEDescription(void);
 uint8_t APP_METROLOGY_GetChannelsDescription(DRV_MCMETROLOGY_CHANNEL **pChannelDesc);
 uint8_t APP_METROLOGY_GetPowersDescription(DRV_MCMETROLOGY_POWER_SOURCE **pPowersDesc);
 

@@ -112,6 +112,22 @@ Microchip or any third party.
 #define SAMPLING_FREQ          4000.0
 #define SECS_IN_HOUR_DOUBLE    3600.0
 
+/* Metrology Analog front End (AFE) description
+
+  Summary:
+    Describes the connection with MCP devices
+
+  Description:
+    The metrology driver has been designed to interface with several MCP devices.
+*/
+typedef enum {
+    AFE_1xMCP3914  = 0,
+    AFE_2xMCP3914  = 1,
+    AFE_1xMCP3913  = 4,
+    AFE_2xMCP3913  = 5,
+    AFE_NUM_TYPE
+} DRV_MCMETROLOGY_AFE_TYPE;
+
 /* Metrology Driver Sensor Type
 
   Summary:

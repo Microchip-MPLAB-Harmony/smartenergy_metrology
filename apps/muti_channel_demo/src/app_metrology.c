@@ -401,6 +401,10 @@ bool APP_METROLOGY_SetControlRegister(CONTROL_REG_ID regId, uint32_t value)
     pData += regId;
     *pData = value;
 
+    pData = (uint32_t *)&app_metrologyData.configuration;
+    pData += regId;
+    *pData = value;
+
     return true;
 }
 
@@ -516,6 +520,8 @@ void APP_METROLOGY_SetControlByDefault(void)
 
     pSrc = DRV_MCMETROLOGY_GetControlByDefault();
     DRV_MCMETROLOGY_SetControl(pSrc);
+
+    memcpy(&app_metrologyData.configuration, pSrc, sizeof(DRV_MCMETROLOGY_REGS_CONTROL));
 }
 
 void APP_METROLOGY_StoreMetrologyData(void)
@@ -579,14 +585,21 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_MCMETROLOGY_HARMONICS_CALLBAC
     app_metrologyData.pHarmonicAnalysisResponse = pHarmonicAnalysisResponse;
 }
 
-void APP_METROLOGY_Restart(void)
+void APP_METROLOGY_Restart(bool reloadRegsFromMemory)
 {
     DRV_MCMETROLOGY_RESULT result;
 
     result = DRV_MCMETROLOGY_Close();
     if (result == DRV_MCMETROLOGY_SUCCESS)
     {
-        app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+        if (reloadRegsFromMemory)
+        {
+            app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
+        }
+        else
+        {
+            app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+        }
         app_metrologyData.startMode = DRV_MCMETROLOGY_START_HARD;
 
         sysObj.drvMCMet = DRV_MCMETROLOGY_Reinitialize((SYS_MODULE_INIT *) & drvMCMetrologyInitData);
@@ -620,6 +633,11 @@ bool APP_METROLOGY_CheckIsVoltageChannel(uint8_t channel)
 void APP_METROLOGY_StopMetrology (void)
 {
     DRV_MCMETROLOGY_Close();
+}
+
+DRV_MCMETROLOGY_AFE_TYPE APP_METROLOGY_GetAFEDescription(void)
+{
+    return DRV_MCMETROLOGY_GetAFEDescription();
 }
 
 uint8_t APP_METROLOGY_GetChannelsDescription(DRV_MCMETROLOGY_CHANNEL **pChannelDesc)

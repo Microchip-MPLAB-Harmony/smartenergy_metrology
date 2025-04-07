@@ -302,6 +302,51 @@ static bool _APP_EVENTS_UpdateEvents(APP_EVENTS_QUEUE_DATA * newEvent)
     return update;
 }
 
+
+static bool _APP_EVENTS_CheckCustomEvents(APP_EVENTS_CUSTOM_EVENT **customEvent)
+{
+    if (app_eventsData.pCustomEventsCallback != NULL)
+    {
+        APP_EVENTS_CUSTOM_EVENT *pCustomEvents;
+        uint8_t index;
+
+        pCustomEvents = app_eventsData.customEventsData;
+        for (index = 0; index < APP_EVENTS_MAX_CUSTOM_EVENTS; index++)
+        {
+            if (pCustomEvents->enabled == true)
+            {
+                if (pCustomEvents->chnIndex < DRV_MCMETROLOGY_CHANNELS_NUMBER)
+                {
+                    APP_METROLOGY_GetChannelMeasure((DRV_MCMETROLOGY_CHANNEL_MEASURE_TYPE)pCustomEvents->measure, 
+                                                    pCustomEvents->chnIndex, 
+                                                    &pCustomEvents->currentValue);
+                }
+                else if (pCustomEvents->powIndex < DRV_MCMETROLOGY_POWERS_NUMBER)
+                {
+                    APP_METROLOGY_GetPowerMeasure((DRV_MCMETROLOGY_POWER_MEASURE_TYPE)pCustomEvents->measure, 
+                                                    pCustomEvents->powIndex, 
+                                                    &pCustomEvents->currentValue);
+                }
+                else 
+                {
+                    APP_METROLOGY_GetMeasure((DRV_MCMETROLOGY_MEASURE_TYPE)pCustomEvents->measure, 
+                                            &pCustomEvents->currentValue);
+                }
+
+                if (pCustomEvents->currentValue >= pCustomEvents->threshold)
+                {
+                    *customEvent = pCustomEvents;
+                    return true;
+                }
+            }
+
+            pCustomEvents++;
+        }
+    }
+    
+    return false;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Initialization and State Machine Functions
@@ -323,6 +368,8 @@ void APP_EVENTS_Initialize ( void )
 
     /* Initialize Events data */
     memset(&app_eventsData.events, 0, sizeof(APP_EVENTS_EVENTS));
+    app_eventsData.pCustomEventsCallback = NULL;
+    memset(&app_eventsData.customEventsData, 0, sizeof(APP_EVENTS_MAX_CUSTOM_EVENTS));
 
     /* Initialize data response Flag */
     app_eventsData.dataResponseFlag = false;
@@ -392,12 +439,20 @@ void APP_EVENTS_Tasks ( void )
 
         case APP_EVENTS_STATE_RUNNING:
         {
+            APP_EVENTS_CUSTOM_EVENT *customEvent;
+            
             if (_APP_EVENTS_ReceiveEventsData(&app_eventsData.newEvent))
             {
                 if (_APP_EVENTS_UpdateEvents(&app_eventsData.newEvent))
                 {
                     _APP_EVENTS_StoreEventsDataInMemory();
                 }
+            }
+            
+            if (_APP_EVENTS_CheckCustomEvents(&customEvent) == true)
+            {
+                app_eventsData.pCustomEventsCallback(customEvent);
+                customEvent->enabled = false;
             }
 
             break;
@@ -493,6 +548,102 @@ bool APP_EVENTS_RegisterEventsData(APP_EVENTS_QUEUE_DATA *eventsData)
     }
 
     return false;
+}
+
+void APP_EVENTS_SetCustomEventsCallback(APP_EVENTS_CUSTOM_EVENT_CALLBACK callback)
+{
+    app_eventsData.pCustomEventsCallback = callback;
+}
+
+bool APP_EVENTS_RegisterCustomEventData(APP_EVENTS_CUSTOM_EVENT *event)
+{
+    APP_EVENTS_CUSTOM_EVENT *pCustomEvents;
+    uint8_t index;
+    
+    pCustomEvents = app_eventsData.customEventsData;
+    for (index = 0; index < APP_EVENTS_MAX_CUSTOM_EVENTS; index++)
+    {
+        if (pCustomEvents->enabled == false)
+        {
+            pCustomEvents->chnIndex = event->chnIndex;
+            pCustomEvents->powIndex = event->powIndex;
+            pCustomEvents->measure = event->measure;
+            pCustomEvents->threshold = event->threshold;
+            memcpy(pCustomEvents->par, event->par, sizeof(pCustomEvents->par));
+            if (pCustomEvents->chnIndex < DRV_MCMETROLOGY_CHANNELS_NUMBER)
+            {
+                pCustomEvents->enabled = true;
+            }
+            else if (pCustomEvents->powIndex < DRV_MCMETROLOGY_POWERS_NUMBER)
+            {
+                pCustomEvents->enabled = true;
+            }
+            else if (pCustomEvents->measure < MEASURE_ENERGY)
+            {
+                pCustomEvents->enabled = true;
+            }
+            else
+            {
+                pCustomEvents->enabled = false;
+            }
+            
+            return pCustomEvents->enabled;
+        }
+        
+        pCustomEvents++;
+    }
+    
+    return false;
+}
+
+bool APP_EVENTS_UnregisterCustomEventData(APP_EVENTS_CUSTOM_EVENT *event)
+{
+    APP_EVENTS_CUSTOM_EVENT *pCustomEvents;
+    uint8_t index;
+    
+    pCustomEvents = app_eventsData.customEventsData;
+    for (index = 0; index < APP_EVENTS_MAX_CUSTOM_EVENTS; index++)
+    {
+        if (memcmp(event->par, pCustomEvents->par, strlen(pCustomEvents->par)) == 0)
+        {
+            if ((event->chnIndex == pCustomEvents->chnIndex) && 
+                (event->powIndex == pCustomEvents->powIndex))
+            {
+                pCustomEvents->enabled = false;
+                memset(pCustomEvents->par, 0, sizeof(pCustomEvents->par));
+                return true;
+            }
+        }
+        
+        pCustomEvents++;
+    }
+    
+    return false;
+}
+
+uint8_t APP_EVENTS_GetCustomEventData(APP_EVENTS_CUSTOM_EVENT **event)
+{
+    APP_EVENTS_CUSTOM_EVENT *pCustomEvents;
+    uint8_t index;
+    uint8_t eventCounter = 0;
+    
+    pCustomEvents = app_eventsData.customEventsData;
+    for (index = 0; index < APP_EVENTS_MAX_CUSTOM_EVENTS; index++)
+    {
+        if (pCustomEvents->enabled == true)
+        {
+            eventCounter++;
+        }
+        
+        pCustomEvents++;
+    }
+    
+    if (eventCounter > 0)
+    {
+        *event = &app_eventsData.customEventsData[0];
+    }
+    
+    return eventCounter;
 }
 
 /*******************************************************************************

@@ -29174,7 +29174,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\definitions.h</file>
-         <hash>25caa2c99fd72c58f98c7bf4b877c2804bd4502cd20808912e24264ce94b9fd3</hash>
+         <hash>06d76dc080842f13a9da92d19e3d5e7279122db78f787085ce9c82614c335264</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\device.h</file>
@@ -29206,11 +29206,11 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology.c</file>
-         <hash>6725ac8a3d0abe706bd79e5cf78a421f2bc992ec895971b5818866fb3ac787f1</hash>
+         <hash>4e569fdbf97811ec37286485712feb1826fa44d58ac3b756dfad23ae45042a61</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology.h</file>
-         <hash>9de1c72a0a9b5732ba9709d35ba1f95931d09912b47f417ea00587066d9bc95f</hash>
+         <hash>313cf54ac6814b7ce5749d659bbc721c45e720bcf700ee99aa76293ee543cdd1</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_configuration.h</file>
@@ -29218,11 +29218,11 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_definitions.h</file>
-         <hash>f8c04efb4997f3159daa351d3cd5f41c9178dfff462d9b64021554bf66eb66f0</hash>
+         <hash>17d0ea621ddc181737a95bea98f89e0835e62b2e40e54f54752e803b879c2d81</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_local.h</file>
-         <hash>f272395f4f1250b64aa44bd12f2785ae3a55997a421a8d8c29006b39a3cd0610</hash>
+         <hash>73dcf036a74fbff032d2a67440493248be1f1f6ba9075ad1627479347093d1da</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology_regs.h</file>
@@ -29298,7 +29298,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\initialization.c</file>
-         <hash>b283018227a2f1d97429bffa3587795812fc6a6f394c3fedfe55e7456f59d089</hash>
+         <hash>5ec4f96bd26a43b0d4b05d1bcab4d5ed80e94232cd1071f0cbfa1d0cacc9f4bb</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\interrupts.c</file>

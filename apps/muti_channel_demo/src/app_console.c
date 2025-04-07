@@ -115,9 +115,194 @@ static char metPwd[APP_CONSOLE_MET_PWD_SIZE] = APP_CONSOLE_DEFAULT_PWD;
 /* Local array to print the sensor type */
 static const char *gConsoleSensorTypes[SENSOR_NUM_TYPE] = {"CT", "SHUNT", "ROGOWSKI", "VRD"};
 
+/* Local array to print the AFE type */
+static const char *gConsoleAFETypes[AFE_NUM_TYPE] = 
+{
+    "1 MCP3914", "2 MCP3914", "", "", "1 MCP3913", "2 MCP3913"
+};
+
+static const char *gParList = "Supported parameter list: \r\n" \
+                            "  CH: Voltage/Current channel, fundamental + harmonics\r\n" \
+                            "  P: Active power, fundamental + harmonics\r\n" \
+                            "  Q: Reactive power, fundamental + harmonics\r\n" \
+                            "  CHF: Voltage/Current channel, fundamental only\r\n" \
+                            "  PF: Active power, fundamental only\r\n" \
+                            "  QF: Reactive power, fundamental only\r\n" \
+                            "  F: Current Frequency\r\n" \
+                            "  A: Voltage and Current angle\r\n" \
+                            "  MAX: Max voltage or current in the interval\r\n" \
+                            "  VAB: VA - VB, fundamental + harmonics\r\n" \
+                            "  VBC: VB - VC, fundamental + harmonics\r\n" \
+                            "  VCA: VC - VA, fundamental + harmonics\r\n" \
+                            "  VABF: VA - VB, fundamental only \r\n" \
+                            "  VBCF: VB - VC, fundamental only\r\n" \
+                            "  VCAF: VC - VA, fundamental only\r\n" \
+                            "  PT: Total Active Power, fundamental + harmonics\r\n" \
+                            "  PTF: Total Active Power, fundamental only\r\n" \
+                            "  QT: Total Reactive Power, fundamental + harmonics\r\n" \
+                            "  QTF: Total Reactive Power, fundamental only\r\n" \
+                            "\r\n";
+
+/* Local array to print the channel measure */
+static const char *gConsoleChannelMeasure[CHN_MEASURE_TYPE_NUM] = 
+{
+    "CHN_MEASURE_RMS", "CHN_MEASURE_RMS_F", "CHN_MEASURE_MAX", "CHN_MEASURE_FREQ"
+};
+
+/* Local array to print the power measure */
+static const char *gConsolePowerMeasure[POW_MEASURE_TYPE_NUM] = 
+{
+    "POW_MEASURE_P", "POW_MEASURE_P_F", "POW_MEASURE_Q", "POW_MEASURE_Q_F", "POW_MEASURE_ANGLE"
+};
+
+/* Local array to print the generic measure */
+static const char *gConsoleMeasure[MEASURE_TYPE_NUM] = 
+{
+    "MEASURE_V_AB", "MEASURE_V_BC", "MEASURE_V_CA", "MEASURE_V_AB_F", 
+    "MEASURE_V_BC_F", "MEASURE_V_CA_F", "MEASURE_FREQ", "MEASURE_PT", "MEASURE_PT_F", 
+    "MEASURE_QT", "MEASURE_QT_F"
+};
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Local Functions
+// *****************************************************************************
+// *****************************************************************************
+static bool _getCustomEventFromParCommand(char *par, uint8_t index, 
+                                          APP_EVENTS_CUSTOM_EVENT* customEvent)
+{
+    bool parValid;
+    
+    customEvent->chnIndex = 0xFF;
+    customEvent->powIndex = 0xFF;
+    
+    if (strcmp(par, "CH") == 0)
+    {
+        parValid = true;
+        customEvent->chnIndex = index;
+        customEvent->measure = (uint8_t)CHN_MEASURE_RMS;
+    }
+    else if (strcmp(par, "P") == 0)
+    {
+        parValid = true;
+        customEvent->powIndex = index;
+        customEvent->measure = (uint8_t)POW_MEASURE_P;
+    }
+    else if (strcmp(par, "Q") == 0)
+    {
+        parValid = true;
+        customEvent->powIndex = index;
+        customEvent->measure = (uint8_t)POW_MEASURE_Q;
+    }
+    else if (strcmp(par, "CHF") == 0)
+    {
+        parValid = true;
+        customEvent->chnIndex = index;
+        customEvent->measure = (uint8_t)CHN_MEASURE_RMS_F;
+    }
+    else if (strcmp(par, "PF") == 0)
+    {
+        parValid = true;
+        customEvent->powIndex = index;
+        customEvent->measure = (uint8_t)POW_MEASURE_P_F;
+    }
+    else if (strcmp(par, "QF") == 0)
+    {
+        parValid = true;
+        customEvent->powIndex = index;
+        customEvent->measure = (uint8_t)POW_MEASURE_Q_F;
+    }
+    else if (strcmp(par, "F") == 0)
+    {
+        parValid = true;
+        customEvent->chnIndex = index;
+        customEvent->measure = (uint8_t)CHN_MEASURE_FREQ;
+    }
+    else if (strcmp(par, "A") == 0)
+    {
+        parValid = true;
+        customEvent->powIndex = index;
+        customEvent->measure = (uint8_t)POW_MEASURE_ANGLE;
+    }
+    else if (strcmp(par, "MAX") == 0)
+    {
+        parValid = true;
+        customEvent->chnIndex = index;
+        customEvent->measure = (uint8_t)CHN_MEASURE_MAX;
+    }
+    else if (strcmp(par, "VAB") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_V_AB;
+    }
+    else if (strcmp(par, "VBC") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_V_BC;
+    }
+    else if (strcmp(par, "VCA") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_V_CA;
+    }
+    else if (strcmp(par, "VABF") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_V_AB_F;
+    }
+    else if (strcmp(par, "VBCF") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_V_BC_F;
+    }
+    else if (strcmp(par, "VCAF") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_V_CA_F;
+    }
+    else if (strcmp(par, "PT") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_PT;
+    }
+    else if (strcmp(par, "PTF") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_PT_F;
+    }
+    else if (strcmp(par, "QT") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_QT;
+    }
+    else if (strcmp(par, "QTF") == 0)
+    {
+        parValid = true;
+        customEvent->measure = (uint8_t)MEASURE_QT_F;
+    }
+    else
+    {
+        parValid = false;
+        customEvent->measure = 0xFF;
+    }
+    
+    if (parValid == true)
+    {
+        uint8_t len;
+        len = strlen(par) + 1;
+        if (len > sizeof(customEvent->par))
+        {
+            len = sizeof(customEvent->par);
+        }
+        memcpy(customEvent->par, par, len);
+    }
+    
+    return parValid;
+}
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Command Functions
 // *****************************************************************************
 // *****************************************************************************
 static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
@@ -134,6 +319,9 @@ static void _commandENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandEVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandEVRC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandEVUC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandEVLC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandHRRX(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
@@ -166,6 +354,9 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[] =
     {"ENR", _commandENR, ": Read energy"},
     {"EVEC", _commandEVEC, ": Clear all event record"},
     {"EVER", _commandEVER, ": Read single event record"},
+    {"EVRC", _commandEVRC, ": Register new Custom event record"},
+    {"EVUC", _commandEVUC, ": Unregister Custom event record"},
+    {"EVLC", _commandEVLC, ": List Custom event record"},
     {"HAR", _commandHAR, ": Read harmonic register"},
     {"HRR", _commandHRR, ": Read harmonic Irms/Vrms"},
     {"HRRX", _commandHRRX, ": Extended version of HRR, using Start/Stop functionality"},
@@ -318,6 +509,28 @@ static void _harmonicAnalysisCallback(uint8_t harmonicNum)
     app_consoleData.harmonicNum = harmonicNum;
     app_consoleData.channelNum = DRV_MCMETROLOGY_CHANNELS_NUMBER;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_ALL_HARMONIC_ANALYSIS;
+}
+
+static void _customEventCallback(APP_EVENTS_CUSTOM_EVENT *event)
+{
+    SYS_CMD_MESSAGE("Custom event has been triggered\r\n");
+    SYS_CMD_PRINT(" par: %s\r\n", event->par);
+    if (event->chnIndex < DRV_MCMETROLOGY_CHANNELS_NUMBER)
+    {
+        SYS_CMD_PRINT(" channel: %u\r\n", event->chnIndex);
+        SYS_CMD_PRINT(" channel measure: %s\r\n", gConsoleChannelMeasure[event->measure]);
+    }
+    else if (event->powIndex < DRV_MCMETROLOGY_POWERS_NUMBER)
+    {
+        SYS_CMD_PRINT(" power: %u\r\n", event->powIndex);
+        SYS_CMD_PRINT(" power measure: %s\r\n", gConsolePowerMeasure[event->measure]);
+    }
+    else
+    {
+        SYS_CMD_PRINT(" measure: %s\r\n", gConsoleMeasure[event->measure]);
+    }
+    SYS_CMD_PRINT(" threshold: %f\r\n", event->threshold);
+    SYS_CMD_PRINT(" current value: %f\r\n", event->currentValue);
 }
 
 // *****************************************************************************
@@ -866,6 +1079,149 @@ static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
+static void _commandEVRC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    if (argc >= 3)
+    {
+        APP_EVENTS_CUSTOM_EVENT customEvent;
+        float threshold;
+        uint8_t index = 0xFF;
+        
+        if (argc == 4)
+        {
+            index = (uint8_t) strtol(argv[2], NULL, 10);
+            sscanf(argv[3], "%f", &threshold);
+        }
+        else
+        {
+            sscanf(argv[2], "%f", &threshold);
+        }
+        
+        if (_getCustomEventFromParCommand(argv[1], index, &customEvent) == true)
+        {
+            customEvent.threshold = threshold;
+            
+            if (APP_EVENTS_RegisterCustomEventData(&customEvent) == true)
+            {
+                SYS_CMD_MESSAGE("Custom event has been registered\r\n");
+            
+                // register callback
+                APP_EVENTS_SetCustomEventsCallback(_customEventCallback);
+            }
+            else
+            {
+                SYS_CMD_MESSAGE("Custom Event Queue is full. It's not registered\r\n");
+            }
+        }
+        else
+        {
+            // Invalid Command
+            SYS_CMD_MESSAGE("Unsupported Parameter.\r\n");
+            SYS_CMD_MESSAGE(gParList);
+        }
+    }
+    else
+    {
+        // Incorrect parameter number
+        SYS_CMD_MESSAGE("Incorrect param number\r\n");
+    }
+}
+
+static void _commandEVUC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    if (argc >= 2)
+    {
+        APP_EVENTS_CUSTOM_EVENT customEvent;
+        uint8_t index = 0xFF;
+        
+        if (argc == 3)
+        {
+            index = (uint8_t) strtol(argv[2], NULL, 10);
+        }
+        
+        if (_getCustomEventFromParCommand(argv[1], index, &customEvent) == true)
+        {
+            if (APP_EVENTS_UnregisterCustomEventData(&customEvent) == true)
+            {
+                APP_EVENTS_CUSTOM_EVENT *pCustomEvents = NULL;
+                
+                SYS_CMD_MESSAGE("Custom event has been unregistered\r\n");
+            
+                if (APP_EVENTS_GetCustomEventData(&pCustomEvents) == 0)
+                {
+                    // Unregister callback
+                    APP_EVENTS_SetCustomEventsCallback(NULL);
+                }
+            }
+            else
+            {
+                SYS_CMD_MESSAGE("Custom event has not been found\r\n");
+            }
+        }
+        else
+        {
+            // Invalid Command
+            SYS_CMD_MESSAGE("Unsupported Parameter.\r\n");
+            SYS_CMD_MESSAGE(gParList);
+        }
+    }
+    else
+    {
+        // Incorrect parameter number
+        SYS_CMD_MESSAGE("Incorrect param number\r\n");
+    }
+}
+
+static void _commandEVLC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    if (argc >= 1)
+    {
+        APP_EVENTS_CUSTOM_EVENT *pCustomEvents = NULL;
+        uint8_t counterEvents;
+        
+        counterEvents = APP_EVENTS_GetCustomEventData(&pCustomEvents);
+        
+        if (counterEvents > 0)
+        {
+            uint8_t index;
+            
+            SYS_CMD_MESSAGE("Custom event list:\r\n");
+            for (index = 0; index < APP_EVENTS_MAX_CUSTOM_EVENTS; index++)
+            {
+                if (pCustomEvents->enabled == true)
+                {
+                    if (pCustomEvents->chnIndex < DRV_MCMETROLOGY_CHANNELS_NUMBER)
+                    {
+                        SYS_CMD_PRINT("  %s%02u  Threshold: %f \r\n", pCustomEvents->par, 
+                                      pCustomEvents->chnIndex, pCustomEvents->threshold);
+                    }
+                    else if (pCustomEvents->powIndex == DRV_MCMETROLOGY_POWERS_NUMBER)
+                    {
+                        SYS_CMD_PRINT("  %s%02u  Threshold: %f \r\n", pCustomEvents->par, 
+                                      pCustomEvents->powIndex, pCustomEvents->threshold);
+                    }
+                    else
+                    {
+                        SYS_CMD_PRINT("  %s    Threshold: %f \r\n", pCustomEvents->par, 
+                                      pCustomEvents->threshold);
+                    }
+                }
+                
+                pCustomEvents++;
+            }
+        }
+        else
+        {
+            SYS_CMD_MESSAGE("Custom event list is empty\r\n");
+        }
+    }
+    else
+    {
+        // Incorrect parameter number
+        SYS_CMD_MESSAGE("Incorrect param number\r\n");
+    }
+}
+
 static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
@@ -1239,29 +1595,8 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         {
             // Invalid Command
             SYS_CMD_MESSAGE("Unsupported Parameter.\r\n");
-            SYS_CMD_MESSAGE("Supported parameter list: \r\n" \
-                            "  CH: Voltage/Current channel, fundamental + harmonics\r\n" \
-                            "  P: Active power, fundamental + harmonics\r\n" \
-                            "  Q: Reactive power, fundamental + harmonics\r\n" \
-                            "  CHF: Voltage/Current channel, fundamental only\r\n" \
-                            "  PF: Active power, fundamental only\r\n" \
-                            "  QF: Reactive power, fundamental only\r\n" \
-                            "  F: Current Frequency\r\n" \
-                            "  A: Voltage and Current angle\r\n" \
-                            "  MAX: Max voltage or current in the interval\r\n" \
-                            "  VAB: VA - VB, fundamental + harmonics\r\n" \
-                            "  VBC: VB - VC, fundamental + harmonics\r\n" \
-                            "  VCA: VC - VA, fundamental + harmonics\r\n" \
-                            "  VABF: VA - VB, fundamental only \r\n" \
-                            "  VBCF: VB - VC, fundamental only\r\n" \
-                            "  VCAF: VC - VA, fundamental only\r\n" \
-                            "  PT: Total Active Power, fundamental + harmonics\r\n" \
-                            "  PTF: Total Active Power, fundamental only\r\n" \
-                            "  QT: Total Reactive Power, fundamental + harmonics\r\n" \
-                            "  QTF: Total Reactive Power, fundamental only\r\n" \
-                            "\r\n");
+            SYS_CMD_MESSAGE(gParList);
         }
-
 
         if (wakeup)
         {
@@ -1537,7 +1872,7 @@ static void _commandRLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Correct password, Reset System
             SYS_CMD_MESSAGE("Reloading Metrology...\r\n\r\n");
             // Reload Metrology coprocessor
-            APP_METROLOGY_Restart();
+            APP_METROLOGY_Restart(true);
 
             /* Show console communication icon */
             APP_DISPLAY_SetSerialCommunication();
@@ -2466,11 +2801,16 @@ void APP_CONSOLE_Tasks(void)
         {
             DRV_MCMETROLOGY_CHANNEL *pChannels;
             DRV_MCMETROLOGY_POWER_SOURCE *pPowers;
+            DRV_MCMETROLOGY_AFE_TYPE afeType;
             uint8_t index;
             uint8_t indexMax;
 
             // Remove Prompt symbol
             _removePrompt();
+            
+            // Read AFE devices
+            afeType = APP_METROLOGY_GetAFEDescription();
+            SYS_CMD_PRINT("AFE connection: %s\r\n\r\n", gConsoleAFETypes[afeType]);
 
             // Read devices topology
             SYS_CMD_PRINT("Channel X:\tName\tGAIN\tSENSOR TYPE\r\n");

@@ -139,6 +139,9 @@ typedef struct
     /* Harmonic Analysis Callback */
     DRV_MCMETROLOGY_HARMONICS_CALLBACK              harmonicAnalysisCallback;
 
+    /* Analog front end description */
+    DRV_MCMETROLOGY_AFE_TYPE                        afeType;
+
 } DRV_MCMETROLOGY_OBJ;
 
 #ifdef __cplusplus

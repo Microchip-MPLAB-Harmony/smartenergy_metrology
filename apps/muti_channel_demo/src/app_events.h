@@ -187,6 +187,20 @@ typedef struct {
     uint8_t dataSize;
 } APP_EVENTS_QUEUE;
 
+typedef struct {
+    float currentValue;
+    float threshold;
+    char par[5];
+    uint8_t chnIndex;
+    uint8_t powIndex;
+    uint8_t measure;
+    bool enabled;
+} APP_EVENTS_CUSTOM_EVENT;
+
+#define APP_EVENTS_MAX_CUSTOM_EVENTS   5
+
+typedef void (* APP_EVENTS_CUSTOM_EVENT_CALLBACK) (APP_EVENTS_CUSTOM_EVENT *event);
+
 // *****************************************************************************
 
 /* Application states
@@ -235,6 +249,10 @@ typedef struct {
     bool dataIsRdy;
 
     bool dataResponseFlag;
+    
+    APP_EVENTS_CUSTOM_EVENT_CALLBACK pCustomEventsCallback;
+    
+    APP_EVENTS_CUSTOM_EVENT customEventsData[APP_EVENTS_MAX_CUSTOM_EVENTS];
 
 } APP_EVENTS_DATA;
 
@@ -325,6 +343,10 @@ bool APP_EVENTS_GetEventInfo(APP_EVENTS_EVENT_ID eventId, uint8_t offset, APP_EV
 void APP_EVENTS_GetLastEventFlags(DRV_MCMETROLOGY_AFE_EVENTS *eventFlags);
 
 bool APP_EVENTS_RegisterEventsData(APP_EVENTS_QUEUE_DATA *eventsData);
+void APP_EVENTS_SetCustomEventsCallback(APP_EVENTS_CUSTOM_EVENT_CALLBACK callback);
+bool APP_EVENTS_RegisterCustomEventData(APP_EVENTS_CUSTOM_EVENT *event);
+bool APP_EVENTS_UnregisterCustomEventData(APP_EVENTS_CUSTOM_EVENT *event);
+uint8_t APP_EVENTS_GetCustomEventData(APP_EVENTS_CUSTOM_EVENT **event);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

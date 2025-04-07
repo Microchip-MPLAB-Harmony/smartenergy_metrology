@@ -705,6 +705,35 @@ DRV_MCMETROLOGY_REGS_CONTROL * DRV_MCMETROLOGY_GetControlByDefault(void);
 
 // *****************************************************************************
 /* Function:
+    DRV_MCMETROLOGY_AFE_TYPE DRV_MCMETROLOGY_GetAFEDescription (void);
+
+  Summary:
+    Get the AFE type
+
+  Description:
+    AFE type could be used to get information about the MCP devices configuration.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    AFE type
+
+  Example:
+    <code>
+        app_metrologyData.afe = DRV_MCMETROLOGY_GetAFEDescription();
+    </code>
+
+  Remarks:
+    None.
+*/
+DRV_MCMETROLOGY_AFE_TYPE DRV_MCMETROLOGY_GetAFEDescription (void);
+
+// *****************************************************************************
+/* Function:
     DRV_MCMETROLOGY_CHANNEL * DRV_MCMETROLOGY_GetChannelDescription (void);
 
   Summary:

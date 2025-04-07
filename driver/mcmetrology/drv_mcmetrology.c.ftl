@@ -136,6 +136,8 @@ static const DRV_MCMETROLOGY_REGS_CONTROL gDrvMCMetControlDefault =
     0x00000000UL                                           /* 281 RESERVED */
 };
 
+DRV_MCMETROLOGY_AFE_TYPE gDrvAFEType = ${DRV_MCMET_AFE_SELECTION};
+
 <#list 0..DRV_MCMET_CHANNELS_NUM-1 as channel>
     <#assign name = "DRV_MCMET_CHANNEL_NAME_" + channel>
 static const char gDrvChannel${channel}Name[] = "${.vars[name]}";
@@ -654,6 +656,8 @@ SYS_MODULE_OBJ DRV_MCMETROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     (void) memcpy(gDrvMCMetObj.channel, gDrvMCMetChannelsDefault, sizeof(gDrvMCMetChannelsDefault));
     (void) memcpy(gDrvMCMetObj.power, gDrvMCMetPowersDefault, sizeof(gDrvMCMetPowersDefault));
 
+    gDrvMCMetObj.afeType = (DRV_MCMETROLOGY_AFE_TYPE)${DRV_MCMET_AFE_SELECTION};
+
     /* Initialization of the Metrology object */
     gDrvMCMetObj.status = DRV_MCMETROLOGY_STATUS_HALT;
 
@@ -933,6 +937,11 @@ void DRV_MCMETROLOGY_Tasks(SYS_MODULE_OBJ object)
             gDrvMCMetObj.harmonicAnalysisData.holdRegs = false;
         }
     }
+}
+
+DRV_MCMETROLOGY_AFE_TYPE DRV_MCMETROLOGY_GetAFEDescription (void)
+{
+    return gDrvMCMetObj.afeType;
 }
 
 DRV_MCMETROLOGY_CHANNEL * DRV_MCMETROLOGY_GetChannelDescription (void)
