@@ -2843,13 +2843,13 @@ void APP_CONSOLE_Tasks(void)
         case APP_CONSOLE_STATE_PRINT_ALL_HARMONIC_ANALYSIS:
         {
             double rmsValues[4];
-            char units[4];
             uint8_t channel = DRV_MCMETROLOGY_CHANNELS_NUMBER - app_consoleData.channelNum;
 
             if (app_consoleData.channelNum == DRV_MCMETROLOGY_CHANNELS_NUMBER)
             {
                 // Remove Prompt symbol
                 _removePrompt();
+                SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\r\n");
             }
 
             // Read and print harmonic values
@@ -2859,23 +2859,23 @@ void APP_CONSOLE_Tasks(void)
 
                 for (index = 0; index < 4; index++)
                 {
-                    rmsValues[index] = harmonicAnalysisRMSData.CHx_m_RMS[channel + index];
+                    rmsValues[index] = harmonicAnalysisRMSData.CHx_m_RMS[channel];
                     if (APP_METROLOGY_CheckIsVoltageChannel(channel) == true)
                     {
                         sprintf(regName[index], "Vrms_Har_CH%02u(V)", channel);
-                        units[index] = 'V';
                     }
                     else
                     {
                         sprintf(regName[index], "Irms_Har_CH%02u(A)", channel);
-                        units[index] = 'A';
                     }
+                    
+                    channel++;
                 }
 
-                SYS_CMD_PRINT("%-20s%-19s%-19s%-19s\r\n", regName[0], regName[1], regName[2], regName[3]);
-                SYS_CMD_PRINT("%-20.3f%C%-19.3f%C%-19.3f%C%-19.3f%C\r\n",
-                              rmsValues[0], units[0], rmsValues[1], units[0],
-                              rmsValues[2], units[2], rmsValues[3], units[3]);
+                SYS_CMD_PRINT("%-20s%-20s%-20s%-20s\r\n", 
+                              regName[0], regName[1], regName[2], regName[3]);
+                SYS_CMD_PRINT("%-20.3f%-20.3f%-20.3f%-20.3f\r\n",
+                              rmsValues[0],rmsValues[1], rmsValues[2], rmsValues[3]);
 
                 // Advance to next register group
                 app_consoleData.channelNum -= 4;
@@ -2886,23 +2886,23 @@ void APP_CONSOLE_Tasks(void)
 
                 for (index = 0; index < 3; index++)
                 {
-                    rmsValues[index] = harmonicAnalysisRMSData.CHx_m_RMS[channel + index];
+                    rmsValues[index] = harmonicAnalysisRMSData.CHx_m_RMS[channel];
                     if (APP_METROLOGY_CheckIsVoltageChannel(channel) == true)
                     {
                         sprintf(regName[index], "Vrms_Har_CH%02u(V)", channel);
-                        units[index] = 'V';
                     }
                     else
                     {
                         sprintf(regName[index], "Irms_Har_CH%02u(A)", channel);
-                        units[index] = 'A';
                     }
+                    
+                    channel++;
                 }
 
-                SYS_CMD_PRINT("%-20s%-19s%-19s\r\n", regName[0], regName[1], regName[2]);
-                SYS_CMD_PRINT("%-20.3f%C%-19.3f%C%-19.3f%C\r\n",
-                              rmsValues[0], units[0], rmsValues[1], units[0],
-                              rmsValues[2], units[2]);
+                SYS_CMD_PRINT("%-20s%-20s%-20s\r\n", 
+                              regName[0], regName[1], regName[2]);
+                SYS_CMD_PRINT("%-20.3f%-20.3f%-20.3f\r\n",
+                              rmsValues[0],rmsValues[1], rmsValues[2]);
 
                 // Advance to next register group
                 app_consoleData.channelNum -= 3;
@@ -2913,22 +2913,21 @@ void APP_CONSOLE_Tasks(void)
 
                 for (index = 0; index < 2; index++)
                 {
-                    rmsValues[index] = harmonicAnalysisRMSData.CHx_m_RMS[channel + index];
+                    rmsValues[index] = harmonicAnalysisRMSData.CHx_m_RMS[channel];
                     if (APP_METROLOGY_CheckIsVoltageChannel(channel) == true)
                     {
                         sprintf(regName[index], "Vrms_Har_CH%02u(V)", channel);
-                        units[index] = 'V';
                     }
                     else
                     {
                         sprintf(regName[index], "Irms_Har_CH%02u(A)", channel);
-                        units[index] = 'A';
                     }
+                    
+                    channel++;
                 }
 
-                SYS_CMD_PRINT("%-20s%-19s\r\n", regName[0], regName[1]);
-                SYS_CMD_PRINT("%-20.3f%C%-19.3f%C\r\n",
-                              rmsValues[0], units[0], rmsValues[1], units[0]);
+                SYS_CMD_PRINT("%-20s%-20s\r\n", regName[0], regName[1]);
+                SYS_CMD_PRINT("%-20.3f%-20.3f\r\n", rmsValues[0], rmsValues[1]);
 
                 // Advance to next register group
                 app_consoleData.channelNum -= 2;
@@ -2939,16 +2938,14 @@ void APP_CONSOLE_Tasks(void)
                 if (APP_METROLOGY_CheckIsVoltageChannel(channel) == true)
                 {
                     sprintf(regName[0], "Vrms_Har_CH%02u(V)", channel);
-                    units[0] = 'V';
                 }
                 else
                 {
                     sprintf(regName[0], "Irms_Har_CH%02u(A)", channel);
-                    units[0] = 'A';
                 }
 
                 SYS_CMD_PRINT("%-20s\r\n", regName[0]);
-                SYS_CMD_PRINT("%-20.3f%C\r\n", rmsValues[0], units[0]);
+                SYS_CMD_PRINT("%-20.3f\r\n", rmsValues[0]);
 
                 // Advance to next register group
                 app_consoleData.channelNum -= 1;

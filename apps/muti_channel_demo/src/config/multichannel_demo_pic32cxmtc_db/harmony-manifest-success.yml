@@ -4,7 +4,7 @@
 
 
 project: muti_channel_demo
-creation_date: 2025-04-04T10:36:30.432+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2025-04-07T10:36:03.053+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 11
 mcc_mode: IDE            # [IDE|Standalone|Headless]
 mcc_version: v5.5.2
@@ -16,7 +16,7 @@ compiler: XC32 4.60
 modules:
     - {name: "core", version: "dev"}
     - {name: "csp", version: "MH3-111694-solve-shd-issue-with-wbz-family-in-setpinconfigurationvalue"}
-    - {name: "smartenergy_metrology", version: "MH3-110618-implement-mcc-multichannel-component"}
+    - {name: "smartenergy_metrology", version: "MH3-111900-improve-events-app-in-multi-channel-demo-app"}
     - {name: "CMSIS_5", version: "master"}
     - {name: "gfx", version: "dev"}
     - {name: "shd", version: "MH3-111744-review-host-boards-configuration-for-wbz-family"}

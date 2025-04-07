@@ -316,7 +316,6 @@
                 <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/driver/mcmetrology/bin/met_bin.S</itemPath>
               </logicalFolder>
               <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/driver/mcmetrology/drv_mcmetrology.c</itemPath>
-              <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/driver/mcmetrology/drv_mcmetrology_debug_accData.c</itemPath>
             </logicalFolder>
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/driver/memory/src/drv_memory.c</itemPath>
@@ -486,10 +485,6 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>true</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
-      <item path="../src/config/multichannel_demo_pic32cxmtc_db/driver/mcmetrology/drv_mcmetrology_debug_accData.c"
-            ex="true"
-            overriding="false">
-      </item>
       <C32>
         <property key="additional-warnings" value="true"/>
         <property key="addresss-attribute-use" value="false"/>

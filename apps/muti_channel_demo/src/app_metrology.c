@@ -279,6 +279,9 @@ void APP_METROLOGY_Tasks(void)
             {
                 pConfiguration = &app_metrologyData.configuration;
             }
+            
+            /* Reinitialize Metrology, to ensure Core 1 and Peripherals are reset */
+            sysObj.drvMCMet = DRV_MCMETROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMCMetrologyInitData);
 
             if (DRV_MCMETROLOGY_Open(app_metrologyData.startMode, pConfiguration) == DRV_MCMETROLOGY_SUCCESS)
             {
@@ -602,7 +605,7 @@ void APP_METROLOGY_Restart(bool reloadRegsFromMemory)
         }
         app_metrologyData.startMode = DRV_MCMETROLOGY_START_HARD;
 
-        sysObj.drvMCMet = DRV_MCMETROLOGY_Reinitialize((SYS_MODULE_INIT *) & drvMCMetrologyInitData);
+        sysObj.drvMCMet = DRV_MCMETROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMCMetrologyInitData);
     }
 }
 
