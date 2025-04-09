@@ -481,6 +481,9 @@ void APP_METROLOGY_Tasks (void)
             {
                 pConfiguration = &app_metrologyData.configuration;
             }
+            
+            /* Reinitialize Metrology, to ensure Core 1 and Peripherals are reset */
+            sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
 
             if (DRV_METROLOGY_Open(app_metrologyData.startMode, pConfiguration) == DRV_METROLOGY_SUCCESS)
             {
