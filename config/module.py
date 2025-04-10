@@ -33,4 +33,4 @@ def loadModule():
         drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Drivers/", "driver/metrology/config/drv_metrology.py")
         drvMetrologyComponent.addDependency("drvMet_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
         drvMetrologyComponent.setDisplayType("Metrology")
-        drvMetrologyComponent.setHelpKeyword("drv_metrology")
+        drvMetrologyComponent.setHelpKeyword("SE_drv_metrology")

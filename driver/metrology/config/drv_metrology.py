@@ -21,7 +21,7 @@ source software license terms, no license or other rights, whether express or
 implied, are granted under any patent or other intellectual property rights of
 Microchip or any third party.
 """
-srv_met_helpkeyword = "mcc_h3_drv_metrology_config"
+srv_met_helpkeyword = "SE_drv_metrology_configurations"
 
 GAIN_P_K_T_Q = 24
 GAIN_VI_Q = 10
