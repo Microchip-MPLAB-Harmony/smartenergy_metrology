@@ -2696,6 +2696,7 @@
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SCROLL_UP_BUTTON&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;SCRL_UP_BTN&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3260,6 +3261,7 @@
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SCROLL_DOWN_BUTTON&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;SCRL_DOWN_BTN&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -10134,7 +10136,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>a0b7ec80ba136ffa803c60f220c27c2cbc9573bff78f896ef0047595b710e366</hash>
+         <hash>ecde57dc9609ee53fb801b89e99497f10f860d773b275c43498b522de577d349</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\bin\met_bin.S</file>
@@ -10290,7 +10292,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\pio\plib_pio.h</file>
-         <hash>1b9388581abea6b61e4531228db745576a3a5a5b09afc25a9a6b3b3b4f5d6724</hash>
+         <hash>32f665c820dc31c71c2721b124aaea9af492f8459d43f79624597cfd2c299a8e</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\qspi\plib_qspi.c</file>
@@ -10370,7 +10372,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\pin_configurations.csv</file>
-         <hash>40718fa1a7ad823430fdb93a5e415292b42ceb93f8fdb36a858f64edc5488b1e</hash>
+         <hash>252477d8c00e7fa8a7e71d56139f1a098e28afb264e19eab33f5723f17964063</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\startup_xc32.c</file>

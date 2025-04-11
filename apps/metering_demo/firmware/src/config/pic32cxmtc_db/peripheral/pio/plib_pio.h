@@ -90,25 +90,25 @@
 #define PIO_PORT_MAX    4U
 
 
-/*** Macros for SCROLL_DOWN_BUTTON pin ***/
-#define SCROLL_DOWN_BUTTON_Set()               (PIOC_REGS->PIO_SODR = ((uint32_t)1U<<22U))
-#define SCROLL_DOWN_BUTTON_Clear()             (PIOC_REGS->PIO_CODR = ((uint32_t)1U<<22U))
-#define SCROLL_DOWN_BUTTON_Toggle()            do {\
+/*** Macros for SCRL_DOWN_BTN pin ***/
+#define SCRL_DOWN_BTN_Set()               (PIOC_REGS->PIO_SODR = ((uint32_t)1U<<22U))
+#define SCRL_DOWN_BTN_Clear()             (PIOC_REGS->PIO_CODR = ((uint32_t)1U<<22U))
+#define SCRL_DOWN_BTN_Toggle()            do {\
                                             PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<22U); \
                                             PIOC_REGS->PIO_ODSR ^= ((uint32_t)1U<<22U);\
                                         } while (0)
-#define SCROLL_DOWN_BUTTON_OutputEnable()      do {\
+#define SCRL_DOWN_BTN_OutputEnable()      do {\
                                             PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<22U); \
                                             PIOC_REGS->PIO_CFGR |=((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         }while(0)
-#define SCROLL_DOWN_BUTTON_InputEnable()       do { \
+#define SCRL_DOWN_BTN_InputEnable()       do { \
                                             PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<22U); \
                                             PIOC_REGS->PIO_CFGR &= ~((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         } while (0)
-#define SCROLL_DOWN_BUTTON_Get()               ((PIOC_REGS->PIO_PDSR >> 22U) & 0x1U)
-#define SCROLL_DOWN_BUTTON_PIN                  PIO_PIN_PC22
-#define SCROLL_DOWN_BUTTON_InterruptEnable()   (PIOC_REGS->PIO_IER = (1<<22))
-#define SCROLL_DOWN_BUTTON_InterruptDisable()  (PIOC_REGS->PIO_IDR = (1<<22))
+#define SCRL_DOWN_BTN_Get()               ((PIOC_REGS->PIO_PDSR >> 22U) & 0x1U)
+#define SCRL_DOWN_BTN_PIN                  PIO_PIN_PC22
+#define SCRL_DOWN_BTN_InterruptEnable()   (PIOC_REGS->PIO_IER = (1<<22))
+#define SCRL_DOWN_BTN_InterruptDisable()  (PIOC_REGS->PIO_IDR = (1<<22))
 
 /*** Macros for RED_LED_PD17 pin ***/
 #define RED_LED_PD17_Set()               (PIOD_REGS->PIO_SODR = ((uint32_t)1U<<17U))
@@ -266,25 +266,25 @@
 #define LCD_SEG0_Get()               ((PIOB_REGS->PIO_PDSR >> 26U) & 0x1U)
 #define LCD_SEG0_PIN                  PIO_PIN_PB26
 
-/*** Macros for SCROLL_UP_BUTTON pin ***/
-#define SCROLL_UP_BUTTON_Set()               (PIOC_REGS->PIO_SODR = ((uint32_t)1U<<4U))
-#define SCROLL_UP_BUTTON_Clear()             (PIOC_REGS->PIO_CODR = ((uint32_t)1U<<4U))
-#define SCROLL_UP_BUTTON_Toggle()            do {\
+/*** Macros for SCRL_UP_BTN pin ***/
+#define SCRL_UP_BTN_Set()               (PIOC_REGS->PIO_SODR = ((uint32_t)1U<<4U))
+#define SCRL_UP_BTN_Clear()             (PIOC_REGS->PIO_CODR = ((uint32_t)1U<<4U))
+#define SCRL_UP_BTN_Toggle()            do {\
                                             PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<4U); \
                                             PIOC_REGS->PIO_ODSR ^= ((uint32_t)1U<<4U);\
                                         } while (0)
-#define SCROLL_UP_BUTTON_OutputEnable()      do {\
+#define SCRL_UP_BTN_OutputEnable()      do {\
                                             PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<4U); \
                                             PIOC_REGS->PIO_CFGR |=((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         }while(0)
-#define SCROLL_UP_BUTTON_InputEnable()       do { \
+#define SCRL_UP_BTN_InputEnable()       do { \
                                             PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<4U); \
                                             PIOC_REGS->PIO_CFGR &= ~((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         } while (0)
-#define SCROLL_UP_BUTTON_Get()               ((PIOC_REGS->PIO_PDSR >> 4U) & 0x1U)
-#define SCROLL_UP_BUTTON_PIN                  PIO_PIN_PC4
-#define SCROLL_UP_BUTTON_InterruptEnable()   (PIOC_REGS->PIO_IER = (1<<4))
-#define SCROLL_UP_BUTTON_InterruptDisable()  (PIOC_REGS->PIO_IDR = (1<<4))
+#define SCRL_UP_BTN_Get()               ((PIOC_REGS->PIO_PDSR >> 4U) & 0x1U)
+#define SCRL_UP_BTN_PIN                  PIO_PIN_PC4
+#define SCRL_UP_BTN_InterruptEnable()   (PIOC_REGS->PIO_IER = (1<<4))
+#define SCRL_UP_BTN_InterruptDisable()  (PIOC_REGS->PIO_IDR = (1<<4))
 // *****************************************************************************
 /* PIO Ports
 

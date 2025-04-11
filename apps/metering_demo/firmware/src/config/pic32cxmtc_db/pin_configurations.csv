@@ -1,7 +1,7 @@
 Pin Number,Pin ID,Custom Name,Function,Direction,Latch,Open Drain,PIO Interrupt,Pull Up,Pull Down,Glitch/Debounce Filter,Slew Rate Control
 1,PC20,,Available,In,,,,,,,
 2,PC21,,Available,In,,,,,,,
-3,PC22,SCROLL_DOWN_BUTTON,GPIO,In,n/a,No,Falling Edge,Yes,No,Glitch Filter,0x0
+3,PC22,SCRL_DOWN_BTN,GPIO,In,n/a,No,Falling Edge,Yes,No,Glitch Filter,0x0
 4,PD0,,Available,In,,,,,,,
 5,PA8,,Available,In,,,,,,,
 6,PA9,,Available,In,,,,,,,
@@ -85,7 +85,7 @@ Pin Number,Pin ID,Custom Name,Function,Direction,Latch,Open Drain,PIO Interrupt,
 106,PC1,,Available,In,,,,,,,
 109,PC2,,Available,In,,,,,,,
 110,PC3,,Available,In,,,,,,,
-111,PC4,SCROLL_UP_BUTTON,GPIO,In,n/a,No,Falling Edge,Yes,No,Glitch Filter,0x0
+111,PC4,SCRL_UP_BTN,GPIO,In,n/a,No,Falling Edge,Yes,No,Glitch Filter,0x0
 112,PC5,,Available,In,,,,,,,
 113,PC6,,Available,In,,,,,,,
 114,PC7,,Available,In,,,,,,,

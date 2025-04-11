@@ -85,21 +85,21 @@
                                 } while (0)
 
 
-/*** INPUT PIO Macros for SCROLL_DOWN_BUTTON ***/
-#define BSP_SCROLL_DOWN_BUTTON_PIN                    PIO_PIN_PC22
-#define BSP_SCROLL_DOWN_BUTTON_Get()                  ((PIOC_REGS->PIO_PDSR >> 22) & 0x1)
-#define BSP_SCROLL_DOWN_BUTTON_STATE_PRESSED          0
-#define BSP_SCROLL_DOWN_BUTTON_STATE_RELEASED         1
-#define BSP_SCROLL_DOWN_BUTTON_InterruptEnable()      (PIOC_REGS->PIO_IER = (1UL<<22))
-#define BSP_SCROLL_DOWN_BUTTON_InterruptDisable()     (PIOC_REGS->PIO_IDR = (1UL<<22))
+/*** INPUT PIO Macros for SCRL_DOWN_BTN ***/
+#define BSP_SCRL_DOWN_BTN_PIN                    PIO_PIN_PC22
+#define BSP_SCRL_DOWN_BTN_Get()                  ((PIOC_REGS->PIO_PDSR >> 22) & 0x1)
+#define BSP_SCRL_DOWN_BTN_STATE_PRESSED          0
+#define BSP_SCRL_DOWN_BTN_STATE_RELEASED         1
+#define BSP_SCRL_DOWN_BTN_InterruptEnable()      (PIOC_REGS->PIO_IER = (1UL<<22))
+#define BSP_SCRL_DOWN_BTN_InterruptDisable()     (PIOC_REGS->PIO_IDR = (1UL<<22))
 
-/*** INPUT PIO Macros for SCROLL_UP_BUTTON ***/
-#define BSP_SCROLL_UP_BUTTON_PIN                    PIO_PIN_PC4
-#define BSP_SCROLL_UP_BUTTON_Get()                  ((PIOC_REGS->PIO_PDSR >> 4) & 0x1)
-#define BSP_SCROLL_UP_BUTTON_STATE_PRESSED          0
-#define BSP_SCROLL_UP_BUTTON_STATE_RELEASED         1
-#define BSP_SCROLL_UP_BUTTON_InterruptEnable()      (PIOC_REGS->PIO_IER = (1UL<<4))
-#define BSP_SCROLL_UP_BUTTON_InterruptDisable()     (PIOC_REGS->PIO_IDR = (1UL<<4))
+/*** INPUT PIO Macros for SCRL_UP_BTN ***/
+#define BSP_SCRL_UP_BTN_PIN                    PIO_PIN_PC4
+#define BSP_SCRL_UP_BTN_Get()                  ((PIOC_REGS->PIO_PDSR >> 4) & 0x1)
+#define BSP_SCRL_UP_BTN_STATE_PRESSED          0
+#define BSP_SCRL_UP_BTN_STATE_RELEASED         1
+#define BSP_SCRL_UP_BTN_InterruptEnable()      (PIOC_REGS->PIO_IER = (1UL<<4))
+#define BSP_SCRL_UP_BTN_InterruptDisable()     (PIOC_REGS->PIO_IDR = (1UL<<4))
 
 
 
