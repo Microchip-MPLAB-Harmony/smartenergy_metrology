@@ -5968,7 +5968,9 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_BMR_FWUPEN"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_FWUPEN&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;/&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
 </value>
@@ -5986,9 +5988,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_BMR_VDD3V3SMWKEN"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_VDD3V3SMWKEN&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
   &lt;/core&gt;
 &lt;/core&gt;
 </value>
@@ -10965,7 +10965,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>d6e6c2ca51718a58acdd95fdf21739082f56ecba9554e742ba0eb6a9f99017a7</hash>
+         <hash>1cbb1f29bf303cf44ae1b741f16d1db443ba53224f0ab492b39d61681013fe62</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\device.h</file>
@@ -11085,7 +11085,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>20fd7cafb38b531080377df8cb3b378268cefd1b6dc4527569ee32c61426c021</hash>
+         <hash>361c3f561588a64e4c506eccf193835738575e05539fd308e06dd5ac771a10c7</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>
@@ -11221,7 +11221,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.c</file>
-         <hash>f4a7450e7df8f48919138a6b3e638cd5ad04b808fc24c8cfbb62bae288aaecda</hash>
+         <hash>7350974acf52c9d3aa8eec5fd464310f8e72f9e526d82b28f7fbe71d4d380ed6</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.h</file>
