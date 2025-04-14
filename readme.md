@@ -20,7 +20,7 @@ The Smart Energy package offers solutions to evaluate the features and to test t
 Refer to the following links for release notes, training materials, and interface reference information.
 
 - [Release Notes](./release_notes.md)
-- [MPLAB® Harmony License](Microchip_SLA001.md)
+- [Microchip SLA](Microchip_SLA001.md)
 
 # Documentation
 
