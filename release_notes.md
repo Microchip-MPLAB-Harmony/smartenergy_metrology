@@ -3,6 +3,38 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Metrology Release v1.1.0-E1
+
+### New Features
+
+- **Applications**
+
+  - Demo Multi-channel Meter application is provided in this release. It allows the user to evaluate the multi channel features and to test the high accuracy that can be achieved with the Microchip Smart Metering solutions.
+
+- **New Features and Enhancements**
+  - Includes new multichannel metrology driver which provides a beta version of the multichannel metrology library.
+
+### Bug fixes
+
+- "plib_sefc_common.c" file is missed in the metrology apps of the Smart Energy Metrology Release v1.0.0.
+
+### Known Issues
+
+- Autocalibration is not supported in this version. It will be included in comming releases.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.25](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v4.60](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.5.2 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.3.132 or higher
+
+### Notes
+
+- None.
+
 ## Smart Energy Metrology Release v1.0.0
 
 ### New Features

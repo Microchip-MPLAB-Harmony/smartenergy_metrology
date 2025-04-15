@@ -34,7 +34,7 @@ To view the documentation offline, follow these steps:
 # Collaterals
 
 The Microchip Smart Energy Metrology package includes some collateral documents and files to help users in the development process.
-These collaterals can be found [here](https://github.com/MicrochipTech/smartenergy_metrology_collaterals/tree/v1.0.0)
+These collaterals can be found [here](https://github.com/MicrochipTech/smartenergy_metrology_collaterals/tree/v1.1.0)
 
 # Contents Summary
 
@@ -51,6 +51,7 @@ The following applications are provided to demonstrate the Metrology capabilitie
 | Name                                                                                                                         | Description                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | [Demo Meter Application](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=Demo_Meter_Application&redirect=true)    | This example is intended to show the Metering capabilities of both PIC32CX-MTSH and PIC32CX-MTC platforms. |
+| [Demo Multi-Channel Meter Application](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=Demo_Multichannel_Meter_Application&redirect=true)    | This example is intended to show the Multi-channel Metering capabilities of PIC32CX-MTC platform. |
 
 ---
 
