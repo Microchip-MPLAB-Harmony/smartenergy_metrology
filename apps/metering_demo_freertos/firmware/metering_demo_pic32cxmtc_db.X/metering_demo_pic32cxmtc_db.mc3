@@ -8333,7 +8333,9 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="le_gfx_slcdc" name="LcdcPowerMode"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;le_gfx_slcdc&gt;
   &lt;le_gfx_slcdc dnOrder=&quot;0&quot; id=&quot;LcdcPowerMode&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;/&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;External Votage Supply&quot;/&gt;
+    &lt;/Values&gt;
   &lt;/le_gfx_slcdc&gt;
 &lt;/le_gfx_slcdc&gt;
 </value>
@@ -10204,7 +10206,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\gfx\driver\controller\slcdc\drv_gfx_slcdc.c</file>
-         <hash>e5031d82e4cac700540eaf01a0b94c85b574de3fca8ad90c87d18f72a15b6f76</hash>
+         <hash>1dc4164a6c8e38066fbafea60793ba3c648139c4db4b08b76ab3fd46032c7058</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\gfx\driver\controller\slcdc\drv_gfx_slcdc.h</file>
