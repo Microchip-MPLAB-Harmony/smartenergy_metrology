@@ -41,3 +41,11 @@ def loadModule():
         drvMCMetrologyComponent.addDependency("drvMCMet_coreDep", "Core Service", "Core Service", True, True)
         drvMCMetrologyComponent.setDisplayType("Multi-Channel Metrology")
         drvMCMetrologyComponent.setHelpKeyword("SE_drv_mcmetrology")
+
+    icmModule = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals/module@[name=\"ICM\"]")
+    if icmModule is not None:
+        if icmModule.getAttribute("name") == "ICM" and icmModule.getAttribute("id") == "11105":
+            drvICMComponent = Module.CreateComponent("plibICM", "ICM", "/SmartEnergy/Peripherals/", "peripheral/icm/config/icm_plib.py")
+            drvICMComponent.addCapability("ICM", "ICM", "ICM", True)
+            drvICMComponent.setDisplayType("ICM")
+            drvICMComponent.setHelpKeyword("SE_plib_icm_config")
