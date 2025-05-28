@@ -204,6 +204,7 @@ def instantiateComponent(icmComponent):
     icmCfgDaprot.setDisplayMode("Description")
     icmCfgDaprot.addKey("USR", "0", "User-access level")
     icmCfgDaprot.addKey("PRI", "1", "Privileged-access level")
+    icmCfgDaprot.setHelp(plib_icm_helpkeyword)
     
     icmCfgHaprot = icmComponent.createKeyValueSetSymbol("ICM_CONFIG_HAPROT", None)
     icmCfgHaprot.setLabel("Region Hash Area Protection")
@@ -212,6 +213,7 @@ def instantiateComponent(icmComponent):
     icmCfgHaprot.setDisplayMode("Description")
     icmCfgHaprot.addKey("USR", "0", "User-access level")
     icmCfgHaprot.addKey("PRI", "1", "Privileged-access level")
+    icmCfgHaprot.setHelp(plib_icm_helpkeyword)
 
     icmCfgAlgo = icmComponent.createKeyValueSetSymbol("ICM_CONFIG_UALGO", None)
     icmCfgAlgo.setLabel("User SHA Algorithm")
@@ -221,15 +223,18 @@ def instantiateComponent(icmComponent):
     icmCfgAlgo.addKey("SHA1", "0", "SHA1")
     icmCfgAlgo.addKey("SHA256", "1", "SHA256")
     icmCfgAlgo.addKey("SHA224", "4", "SHA224")
+    icmCfgAlgo.setHelp(plib_icm_helpkeyword)
 
     icmCfgDualBuffer = icmComponent.createBooleanSymbol("ICM_CONFIG_DUALBUFF", None)
     icmCfgDualBuffer.setLabel("Dual Input Buffer")
     icmCfgDualBuffer.setDefaultValue(0)
+    icmCfgDualBuffer.setHelp(plib_icm_helpkeyword)
 
     icmCfgMonitorMode = icmComponent.createBooleanSymbol("ICM_CONFIG_ASCD", None)
     icmCfgMonitorMode.setLabel("Automatic monitoring mode")
     icmCfgMonitorMode.setDefaultValue(0)
     icmCfgMonitorMode.setDependencies(updateShowRegions, ["ICM_CONFIG_ASCD"])
+    icmCfgMonitorMode.setHelp(plib_icm_helpkeyword)
                                
     icmCfgBurden = icmComponent.createIntegerSymbol("ICM_CONFIG_BBC", icmCfgMonitorMode)
     icmCfgBurden.setLabel("Bus Burden Control")
@@ -238,18 +243,22 @@ def instantiateComponent(icmComponent):
     icmCfgBurden.setMax(15)
     icmCfgBurden.setVisible(False)
     icmCfgBurden.setDependencies(showSymbol, ["ICM_CONFIG_ASCD"])
+    icmCfgBurden.setHelp(plib_icm_helpkeyword)
 
     icmCfgSecList = icmComponent.createBooleanSymbol("ICM_CONFIG_SLBDIS", None)
     icmCfgSecList.setLabel("Allow Secondary List")
     icmCfgSecList.setDefaultValue(1)
+    icmCfgSecList.setHelp(plib_icm_helpkeyword)
 
     icmCfgEOMDIS = icmComponent.createBooleanSymbol("ICM_CONFIG_EOMDIS", None)
     icmCfgEOMDIS.setLabel("Allow End of Monitoring")
     icmCfgEOMDIS.setDefaultValue(1)
+    icmCfgEOMDIS.setHelp(plib_icm_helpkeyword)
 
     icmCfgWBDIS = icmComponent.createBooleanSymbol("ICM_CONFIG_WBDIS", None)
     icmCfgWBDIS.setLabel("Allow Write Back")
     icmCfgWBDIS.setDefaultValue(1)
+    icmCfgWBDIS.setHelp(plib_icm_helpkeyword)
 
     icmCFGRegister = icmComponent.createHexSymbol("ICM_CFG", None)
     icmCFGRegister.setLabel("ICM_CFG")
@@ -268,6 +277,7 @@ def instantiateComponent(icmComponent):
     icmNumRegions.setMin(1)
     icmNumRegions.setMax(4)
     icmNumRegions.setDependencies(updateShowRegions, ["ICM_REGIONS_NUMBER"])
+    icmNumRegions.setHelp(plib_icm_helpkeyword)
 
     for icmRegion in range(0, 4):
         symbolDepList = []
@@ -275,6 +285,7 @@ def instantiateComponent(icmComponent):
         icmRegionConfigMenu = icmComponent.createMenuSymbol("ICM_REG_{}_CONFIG".format(icmRegion), icmNumRegions)
         icmRegionConfigMenu.setLabel("Region {} Configuration".format(icmRegion))
         icmRegionConfigMenu.setVisible(icmRegion == 0)
+        icmRegionConfigMenu.setHelp(plib_icm_helpkeyword)
 
         symbolName = "ICM_REG_{}_ENABLED".format(icmRegion)
         icmDescEnabled = icmComponent.createBooleanSymbol(symbolName, icmRegionConfigMenu)
@@ -290,6 +301,7 @@ def instantiateComponent(icmComponent):
         icmBusProtection.setDisplayMode("Description")
         icmBusProtection.addKey("USR", "0", "User-access level")
         icmBusProtection.addKey("PRI", "1", "Privileged-access level")
+        icmBusProtection.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_ALGO".format(icmRegion)
@@ -301,6 +313,7 @@ def instantiateComponent(icmComponent):
         icmAlgo.addKey("SHA1", "0", "SHA1")
         icmAlgo.addKey("SHA256", "1", "SHA256")
         icmAlgo.addKey("SHA224", "4", "SHA224")
+        icmAlgo.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_PROCDLY".format(icmRegion)
@@ -311,6 +324,7 @@ def instantiateComponent(icmComponent):
         icmDelay.setDisplayMode("Description")
         icmDelay.addKey("SHORTEST", "0", "SHORTEST")
         icmDelay.addKey("LONGEST", "1", "LONGEST")
+        icmDelay.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_EOM".format(icmRegion)
@@ -343,31 +357,37 @@ def instantiateComponent(icmComponent):
         symbolName = "ICM_REG_{}_SUIEN".format(icmRegion)
         icmStatusInt = icmComponent.createBooleanSymbol(symbolName, icmIntMenu)
         icmStatusInt.setLabel("Status Updated Interrupt")
+        icmStatusInt.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_ECIEN".format(icmRegion)
         icmEndBitInt = icmComponent.createBooleanSymbol(symbolName, icmIntMenu)
         icmEndBitInt.setLabel("End Bit Condition Interrupt")
+        icmEndBitInt.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_WCIEN".format(icmRegion)
         icmWrapInt = icmComponent.createBooleanSymbol(symbolName, icmIntMenu)
         icmWrapInt.setLabel("Wrap Condition Interrupt")
+        icmWrapInt.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_BEIEN".format(icmRegion)
         icmBusErrorInt = icmComponent.createBooleanSymbol(symbolName, icmIntMenu)
         icmBusErrorInt.setLabel("Bus Error Interrupt")
+        icmBusErrorInt.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_DMIEN".format(icmRegion)
         icmDigestMismatchInt = icmComponent.createBooleanSymbol(symbolName, icmIntMenu)
         icmDigestMismatchInt.setLabel("Digest Mismatch Interrupt")
+        icmDigestMismatchInt.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         symbolName = "ICM_REG_{}_RHIEN".format(icmRegion)
         icmHashInt = icmComponent.createBooleanSymbol(symbolName, icmIntMenu)
         icmHashInt.setLabel("Hash Completed Interrupt")
+        icmHashInt.setHelp(plib_icm_helpkeyword)
         symbolDepList.append(symbolName)
 
         icmRCFGRegister = icmComponent.createHexSymbol("ICM_RCFG_{}".format(icmRegion), icmRegionConfigMenu)
