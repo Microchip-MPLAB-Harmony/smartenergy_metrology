@@ -188,7 +188,6 @@ typedef struct {
   Description:
     - Voltage channel
     - Current channel
-    - Calibration references
 
 */
 typedef struct {
@@ -338,8 +337,7 @@ typedef enum {
     Identifies the data calculated from the metrology AFE measurements.
 
   Description:
-    - energy. Active energy calculated value.
-    - afeEvents. AFE events data.
+    - events. AFE events data.
     - chnMeasure. Measure calculated values depending on channel.
     - powMeasure. Measure calculated values depending on power source.
     - measure. Measure calculated values.
@@ -350,34 +348,6 @@ typedef struct {
     float powMeasure[DRV_MCMETROLOGY_POWERS_NUMBER][POW_MEASURE_TYPE_NUM];
     float measure[MEASURE_TYPE_NUM];
 } DRV_MCMETROLOGY_AFE_DATA;
-
-/* Metrology Driver Configuration
-
-  Summary:
-    Identifies values needed to set different metrology configurations.
-
-  Description:
-    - mc. Meter Constant (amount of energy signified by one output pulse). Units: pulses/kWh (active energy), pulses/kVARh (reactive energy), or pulses/kAmp2-h (amp square)
-    - freq. Mains frequency. Units: Hz.
-    - tr.
-      - In the case of a current transformer, this is the current transformer ratio
-      - In the case of a Rogowski Coil, this is the current sensitivity (units: uV/A) at the main frequency specified in ?Frequency? parameter.
-    - rl.
-      - In the case of current transformer, this is the resistor load or burden resistor (units uOhms).
-      - In the case of shunt resistor, this is the shunt resistor value (units uOhms)
-    - ku. Voltage divider ratio.
-    - st. Sensor Type. Refer to DRV_MCMETROLOGY_SENSOR_TYPE.
-    - gain. Programmable Gain Amplifier of the AFE (analog front end). Refer to DRV_MCMETROLOGY_GAIN_TYPE.
-*/
-typedef struct {
-    uint32_t mc;
-    double freq;
-    double tr;
-    double rl;
-    uint32_t ku;
-    DRV_MCMETROLOGY_SENSOR_TYPE st;
-    DRV_MCMETROLOGY_GAIN_TYPE gain;
-} DRV_MCMETROLOGY_CONFIGURATION;
 
 /* METROLOGY Driver Status
 

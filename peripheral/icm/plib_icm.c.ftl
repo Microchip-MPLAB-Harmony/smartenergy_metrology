@@ -8,7 +8,7 @@
     plib_icm.c
 
   Summary:
-    Systick Source File
+    Integrity Check Monitor Plib (ICM) Source File
 
   Description:
     None

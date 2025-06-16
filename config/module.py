@@ -45,7 +45,16 @@ def loadModule():
     icmModule = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals/module@[name=\"ICM\"]")
     if icmModule is not None:
         if icmModule.getAttribute("name") == "ICM" and icmModule.getAttribute("id") == "11105":
-            drvICMComponent = Module.CreateComponent("plibICM", "ICM", "/SmartEnergy/Peripherals/", "peripheral/icm/config/icm_plib.py")
-            drvICMComponent.addCapability("ICM", "ICM", "ICM", True)
-            drvICMComponent.setDisplayType("ICM")
+            drvICMComponent = Module.CreateComponent("icm", "ICM", "/SmartEnergy/Peripherals/", "peripheral/icm/config/icm_plib.py")
+            # drvICMComponent.addCapability("ICM", "ICM", "ICM", True)
+            drvICMComponent.setDisplayType("Peripheral Library")
             drvICMComponent.setHelpKeyword("SE_plib_icm_config")
+
+    emafeModule = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals/module@[name=\"EMAFE\"]")
+    if emafeModule is not None:
+        if emafeModule.getAttribute("name") == "EMAFE" and emafeModule.getAttribute("id") == "04742":
+            drvEMAFEComponent = Module.CreateComponent("emafe", "EMAFE", "/SmartEnergy/Peripherals/", "peripheral/emafe/config/emafe_plib.py")
+            # drvEMAFEComponent.addCapability("EMAFE", "EMAFE", "EMAFE", True)
+            drvEMAFEComponent.addDependency("mcspi_dependency", "MCSPI", "MCSPI", True, True)
+            drvEMAFEComponent.setDisplayType("Peripheral Library")
+            drvEMAFEComponent.setHelpKeyword("SE_plib_emafe_config")

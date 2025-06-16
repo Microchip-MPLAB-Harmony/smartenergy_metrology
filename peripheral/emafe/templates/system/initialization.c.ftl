@@ -1,0 +1,1 @@
+	EMAFE_Initialize();
