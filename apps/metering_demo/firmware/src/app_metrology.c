@@ -120,13 +120,13 @@ const char * _met_control_desc[] =
   "48 CPTR_CTRL",
   "49 CPTR_BUFF_SIZE",
   "50 CPTR_ADDR",
-  "51 Reserved1",
-  "52 Reserved2",
-  "53 Reserved3",
+  "51 RESERVED_C51",
+  "52 RESERVED_C52",
+  "53 RESERVED_C53",
   "54 ATS_CTRL_20_23",
   "55 ATS_CTRL_24_27",
   "56 ATS_CTRL_28_2B",
-  "57 Reserved4",
+  "57 RESERVED_C57",
   "58 PWR_OFFS_P_A",
   "59 PWR_OFFS_P_B",
   "60 PWR_OFFS_P_C",
@@ -171,7 +171,8 @@ const char * _met_status_desc[] =
   "31 ZC_N_VB",
   "32 ZC_N_VC",
   "33 AT_CAL_41_44",
-  "34 AT_CAL_45_48"
+  "34 AT_CAL_45_48",
+  "35 RESERVED_S35",
 };
 
 const char * _met_acc_desc[] =

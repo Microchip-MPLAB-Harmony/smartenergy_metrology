@@ -65,6 +65,11 @@ Microchip or any third party.
 #define   FEATURE_CTRL_SYNCH_A_Val                     _UINT32_(0x1)                           /* (FEATURE_CTRL) Measurement interval based on phase-A */
 #define   FEATURE_CTRL_SYNCH_B_Val                     _UINT32_(0x2)                           /* (FEATURE_CTRL) Measurement interval based on phase-B */
 #define   FEATURE_CTRL_SYNCH_C_Val                     _UINT32_(0x3)                           /* (FEATURE_CTRL) Measurement interval based on phase-C */
+#define FEATURE_CTRL_RZC_THRESHOLD_DIS_Pos           _UINT32_(7)                               /* (FEATURE_CTRL) Raw Zero-Crossing Threshold Disable Position */
+#define FEATURE_CTRL_RZC_THRESHOLD_DIS_Msk           (_UINT32_(0x1) << FEATURE_CTRL_RZC_THRESHOLD_DIS_Pos)  /* (FEATURE_CTRL) Raw Zero-Crossing Threshold Disable Mask */
+#define FEATURE_CTRL_RZC_THRESHOLD_DIS(value)        (FEATURE_CTRL_RZC_THRESHOLD_DIS_Msk & (_UINT32_(value) << FEATURE_CTRL_RZC_THRESHOLD_DIS_Pos))
+#define   FEATURE_CTRL_RZC_THRESHOLD_DIS_AVG_Val       _UINT32_(0x0)                           /* (FEATURE_CTRL) Threshold set to the average value computed in the last integration period */
+#define   FEATURE_CTRL_RZC_THRESHOLD_DIS_0_Val         _UINT32_(0x1)                           /* (FEATURE_CTRL) Threshold set to 0 */
 #define FEATURE_CTRL_PHASE_A_EN_Pos                  _UINT32_(8)                               /* (FEATURE_CTRL) Enable Phase A Position */
 #define FEATURE_CTRL_PHASE_A_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_PHASE_A_EN_Pos)    /* (FEATURE_CTRL) Enable Phase A Mask */
 #define FEATURE_CTRL_PHASE_A_EN(value)               (FEATURE_CTRL_PHASE_A_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_PHASE_A_EN_Pos))
@@ -80,26 +85,16 @@ Microchip or any third party.
 #define FEATURE_CTRL_PHASE_C_EN(value)               (FEATURE_CTRL_PHASE_C_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_PHASE_C_EN_Pos))
 #define   FEATURE_CTRL_PHASE_C_EN_DISABLED_Val         _UINT32_(0x0)                           /* (FEATURE_CTRL) Disable phase */
 #define   FEATURE_CTRL_PHASE_C_EN_ENABLED_Val          _UINT32_(0x1)                           /* (FEATURE_CTRL) Enable phase */
+#define FEATURE_CTRL_NEUTRAL_DIS_Pos                 _UINT32_(11)                               /* (FEATURE_CTRL) Disable neutral measurement Position */
+#define FEATURE_CTRL_NEUTRAL_DIS_Msk                 (_UINT32_(0x1) << FEATURE_CTRL_NEUTRAL_DIS_Pos)  /* (FEATURE_CTRL) Disable neutral measurement Mask */
+#define FEATURE_CTRL_NEUTRAL_DIS(value)              (FEATURE_CTRL_NEUTRAL_DIS_Msk & (_UINT32_(value) << FEATURE_CTRL_NEUTRAL_DIS_Pos))
+#define   FEATURE_CTRL_NEUTRAL_DIS_DISABLE_Val         _UINT32_(0x0)                           /* (FEATURE_CTRL) Neutral measurement is disabled, and the shared channel is continuously acquiring temperature readings */
+#define   FEATURE_CTRL_NEUTRAL_DIS_ENABLE_Val          _UINT32_(0x1)                           /* (FEATURE_CTRL) Neutral and temperature measurements are acquired using the shared channel */
 #define FEATURE_CTRL_MAX_INT_SELECT_Pos              _UINT32_(12)                               /* (FEATURE_CTRL) Max Integration Period Select Position */
 #define FEATURE_CTRL_MAX_INT_SELECT_Msk              (_UINT32_(0x1) << FEATURE_CTRL_MAX_INT_SELECT_Pos)    /* (FEATURE_CTRL) Max Integration Period Select Mask */
 #define FEATURE_CTRL_MAX_INT_SELECT(value)           (FEATURE_CTRL_MAX_INT_SELECT_Msk & (_UINT32_(value) << FEATURE_CTRL_MAX_INT_SELECT_Pos))
 #define   FEATURE_CTRL_MAX_INT_SELECT_CL1_Val           _UINT32_(0x0)                           /* (FEATURE_CTRL) Metrology DSP will integrate for an integral number of cycles closest to 1 second */
 #define   FEATURE_CTRL_MAX_INT_SELECT_NGT1_Val          _UINT32_(0x1)                           /* (FEATURE_CTRL) Metrology DSP will integrate for an integral number of cycles no greater than 1 second */
-#define FEATURE_CTRL_CREEP_I_EN_Pos                  _UINT32_(13)                                /* (FEATURE_CTRL) Current Creep Threshold Function Enable Position */
-#define FEATURE_CTRL_CREEP_I_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_I_EN_Pos)    /* (FEATURE_CTRL) Current Creep Threshold Function Enable Mask */
-#define FEATURE_CTRL_CREEP_I_EN(value)               (FEATURE_CTRL_CREEP_I_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_I_EN_Pos))
-#define   FEATURE_CTRL_CREEP_I_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable current creep threshold feature */
-#define   FEATURE_CTRL_CREEP_I_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable current creep threshold feature */
-#define FEATURE_CTRL_CREEP_Q_EN_Pos                  _UINT32_(14)                                /* (FEATURE_CTRL) Reactive Creep Threshold Function Enable Position */
-#define FEATURE_CTRL_CREEP_Q_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_Q_EN_Pos)    /* (FEATURE_CTRL) Reactive Creep Threshold Function Enable Mask */
-#define FEATURE_CTRL_CREEP_Q_EN(value)               (FEATURE_CTRL_CREEP_Q_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_Q_EN_Pos))
-#define   FEATURE_CTRL_CREEP_Q_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable Reactive creep threshold feature */
-#define   FEATURE_CTRL_CREEP_Q_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable Reactive creep threshold feature */
-#define FEATURE_CTRL_CREEP_P_EN_Pos                  _UINT32_(15)                                /* (FEATURE_CTRL) Active Creep Threshold Function Enable Position */
-#define FEATURE_CTRL_CREEP_P_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_P_EN_Pos)    /* (FEATURE_CTRL) Active Creep Threshold Function Enable Mask */
-#define FEATURE_CTRL_CREEP_P_EN(value)               (FEATURE_CTRL_CREEP_P_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_P_EN_Pos))
-#define   FEATURE_CTRL_CREEP_P_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable Active creep threshold feature */
-#define   FEATURE_CTRL_CREEP_P_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable Active creep threshold feature */
 #define FEATURE_CTRL_SWAP_B_and_C_Pos                _UINT32_(16)                              /* (FEATURE_CTRL) Swap processing channels Position */
 #define FEATURE_CTRL_SWAP_B_and_C_Msk                (_UINT32_(0x1) << FEATURE_CTRL_SWAP_B_and_C_Pos)    /* (FEATURE_CTRL) Swap processing channels Mask */
 #define FEATURE_CTRL_SWAP_B_and_C(value)             (FEATURE_CTRL_SWAP_B_and_C_Msk & (_UINT32_(value) << FEATURE_CTRL_SWAP_B_and_C_Pos))
@@ -111,6 +106,26 @@ Microchip or any third party.
 #define FEATURE_CTRL_V_MAX_RESET_Pos                 _UINT32_(18)                                /* (FEATURE_CTRL) Reset All V_x_MAX values Position */
 #define FEATURE_CTRL_V_MAX_RESET_Msk                 (_UINT32_(0x1) << FEATURE_CTRL_V_MAX_RESET_Pos)    /* (FEATURE_CTRL) Reset All V_x_MAX values Mask */
 #define FEATURE_CTRL_V_MAX_RESET(value)              (FEATURE_CTRL_V_MAX_RESET_Msk & (_UINT32_(value) << FEATURE_CTRL_V_MAX_RESET_Pos))
+#define FEATURE_CTRL_CREEP_I_EN_Pos                  _UINT32_(20)                                /* (FEATURE_CTRL) Current Creep Threshold Function Enable Position */
+#define FEATURE_CTRL_CREEP_I_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_I_EN_Pos)    /* (FEATURE_CTRL) Current Creep Threshold Function Enable Mask */
+#define FEATURE_CTRL_CREEP_I_EN(value)               (FEATURE_CTRL_CREEP_I_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_I_EN_Pos))
+#define   FEATURE_CTRL_CREEP_I_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable current creep threshold feature */
+#define   FEATURE_CTRL_CREEP_I_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable current creep threshold feature */
+#define FEATURE_CTRL_CREEP_Q_EN_Pos                  _UINT32_(21)                                /* (FEATURE_CTRL) Reactive Power Creep Threshold Function Enable Position */
+#define FEATURE_CTRL_CREEP_Q_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_Q_EN_Pos)    /* (FEATURE_CTRL) Reactive Power Creep Threshold Function Enable Mask */
+#define FEATURE_CTRL_CREEP_Q_EN(value)               (FEATURE_CTRL_CREEP_Q_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_Q_EN_Pos))
+#define   FEATURE_CTRL_CREEP_Q_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable Reactive Power creep threshold feature */
+#define   FEATURE_CTRL_CREEP_Q_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable Reactive Power creep threshold feature */
+#define FEATURE_CTRL_CREEP_P_EN_Pos                  _UINT32_(22)                                /* (FEATURE_CTRL) Active Power Creep Threshold Function Enable Position */
+#define FEATURE_CTRL_CREEP_P_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_P_EN_Pos)    /* (FEATURE_CTRL) Active Power Creep Threshold Function Enable Mask */
+#define FEATURE_CTRL_CREEP_P_EN(value)               (FEATURE_CTRL_CREEP_P_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_P_EN_Pos))
+#define   FEATURE_CTRL_CREEP_P_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable Active Power creep threshold feature */
+#define   FEATURE_CTRL_CREEP_P_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable Active Power creep threshold feature */
+#define FEATURE_CTRL_CREEP_S_EN_Pos                  _UINT32_(23)                                /* (FEATURE_CTRL) Aparent Power Creep Threshold Function Enable Position */
+#define FEATURE_CTRL_CREEP_S_EN_Msk                  (_UINT32_(0x1) << FEATURE_CTRL_CREEP_S_EN_Pos)    /* (FEATURE_CTRL) Aparent Power Creep Threshold Function Enable Mask */
+#define FEATURE_CTRL_CREEP_S_EN(value)               (FEATURE_CTRL_CREEP_S_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_CREEP_S_EN_Pos))
+#define   FEATURE_CTRL_CREEP_S_EN_DISABLED_Val         _UINT32_(0x0)                             /* (FEATURE_CTRL) Disable Aparent Power creep threshold feature */
+#define   FEATURE_CTRL_CREEP_S_EN_ENABLED_Val          _UINT32_(0x1)                             /* (FEATURE_CTRL) Enable Aparent Power creep threshold feature */
 #define FEATURE_CTRL_IA_HARM_DIS_Pos                 _UINT32_(24)                                /* (FEATURE_CTRL) Disable Harmonic IA Analysis */
 #define FEATURE_CTRL_IA_HARM_DIS_Msk                 (_UINT32_(0x1) << FEATURE_CTRL_IA_HARM_DIS_Pos)    /* (FEATURE_CTRL) Enable Harmonic IA Analysis Mask */
 #define FEATURE_CTRL_IA_HARM_DIS(value)              (FEATURE_CTRL_IA_HARM_DIS_Msk & (_UINT32_(value) << FEATURE_CTRL_IA_HARM_DIS_Pos))
@@ -249,6 +264,9 @@ Microchip or any third party.
 #define   PULSE0_CTRL_PC0_TYPE_Q_T_F_Val            _UINT32_(0x3)                             /* (PULSE0_CTRL) Var-hours, total all phases, fundamental only */
 #define   PULSE0_CTRL_PC0_TYPE_I_T_Val              _UINT32_(0x4)                             /* (PULSE0_CTRL) Amp-squared-hours, total all phases, fundamental + harmonics */
 #define   PULSE0_CTRL_PC0_TYPE_I_T_F_Val            _UINT32_(0x5)                             /* (PULSE0_CTRL) Amp-squared-hours, total all phases, fundamental only */
+#define   PULSE0_CTRL_PC0_TYPE_S_T_Val              _UINT32_(0x6)                             /* (PULSE0_CTRL) VA-hours, total all phases, fundamental + harmonics. It is computed by multiplying Irms by Vrms */
+#define   PULSE0_CTRL_PC0_TYPE_S_T_F_Val            _UINT32_(0x7)                             /* (PULSE0_CTRL) VA-hours, total all phases, fundamental only. It is computed by multiplying Irms (fundamental) by Vrms (fundamental) */
+#define   PULSE0_CTRL_PC0_TYPE_S2_T_Val             _UINT32_(0x8)                             /* (PULSE0_CTRL) VA-hours, total all phases. It is computed as the square root of (P2+Q2) */
 #define PULSE0_CTRL_PC0_POLARITY_Pos               _UINT32_(24)                                 /* (PULSE0_CTRL) Pulse Polarity Position  */
 #define PULSE0_CTRL_PC0_POLARITY_Msk               (_UINT32_(0x1) << PULSE0_CTRL_PC0_POLARITY_Pos)      /* (PULSE0_CTRL) Pulse Polarity Mask  */
 #define PULSE0_CTRL_PC0_POLARITY(value)            (PULSE0_CTRL_PC0_POLARITY_Msk & (_UINT32_(value) << PULSE0_CTRL_PC0_POLARITY_Pos))
@@ -300,6 +318,9 @@ Microchip or any third party.
 #define   PULSE1_CTRL_PC1_TYPE_Q_T_F_Val            _UINT32_(0x3)                             /* (PULSE1_CTRL) Var-hours, total all phases, fundamental only */
 #define   PULSE1_CTRL_PC1_TYPE_I_T_Val              _UINT32_(0x4)                             /* (PULSE1_CTRL) Amp-squared-hours, total all phases, fundamental + harmonics */
 #define   PULSE1_CTRL_PC1_TYPE_I_T_F_Val            _UINT32_(0x5)                             /* (PULSE1_CTRL) Amp-squared-hours, total all phases, fundamental only */
+#define   PULSE1_CTRL_PC1_TYPE_S_T_Val              _UINT32_(0x6)                             /* (PULSE1_CTRL) VA-hours, total all phases, fundamental + harmonics. It is computed by multiplying Irms by Vrms */
+#define   PULSE1_CTRL_PC1_TYPE_S_T_F_Val            _UINT32_(0x7)                             /* (PULSE1_CTRL) VA-hours, total all phases, fundamental only. It is computed by multiplying Irms (fundamental) by Vrms (fundamental) */
+#define   PULSE1_CTRL_PC1_TYPE_S2_T_Val             _UINT32_(0x8)                             /* (PULSE1_CTRL) VA-hours, total all phases. It is computed as the square root of (P2+Q2) */
 #define PULSE1_CTRL_PC1_POLARITY_Pos               _UINT32_(24)                                 /* (PULSE1_CTRL) Pulse Polarity Position  */
 #define PULSE1_CTRL_PC1_POLARITY_Msk               (_UINT32_(0x1) << PULSE1_CTRL_PC1_POLARITY_Pos)      /* (PULSE1_CTRL) Pulse Polarity Mask  */
 #define PULSE1_CTRL_PC1_POLARITY(value)            (PULSE1_CTRL_PC1_POLARITY_Msk & (_UINT32_(value) << PULSE1_CTRL_PC1_POLARITY_Pos))
@@ -351,6 +372,9 @@ Microchip or any third party.
 #define   PULSE2_CTRL_PC2_TYPE_Q_T_F_Val            _UINT32_(0x3)                             /* (PULSE2_CTRL) Var-hours, total all phases, fundamental only */
 #define   PULSE2_CTRL_PC2_TYPE_I_T_Val              _UINT32_(0x4)                             /* (PULSE2_CTRL) Amp-squared-hours, total all phases, fundamental + harmonics */
 #define   PULSE2_CTRL_PC2_TYPE_I_T_F_Val            _UINT32_(0x5)                             /* (PULSE2_CTRL) Amp-squared-hours, total all phases, fundamental only */
+#define   PULSE2_CTRL_PC2_TYPE_S_T_Val              _UINT32_(0x6)                             /* (PULSE2_CTRL) VA-hours, total all phases, fundamental + harmonics. It is computed by multiplying Irms by Vrms */
+#define   PULSE2_CTRL_PC2_TYPE_S_T_F_Val            _UINT32_(0x7)                             /* (PULSE2_CTRL) VA-hours, total all phases, fundamental only. It is computed by multiplying Irms (fundamental) by Vrms (fundamental) */
+#define   PULSE2_CTRL_PC2_TYPE_S2_T_Val             _UINT32_(0x8)                             /* (PULSE2_CTRL) VA-hours, total all phases. It is computed as the square root of (P2+Q2) */
 #define PULSE2_CTRL_PC2_POLARITY_Pos               _UINT32_(24)                                 /* (PULSE2_CTRL) Pulse Polarity Position  */
 #define PULSE2_CTRL_PC2_POLARITY_Msk               (_UINT32_(0x1) << PULSE2_CTRL_PC2_POLARITY_Pos)      /* (PULSE2_CTRL) Pulse Polarity Mask  */
 #define PULSE2_CTRL_PC2_POLARITY(value)            (PULSE2_CTRL_PC2_POLARITY_Msk & (_UINT32_(value) << PULSE2_CTRL_PC2_POLARITY_Pos))
@@ -1306,6 +1330,7 @@ typedef struct
     __O  uint32_t ZC_N_VC;                 /**< Offset: 0x80 (R/  32) Zero-crossing sample number of phase-C voltage (uQ20.12) */
     __O  uint32_t ATSENSE_CAL_41_44;       /**< Offset: 0x84 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x41 ? 0x44 */
     __O  uint32_t ATSENSE_CAL_45_48;       /**< Offset: 0x88 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x45 ? 0x48 */
+    __O  uint32_t Reserved4;
 } DRV_METROLOGY_REGS_STATUS;
 
 /** \brief Metrology Control register API structure */
