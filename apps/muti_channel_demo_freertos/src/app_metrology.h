@@ -134,6 +134,10 @@ typedef struct
     bool setConfiguration;
 
     bool dataIsRdy;
+    
+    volatile bool integrationFlag;
+    
+    volatile bool halfFullCycleFlag;
 
 } APP_METROLOGY_DATA;
 

@@ -71,14 +71,10 @@ extern "C" {
 // *****************************************************************************
 
 #define EVENT_LOG_MAX_NUMBER                 10
-#define EVENT_HOLDING_START_COUNTER          10//60
-#define EVENT_HOLDING_END_COUNTER            10//60
 
 typedef enum {
     NO_EVENT = 0,
-    EVENT_HOLDING_START,
-    EVENT_START,
-    EVENT_HOLDING_END
+    EVENT_START
 } APP_EVENTS_EVENT_STATUS;
 
 typedef enum {
@@ -159,7 +155,6 @@ typedef struct {
     APP_EVENTS_EVENT_STATUS status;
     APP_EVENTS_EVENT_INFO data[EVENT_LOG_MAX_NUMBER];
     uint16_t counter;
-    uint8_t holdingCounter;
     uint8_t dataIndex;
 } APP_EVENTS_EVENT_DATA;
 

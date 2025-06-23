@@ -137,6 +137,12 @@ typedef struct
     /* IPC metrology lib integration Callback */
     DRV_MCMETROLOGY_CALLBACK                        integrationCallback;
 
+    /* IPC metrology lib Full Cycle Callback */
+    DRV_MCMETROLOGY_CALLBACK                        fullCycleCallback;
+
+    /* IPC metrology lib Half Cycle Callback */
+    DRV_MCMETROLOGY_CALLBACK                        halfCycleCallback;
+
     /* Harmonic Analysis Callback */
     DRV_MCMETROLOGY_HARMONICS_CALLBACK              harmonicAnalysisCallback;
 
