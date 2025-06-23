@@ -171,6 +171,15 @@ static const DRV_MCMETROLOGY_POWER_SOURCE gDrvMCMetPowersDefault[DRV_MCMETROLOGY
 // *****************************************************************************
 // *****************************************************************************
 
+static void lDRV_Mcmetrology_UpdateEvents(void)
+{
+    /* Update events */
+    gDrvMCMetObj.metAFEData.events.swell = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.SWELL_OVERCURRENT_FLAG;
+    gDrvMCMetObj.metAFEData.events.sag = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.SAG_FLAG;
+    gDrvMCMetObj.metAFEData.events.creep = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.CREEP_FLAG;
+    gDrvMCMetObj.metAFEData.events.phActive = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.PH_ACTIVE_FLAG;
+}
+
 void IPC1_InterruptHandler (void)
 {
     uint32_t status = IPC1_REGS->IPC_ISR;
@@ -207,6 +216,9 @@ void IPC1_InterruptHandler (void)
             /* Update Frequency Data */
             gDrvMCMetObj.freq = gDrvMCMetObj.metRegisters->MET_STATUS.FREQ;
 
+            /* Update events */
+            lDRV_Mcmetrology_UpdateEvents();
+
             if (gDrvMCMetObj.harmonicAnalysisData.holdRegs == false)
             {
                 /* Update Harmonics Data */
@@ -218,28 +230,32 @@ void IPC1_InterruptHandler (void)
 
         gDrvMCMetObj.integrationFlag = true;
     }
-
 <#if DRV_MCMET_NOT_FULL_CYCLE == true>
+
     if ((status & DRV_MCMETROLOGY_IPC_FULLCYCLE_IRQ_MSK) != 0UL)
     {
+        /* Update events */
+        lDRV_Mcmetrology_UpdateEvents();
         if (gDrvMCMetObj.fullCycleCallback != NULL)
         {
             gDrvMCMetObj.fullCycleCallback();
         }
     }
-
 </#if>
 <#if DRV_MCMET_NOT_HALF_CYCLE == true>
+
     if ((status & DRV_MCMETROLOGY_IPC_HALFCYCLE_IRQ_MSK) != 0UL)
     {
+        /* Update events */
+        lDRV_Mcmetrology_UpdateEvents();
         if (gDrvMCMetObj.halfCycleCallback != NULL)
         {
             gDrvMCMetObj.halfCycleCallback();
         }
     }
-
 </#if>
 <#if DRV_MCMET_RAW_ZERO_CROSSING == true>
+
     if ((status & DRV_MCMETROLOGY_IPC_ZEROCROSS_IRQ_MSK) != 0UL)
     {
         if (gDrvMCMetObj.zeroCrossCallback != NULL)
@@ -247,9 +263,9 @@ void IPC1_InterruptHandler (void)
             gDrvMCMetObj.zeroCrossCallback();
         }
     }
-
 </#if>
 <#if DRV_MCMET_PULSE_0 == true>
+
     if ((status & DRV_MCMETROLOGY_IPC_PULSE0_IRQ_MSK) != 0UL)
     {
         if (gDrvMCMetObj.pulse0Callback != NULL)
@@ -257,9 +273,9 @@ void IPC1_InterruptHandler (void)
             gDrvMCMetObj.pulse0Callback();
         }
     }
-
 </#if>
 <#if DRV_MCMET_PULSE_1 == true>
+
     if ((status & DRV_MCMETROLOGY_IPC_PULSE1_IRQ_MSK) != 0UL)
     {
         if (gDrvMCMetObj.pulse1Callback != NULL)
@@ -267,9 +283,9 @@ void IPC1_InterruptHandler (void)
             gDrvMCMetObj.pulse1Callback();
         }
     }
-
 </#if>
 <#if DRV_MCMET_PULSE_2 == true>
+
     if ((status & DRV_MCMETROLOGY_IPC_PULSE2_IRQ_MSK) != 0UL)
     {
         if (gDrvMCMetObj.pulse2Callback != NULL)
@@ -277,8 +293,8 @@ void IPC1_InterruptHandler (void)
             gDrvMCMetObj.pulse2Callback();
         }
     }
-
 </#if>
+
     IPC1_REGS->IPC_ICCR = status;
 
 <#if DRV_MCMET_RTOS_ENABLE == true>
@@ -287,7 +303,6 @@ void IPC1_InterruptHandler (void)
 <#else>
     gDrvMCMetObj.ipcInterruptFlag = true;
 </#if>
-
 }
 
 static double lDRV_Mcmetrology_GetHarmonicRMS(int32_t real, int32_t imag)
@@ -417,7 +432,6 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
 {
     DRV_MCMETROLOGY_REGS_ACCUMULATORS *pAccData = NULL;
     DRV_MCMETROLOGY_REGS_CONTROL *pMetControl = NULL;
-    DRV_MCMETROLOGY_AFE_EVENTS *pAFEEvents = NULL;
     float *pDstData = NULL;
     float pt = 0.0f;
     float ptf = 0.0f;
@@ -429,7 +443,6 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
 
     pAccData = &gDrvMCMetObj.metAccData;
     pMetControl = &gDrvMCMetObj.metRegisters->MET_CONTROL;
-    pAFEEvents = &gDrvMCMetObj.metAFEData.events;
 
     /* Update Accumulated Voltage/Current/Frequency/Max Quantities per Channel */
     for (index = 0; index < DRV_MCMETROLOGY_CHANNELS_NUMBER; index++)
@@ -510,12 +523,6 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
 
     /* Update Total Accumulated Energy */
     *(pDstData + (uint8_t)MEASURE_ENERGY) += lDRV_Mcmetrology_GetEnergy(PENERGY);
-
-    /* Update events */
-    pAFEEvents->swell = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.SWELL_OVERCURRENT_FLAG;
-    pAFEEvents->sag = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.SAG_FLAG;
-    pAFEEvents->creep = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.CREEP_FLAG;
-    pAFEEvents->phActive = (uint16_t)gDrvMCMetObj.metRegisters->MET_STATUS.PH_ACTIVE_FLAG;
 }
 
 static void lDRV_MCMETROLOGY_UpdateHarmonicAnalysisValues(void)
@@ -651,6 +658,9 @@ SYS_MODULE_OBJ DRV_MCMETROLOGY_Reinitialize (SYS_MODULE_INIT * init)
 
     /* Disable IPC interrupts */
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
+
+    /* Clean the IPC interrupt flags */
+    gDrvMCMetObj.integrationFlag = true;
 
     /* Assert reset of the coprocessor and its peripherals */
     RSTC_CoProcessorEnable(false);

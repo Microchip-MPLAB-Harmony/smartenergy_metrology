@@ -171,7 +171,7 @@ static double lDRV_Metrology_GetDouble(int64_t value)
 
 static void lDRV_METROLOGY_UpdateEvents(void)
 {
-    /* Update Swell/Sag events */
+    /* Update Swell/Sag/Creep/Phase Active events */
     gDrvMetObj.metAFEData.afeEvents.sagA = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk) > 0U? 1U : 0U;
     gDrvMetObj.metAFEData.afeEvents.sagB = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk) > 0U? 1U : 0U;
     gDrvMetObj.metAFEData.afeEvents.sagC = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk) > 0U? 1U : 0U;
@@ -232,7 +232,7 @@ void IPC1_InterruptHandler (void)
     {
         /* Update State Flag Register */
         gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
-        /* Update Swell/Sag events */
+        /* Update events */
         lDRV_METROLOGY_UpdateEvents();
         if (gDrvMetObj.fullCycleCallback != NULL)
         {
@@ -246,7 +246,7 @@ void IPC1_InterruptHandler (void)
     {
         /* Update State Flag Register */
         gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
-        /* Update Swell/Sag events */
+        /* Update events */
         lDRV_METROLOGY_UpdateEvents();
         if (gDrvMetObj.halfCycleCallback != NULL)
         {
@@ -743,7 +743,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     gDrvMetObj.metAFEData.energy += lDRV_Metrology_GetPQEnergy(PENERGY);
 
-    /* Update Swell/Sag events */
+    /* Update events */
     lDRV_METROLOGY_UpdateEvents();
 }
 
