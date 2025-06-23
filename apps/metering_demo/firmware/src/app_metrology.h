@@ -349,6 +349,8 @@ typedef struct
 
     volatile bool integrationFlag;
 
+    volatile bool halfFullCycleFlag;
+
     bool dataFlag;
 
 } APP_METROLOGY_DATA;

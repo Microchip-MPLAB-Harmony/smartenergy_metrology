@@ -353,6 +353,16 @@ static void _APP_METROLOGY_HarmonicAnalysisCallback(uint32_t harmonicBitmap)
     }
 }
 
+static void _APP_METROLOGY_HalfFullCycleCallback(void)
+{
+    if ((app_metrologyData.state == APP_METROLOGY_STATE_RUNNING) ||
+        (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION))
+    {
+        /* Signal Metrology thread to update events for a Half/Full Cycle */
+        app_metrologyData.halfFullCycleFlag = true;
+    }
+}
+
 static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result)
 {
     if (result == APP_DATALOG_RESULT_SUCCESS)
@@ -408,6 +418,10 @@ void APP_METROLOGY_Initialize (void)
     DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
     /* Set Callback for harmonic analysis process */
     DRV_METROLOGY_HarmonicAnalysisCallbackRegister(_APP_METROLOGY_HarmonicAnalysisCallback);
+    /* Set Callback for full cycle */
+    DRV_METROLOGY_FullCycleCallbackRegister(_APP_METROLOGY_HalfFullCycleCallback);
+    /* Set Callback for half cycle */
+    DRV_METROLOGY_HalfCycleCallbackRegister(_APP_METROLOGY_HalfFullCycleCallback);
 
     /* Clear Harmonic Analysis Data */
     app_metrologyData.harmonicAnalysisPending = false;
@@ -420,6 +434,7 @@ void APP_METROLOGY_Initialize (void)
 
     /* Initialize integration Flag */
     app_metrologyData.integrationFlag = false;
+    app_metrologyData.halfFullCycleFlag = false;
     app_metrologyData.dataFlag = false;
 
 }
@@ -544,6 +559,20 @@ void APP_METROLOGY_Tasks (void)
                 {
                     SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
                 }
+
+                // Send new Events to the Events Task
+                RTC_TimeGet(&newEvent.eventTime);
+                DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
+                if (APP_EVENTS_SendEventsData(&newEvent) == false)
+                {
+                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                }
+            }
+            
+            /* Wait for the Half/Full Cycle to get events. */
+            if (app_metrologyData.halfFullCycleFlag)
+            {
+                app_metrologyData.halfFullCycleFlag = false;
 
                 // Send new Events to the Events Task
                 RTC_TimeGet(&newEvent.eventTime);

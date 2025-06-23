@@ -81,6 +81,8 @@ extern uint8_t met_bin_end;
 
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
+#define DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK       IPC_ISR_IRQ4_Msk
+#define DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK       IPC_ISR_IRQ5_Msk
 
 #define FREQ_Q                 12U
 #define GAIN_P_K_T_Q           24U
@@ -293,7 +295,16 @@ typedef struct {
     unsigned int swellA : 1;
     unsigned int swellB : 1;
     unsigned int swellC : 1;
-    unsigned int reserved : 10;
+    unsigned int creepIA : 1;
+    unsigned int creepIB : 1;
+    unsigned int creepIC : 1;
+    unsigned int creepQ : 1;
+    unsigned int creepP : 1;
+    unsigned int creepS : 1;
+    unsigned int phActiveA : 1;
+    unsigned int phActiveB : 1;
+    unsigned int phActiveC : 1;
+    unsigned int reserved : 1;
 } DRV_METROLOGY_AFE_EVENTS;
 
 /* Metrology Driver Measurements type

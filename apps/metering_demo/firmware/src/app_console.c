@@ -1291,29 +1291,41 @@ static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 3)
     {
         // Extract event id from parameters
-        if (strcmp(argv[1], "UA") == 0)
+        if (strcmp(argv[1], "UASAG") == 0)
         {
             app_consoleData.eventIdRequest = SAG_UA_EVENT_ID;
         }
-        else if (strcmp(argv[1], "UB") == 0)
+        else if (strcmp(argv[1], "UBSAG") == 0)
         {
             app_consoleData.eventIdRequest = SAG_UB_EVENT_ID;
         }
-        else if (strcmp(argv[1], "UC") == 0)
+        else if (strcmp(argv[1], "UCSAG") == 0)
         {
             app_consoleData.eventIdRequest = SAG_UC_EVENT_ID;
         }
+        else if (strcmp(argv[1], "UASWELL") == 0)
+        {
+            app_consoleData.eventIdRequest = SWELL_UA_EVENT_ID;
+        }
+        else if (strcmp(argv[1], "UBSWELL") == 0)
+        {
+            app_consoleData.eventIdRequest = SWELL_UB_EVENT_ID;
+        }
+        else if (strcmp(argv[1], "UCSWELL") == 0)
+        {
+            app_consoleData.eventIdRequest = SWELL_UC_EVENT_ID;
+        }
         else if (strcmp(argv[1], "PA") == 0)
         {
-            app_consoleData.eventIdRequest = POW_UA_EVENT_ID;
+            app_consoleData.eventIdRequest = POW_PA_EVENT_ID;
         }
         else if (strcmp(argv[1], "PB") == 0)
         {
-            app_consoleData.eventIdRequest = POW_UB_EVENT_ID;
+            app_consoleData.eventIdRequest = POW_PB_EVENT_ID;
         }
         else if (strcmp(argv[1], "PC") == 0)
         {
-            app_consoleData.eventIdRequest = POW_UC_EVENT_ID;
+            app_consoleData.eventIdRequest = POW_PC_EVENT_ID;
         }
 
         if (app_consoleData.eventIdRequest != EVENT_INVALID_ID)
@@ -2891,15 +2903,27 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     SYS_CMD_PRINT("Last %d Times Uc Sag is:\r\n", app_consoleData.eventLastTimeRequest);
                 }
-                else if (app_consoleData.eventIdRequest == POW_UA_EVENT_ID)
+                else if (app_consoleData.eventIdRequest == SWELL_UA_EVENT_ID)
+                {
+                    SYS_CMD_PRINT("Last %d Times Ua Swell is:\r\n", app_consoleData.eventLastTimeRequest);
+                }
+                else if (app_consoleData.eventIdRequest == SWELL_UB_EVENT_ID)
+                {
+                    SYS_CMD_PRINT("Last %d Times Ub Swell is:\r\n", app_consoleData.eventLastTimeRequest);
+                }
+                else if (app_consoleData.eventIdRequest == SWELL_UC_EVENT_ID)
+                {
+                    SYS_CMD_PRINT("Last %d Times Uc Swell is:\r\n", app_consoleData.eventLastTimeRequest);
+                }
+                else if (app_consoleData.eventIdRequest == POW_PA_EVENT_ID)
                 {
                     SYS_CMD_PRINT("Last %d Times Pa reverse is:\r\n", app_consoleData.eventLastTimeRequest);
                 }
-                else if (app_consoleData.eventIdRequest == POW_UB_EVENT_ID)
+                else if (app_consoleData.eventIdRequest == POW_PB_EVENT_ID)
                 {
                     SYS_CMD_PRINT("Last %d Times Pb reverse is:\r\n", app_consoleData.eventLastTimeRequest);
                 }
-                else if (app_consoleData.eventIdRequest == POW_UC_EVENT_ID)
+                else if (app_consoleData.eventIdRequest == POW_PC_EVENT_ID)
                 {
                     SYS_CMD_PRINT("Last %d Times Pc reverse is:\r\n", app_consoleData.eventLastTimeRequest);
                 }

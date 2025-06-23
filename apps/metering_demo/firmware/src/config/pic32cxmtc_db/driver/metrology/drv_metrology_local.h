@@ -128,6 +128,9 @@ typedef struct
     /* Number of samples for accumulators in last Integration Period */
     uint32_t                                      samplesInPeriod;
 
+    /* State Flat Register in last Full-Cycle/Half-Cycle/Integration Period interrupt */
+    uint32_t                                      stateFlagReg;
+
     /* Metrology Control interface */
     MET_REGISTERS *                               metRegisters;
 
@@ -151,6 +154,12 @@ typedef struct
 
     /* IPC metrology lib integration Callback */
     DRV_METROLOGY_CALLBACK                        integrationCallback;
+
+    /* IPC metrology lib Full Cycle Callback */
+    DRV_METROLOGY_CALLBACK                        fullCycleCallback;
+
+    /* IPC metrology lib Half Cycle Callback */
+    DRV_METROLOGY_CALLBACK                        halfCycleCallback;
 
     /* Calibration Process Callback */
     DRV_METROLOGY_CALIBRATION_CALLBACK            calibrationCallback;

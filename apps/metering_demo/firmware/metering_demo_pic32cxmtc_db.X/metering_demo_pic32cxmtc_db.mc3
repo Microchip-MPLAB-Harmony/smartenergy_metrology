@@ -5722,7 +5722,9 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_NOT_FULL_CYCLE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
   &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_NOT_FULL_CYCLE&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;/&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
   &lt;/drvMet&gt;
 &lt;/drvMet&gt;
 </value>
@@ -5731,7 +5733,9 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_NOT_HALF_CYCLE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
   &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_NOT_HALF_CYCLE&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;/&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
   &lt;/drvMet&gt;
 &lt;/drvMet&gt;
 </value>
@@ -11232,7 +11236,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>654266da649d238e7024b1898db5b2b19e69a5c90dc7838b90317af5acfa1ee5</hash>
+         <hash>8b7668170b049a01255a6ec03903d0db3ab2f291047cdfc80a57adb1532575dc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -11288,23 +11292,23 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>7b949fa8cae87d9314eaedeea366a7ffcb9a2bedd81c4a7a85ad704bec4e574e</hash>
+         <hash>e3cda4b5b241e4a77ca01d318a30850e84d3eae0294ad331c635532f13c578f3</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
-         <hash>66fd5adde4e573277571eabbedf84b1c80624645506a3b0c1db90d29ae398ef0</hash>
+         <hash>05811532892ed01491c44779763400e7e4571eead047930f60e0e3ca5c284cc4</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>56e72e8897873c64f81ba6f8ca608b36cf54dd69ed860ffc9373051852ab8cb2</hash>
+         <hash>69f44f4b81cf406a8fee8881873af66099a1eb1c363329d2438920e5774907b1</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_local.h</file>
-         <hash>4c723966eccf04466f13299cfb6bd8588a4e29d193f572723c9d06b5429865e9</hash>
+         <hash>090d058140338f9558011c063605ec848eadfedb8c336bea8252b561d32b670c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>d670ab009f396d5df831d843ff1fd78316082cd4b75ca8e39b042c9ca9a366ee</hash>
+         <hash>472f88dbc345170de6d7359594586b9a61f103528620c8eff27e0cadd91a816b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26.h</file>
