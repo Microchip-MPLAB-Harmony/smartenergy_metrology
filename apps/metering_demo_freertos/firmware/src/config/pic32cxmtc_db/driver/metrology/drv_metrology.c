@@ -161,6 +161,26 @@ static double lDRV_Metrology_GetDouble(int64_t value)
     return (double)value;
 }
 
+static void lDRV_METROLOGY_UpdateEvents(void)
+{
+    /* Update Swell/Sag events */
+    gDrvMetObj.metAFEData.afeEvents.sagA = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.sagB = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.sagC = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.swellA = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.swellB = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.swellC = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.creepIA = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_CREEP_DET_IA_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.creepIB = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_CREEP_DET_IB_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.creepIC = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_CREEP_DET_IC_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.creepP = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_CREEP_DET_P_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.creepQ = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_CREEP_DET_Q_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.creepS = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_CREEP_DET_S_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.phActiveA = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_PH_A_ACTIVE_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.phActiveB = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_PH_B_ACTIVE_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.phActiveC = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_PH_C_ACTIVE_Msk) > 0U? 1U : 0U;
+}
+
 void IPC1_InterruptHandler (void)
 {
     uint32_t status = IPC1_REGS->IPC_ISR;
@@ -187,6 +207,8 @@ void IPC1_InterruptHandler (void)
             gDrvMetObj.metFreqData.freqA = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VA;
             gDrvMetObj.metFreqData.freqB = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VB;
             gDrvMetObj.metFreqData.freqC = gDrvMetObj.metRegisters->MET_STATUS.FREQ_VC;
+            /* Update State Flag Register */
+            gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
             if (gDrvMetObj.harmonicAnalysisData.holdRegs == false)
             {
                 /* Update Harmonics Data */
@@ -197,11 +219,34 @@ void IPC1_InterruptHandler (void)
         gDrvMetObj.integrationFlag = true;
     }
 
+    if ((status & DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK) != 0UL)
+    {
+        /* Update State Flag Register */
+        gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
+        /* Update Swell/Sag events */
+        lDRV_METROLOGY_UpdateEvents();
+        if (gDrvMetObj.fullCycleCallback != NULL)
+        {
+            gDrvMetObj.fullCycleCallback();
+        }
+    }
+
+    if ((status & DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK) != 0UL)
+    {
+        /* Update State Flag Register */
+        gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
+        /* Update Swell/Sag events */
+        lDRV_METROLOGY_UpdateEvents();
+        if (gDrvMetObj.halfCycleCallback != NULL)
+        {
+            gDrvMetObj.halfCycleCallback();
+        }
+    }
+
     IPC1_REGS->IPC_ICCR = status;
 
     /* Signal Metrology thread to attend IPC interrupt */
     (void) OSAL_SEM_PostISR(&gDrvMetObj.semaphoreID);
-
 }
 
 static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag, uint32_t k)
@@ -487,6 +532,8 @@ static void lDRV_Metrology_IpcInitialize (void)
     IPC1_REGS->IPC_ICCR = 0xFFFFFFFFUL;
     /* Enable interrupts */
     IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK |
+        DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK |
+        DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK |
         DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
@@ -534,10 +581,6 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle(uint32_t measured, double
 static void lDRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeMeasure = NULL;
-    uint32_t stateFlagReg;
-
-    /* Get State Flag Register */
-    stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
 
     /* Update Measure values */
     afeMeasure = gDrvMetObj.metAFEData.measure;
@@ -629,13 +672,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     gDrvMetObj.metAFEData.energy += lDRV_Metrology_GetPQEnergy(PENERGY);
 
     /* Update Swell/Sag events */
-    gDrvMetObj.metAFEData.afeEvents.sagA = (stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk) > 0U? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.sagB = (stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk) > 0U? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.sagC = (stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk) > 0U? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.swellA = (stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk) > 0U? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.swellB = (stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk) > 0U? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.swellC = (stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk) > 0U? 1U : 0U;
-
+    lDRV_METROLOGY_UpdateEvents();
 }
 
 static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
@@ -966,6 +1003,9 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     /* Disable IPC interrupts */
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
+    /* Clean the IPC interrupt flags */
+    gDrvMetObj.integrationFlag = false;
+
     /* Assert reset of the coprocessor and its peripherals */
     RSTC_CoProcessorEnable(false);
     RSTC_CoProcessorPeripheralEnable(false);
@@ -1118,6 +1158,28 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister (
     }
 
     gDrvMetObj.integrationCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.fullCycleCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.halfCycleCallback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 

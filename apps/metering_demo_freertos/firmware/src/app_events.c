@@ -151,40 +151,17 @@ static bool _APP_EVENTS_RegisterEvent(APP_EVENTS_EVENT_ID type, bool enabled, st
         {
             if (enabled)
             {
-                /* Start Holding Start time */
-                eventData->status = EVENT_HOLDING_START;
-                eventData->holdingCounter = EVENT_HOLDING_START_COUNTER;
+                APP_EVENTS_EVENT_INFO * eventInfo;
+
+                /* Register Starting Event */
+                eventInfo = &eventData->data[eventData->dataIndex];
+                
+                /* Register Starting Event */
+                eventInfo->startTime = *timeEvent;
+                memset(&eventInfo->endTime, 0, sizeof(struct tm));
+
+                eventData->status = EVENT_START;
             }
-            break;
-        }
-
-        case EVENT_HOLDING_START:
-        {
-            APP_EVENTS_EVENT_INFO * eventInfo;
-
-            /* Register Starting Event */
-            eventInfo = &eventData->data[eventData->dataIndex];
-
-            if (enabled)
-            {
-                eventData->holdingCounter--;
-                if (eventData->holdingCounter == 0)
-                {
-                    /* Register Starting Event */
-                    eventInfo->startTime = *timeEvent;
-                    memset(&eventInfo->endTime, 0, sizeof(struct tm));
-
-                    eventData->status = EVENT_START;
-                }
-            }
-            else
-            {
-                /* Cancel Starting event */
-                eventData->status = NO_EVENT;
-                /* Clean starting time */
-                memset(&eventInfo->startTime, 0, sizeof(struct tm));
-            }
-
             break;
         }
 
@@ -192,47 +169,26 @@ static bool _APP_EVENTS_RegisterEvent(APP_EVENTS_EVENT_ID type, bool enabled, st
         {
             if (enabled == 0)
             {
-                /* Start Holding End time */
-                eventData->status = EVENT_HOLDING_END;
-                eventData->holdingCounter = EVENT_HOLDING_END_COUNTER;
+                APP_EVENTS_EVENT_INFO * eventInfo;
+
+                /* Register Ending Event */
+                eventInfo = &eventData->data[eventData->dataIndex];
+                eventInfo->endTime = *timeEvent;
+
+                /* Set index to next logged data */
+                eventData->dataIndex++;
+                eventData->dataIndex %= EVENT_LOG_MAX_NUMBER;
+
+                /* Clear data of the next index */
+                eventInfo = &eventData->data[eventData->dataIndex];
+                memset(eventInfo, 0, sizeof(APP_EVENTS_EVENT_INFO));
+
+                eventData->counter++;
+                eventData->status = NO_EVENT;
+
+                /* Register event is completed */
+                registered = true;
             }
-            break;
-        }
-
-        case EVENT_HOLDING_END:
-        {
-            if (enabled == 0)
-            {
-                eventData->holdingCounter--;
-                if (eventData->holdingCounter == 0)
-                {
-                    APP_EVENTS_EVENT_INFO * eventInfo;
-
-                    /* Register Ending Event */
-                    eventInfo = &eventData->data[eventData->dataIndex];
-                    eventInfo->endTime = *timeEvent;
-
-                    /* Set index to next logged data */
-                    eventData->dataIndex++;
-                    eventData->dataIndex %= EVENT_LOG_MAX_NUMBER;
-
-                    /* Clear data of the next index */
-                    eventInfo = &eventData->data[eventData->dataIndex];
-                    memset(eventInfo, 0, sizeof(APP_EVENTS_EVENT_INFO));
-
-                    eventData->counter++;
-                    eventData->status = NO_EVENT;
-
-                    /* Register event is completed */
-                    registered = true;
-                }
-            }
-            else
-            {
-                /* Cancel Ending event */
-                eventData->status = EVENT_START;
-            }
-
             break;
         }
     }
@@ -258,18 +214,33 @@ static bool _APP_EVENTS_UpdateEvents(APP_EVENTS_QUEUE_DATA * newEvent)
     {
         update = true;
     }
-
-    if (_APP_EVENTS_RegisterEvent(POW_UA_EVENT_ID, newEvent->eventFlags.swellA, &newEvent->eventTime))
+    
+    if (_APP_EVENTS_RegisterEvent(SWELL_UA_EVENT_ID, newEvent->eventFlags.swellA, &newEvent->eventTime))
     {
         update = true;
     }
 
-    if (_APP_EVENTS_RegisterEvent(POW_UB_EVENT_ID, newEvent->eventFlags.swellB, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(SWELL_UB_EVENT_ID, newEvent->eventFlags.swellB, &newEvent->eventTime))
     {
         update = true;
     }
 
-    if (_APP_EVENTS_RegisterEvent(POW_UC_EVENT_ID, newEvent->eventFlags.swellC, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(SWELL_UC_EVENT_ID, newEvent->eventFlags.swellC, &newEvent->eventTime))
+    {
+        update = true;
+    }
+
+    if (_APP_EVENTS_RegisterEvent(POW_PA_EVENT_ID, newEvent->eventFlags.paDir, &newEvent->eventTime))
+    {
+        update = true;
+    }
+
+    if (_APP_EVENTS_RegisterEvent(POW_PB_EVENT_ID, newEvent->eventFlags.pbDir, &newEvent->eventTime))
+    {
+        update = true;
+    }
+
+    if (_APP_EVENTS_RegisterEvent(POW_PC_EVENT_ID, newEvent->eventFlags.pcDir, &newEvent->eventTime))
     {
         update = true;
     }

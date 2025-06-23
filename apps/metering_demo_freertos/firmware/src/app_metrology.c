@@ -320,6 +320,7 @@ static void _APP_METROLOGY_IntegrationCallback(void)
         (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION))
     {
         /* Signal Metrology thread to update measurements for an integration period */
+        app_metrologyData.integrationFlag = true;
         OSAL_SEM_Post(&appMetrologySemID);
     }
 }
@@ -356,6 +357,17 @@ static void _APP_METROLOGY_HarmonicAnalysisCallback(uint32_t harmonicBitmap)
             app_metrologyData.sendHarmonicsToConsole = false;
             app_metrologyData.pHarmonicAnalysisCallback(harmonicBitmap);
         }
+    }
+}
+
+static void _APP_METROLOGY_HalfFullCycleCallback(void)
+{
+    if ((app_metrologyData.state == APP_METROLOGY_STATE_RUNNING) ||
+        (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION))
+    {
+        /* Signal Metrology thread to update events for a Half/Full Cycle */
+        app_metrologyData.halfFullCycleFlag = true;
+        OSAL_SEM_PostISR(&appMetrologySemID);
     }
 }
 
@@ -414,6 +426,10 @@ void APP_METROLOGY_Initialize (void)
     DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
     /* Set Callback for harmonic analysis process */
     DRV_METROLOGY_HarmonicAnalysisCallbackRegister(_APP_METROLOGY_HarmonicAnalysisCallback);
+    /* Set Callback for full cycle */
+    DRV_METROLOGY_FullCycleCallbackRegister(_APP_METROLOGY_HalfFullCycleCallback);
+    /* Set Callback for half cycle */
+    DRV_METROLOGY_HalfCycleCallbackRegister(_APP_METROLOGY_HalfFullCycleCallback);
 
     /* Clear Harmonic Analysis Data */
     app_metrologyData.harmonicAnalysisPending = false;
@@ -422,6 +438,10 @@ void APP_METROLOGY_Initialize (void)
 
     /* Clear Calibration Data */
     app_metrologyData.pCalibrationCallback = NULL;
+    
+    /* Initialize integration Flag */
+    app_metrologyData.integrationFlag = false;
+    app_metrologyData.halfFullCycleFlag = false;
 
     /* Create the Metrology Integration Semaphore. */
     if (OSAL_SEM_Create(&appMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
@@ -552,31 +572,52 @@ void APP_METROLOGY_Tasks (void)
                 /* Received Start Calibration Command */
                 break;
             }
+            
+            if (app_metrologyData.integrationFlag) {
+                app_metrologyData.integrationFlag = false;
+                
+                // Send new Energy values to the Energy Task
+                app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
+                if (app_metrologyData.queueFree)
+                {
+                    newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
+                    newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
+                    xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
+                }
+                else
+                {
+                    SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
+                }
 
-            // Send new Energy values to the Energy Task
-            app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
-            if (app_metrologyData.queueFree)
-            {
-                newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-                newMetrologyData.Pt = DRV_METROLOGY_GetMeasureValue(MEASURE_PT);
-                xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
-            }
-            else
-            {
-                SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
+                // Send new Events to the Events Task
+                app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
+                if (app_metrologyData.queueFree)
+                {
+                    RTC_TimeGet(&newEvent.eventTime);
+                    DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
+                    xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                }
+                else
+                {
+                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                }
             }
 
-            // Send new Events to the Events Task
-            app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
-            if (app_metrologyData.queueFree)
+            if (app_metrologyData.halfFullCycleFlag)
             {
-                RTC_TimeGet(&newEvent.eventTime);
-                DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
-                xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
-            }
-            else
-            {
-                SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                app_metrologyData.halfFullCycleFlag = false;
+                // Send new Events to the Events Task
+                app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
+                if (app_metrologyData.queueFree)
+                {
+                    RTC_TimeGet(&newEvent.eventTime);
+                    DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
+                    xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                }
+                else
+                {
+                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                }
             }
 
             break;

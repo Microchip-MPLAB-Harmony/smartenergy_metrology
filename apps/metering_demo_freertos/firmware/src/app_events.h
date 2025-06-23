@@ -71,15 +71,11 @@ extern "C" {
 // *****************************************************************************
 
 #define EVENT_LOG_MAX_NUMBER                 10
-#define EVENT_HOLDING_START_COUNTER          10//60
-#define EVENT_HOLDING_END_COUNTER            10//60
 
 typedef enum
 {
 	NO_EVENT = 0,
-	EVENT_HOLDING_START,
 	EVENT_START,
-	EVENT_HOLDING_END
 } APP_EVENTS_EVENT_STATUS;
 
 typedef enum
@@ -87,9 +83,12 @@ typedef enum
 	SAG_UA_EVENT_ID = 0,
 	SAG_UB_EVENT_ID,
 	SAG_UC_EVENT_ID,
-	POW_UA_EVENT_ID,
-	POW_UB_EVENT_ID,
-	POW_UC_EVENT_ID,
+	SWELL_UA_EVENT_ID,
+	SWELL_UB_EVENT_ID,
+	SWELL_UC_EVENT_ID,
+	POW_PA_EVENT_ID,
+	POW_PB_EVENT_ID,
+	POW_PC_EVENT_ID,
     EVENTS_NUM_ID,
     EVENT_INVALID_ID = 0xFF,
 } APP_EVENTS_EVENT_ID;
@@ -105,7 +104,6 @@ typedef struct
 	APP_EVENTS_EVENT_STATUS status;
 	APP_EVENTS_EVENT_INFO data[EVENT_LOG_MAX_NUMBER];
 	uint16_t counter;
-	uint8_t holdingCounter;
 	uint8_t dataIndex;
 } APP_EVENTS_EVENT_DATA;
 
