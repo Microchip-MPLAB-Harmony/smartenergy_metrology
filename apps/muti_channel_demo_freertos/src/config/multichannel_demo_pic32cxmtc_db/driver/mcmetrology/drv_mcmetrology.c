@@ -554,7 +554,7 @@ SYS_MODULE_OBJ DRV_MCMETROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
     /* Clean the IPC interrupt flags */
-    gDrvMCMetObj.integrationFlag = true;
+    gDrvMCMetObj.integrationFlag = false;
 
     /* Assert reset of the coprocessor and its peripherals */
     RSTC_CoProcessorEnable(false);
