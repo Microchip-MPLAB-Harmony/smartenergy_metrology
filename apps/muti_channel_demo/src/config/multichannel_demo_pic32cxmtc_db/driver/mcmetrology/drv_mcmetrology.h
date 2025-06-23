@@ -436,6 +436,8 @@ DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_Start(void);
     None.
 */
 DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_IntegrationCallbackRegister(DRV_MCMETROLOGY_CALLBACK callback);
+DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_FullCycleCallbackRegister(DRV_MCMETROLOGY_CALLBACK callback);
+DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_HalfCycleCallbackRegister(DRV_MCMETROLOGY_CALLBACK callback);
 
 // *****************************************************************************
 /* Function:

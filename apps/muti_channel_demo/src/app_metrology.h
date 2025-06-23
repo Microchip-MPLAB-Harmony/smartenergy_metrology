@@ -137,6 +137,8 @@ typedef struct
     bool dataIsRdy;
 
     volatile bool integrationFlag;
+    
+    volatile bool halfFullCycleFlag;
 
     bool dataFlag;
 
