@@ -311,7 +311,16 @@ typedef struct {
     unsigned int swellA : 1;
     unsigned int swellB : 1;
     unsigned int swellC : 1;
-    unsigned int reserved : 10;
+    unsigned int creepIA : 1;
+    unsigned int creepIB : 1;
+    unsigned int creepIC : 1;
+    unsigned int creepQ : 1;
+    unsigned int creepP : 1;
+    unsigned int creepS : 1;
+    unsigned int phActiveA : 1;
+    unsigned int phActiveB : 1;
+    unsigned int phActiveC : 1;
+    unsigned int reserved : 1;
 } DRV_METROLOGY_AFE_EVENTS;
 
 /* Metrology Driver Measurements type

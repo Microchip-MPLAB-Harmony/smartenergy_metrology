@@ -136,6 +136,9 @@ typedef struct
     /* Number of samples for accumulators in last Integration Period */
     uint32_t                                      samplesInPeriod;
 
+    /* State Flat Register in last Full-Cycle/Half-Cycle/Integration Period interrupt */
+    uint32_t                                      stateFlagReg;
+
     /* Metrology Control interface */
     MET_REGISTERS *                               metRegisters;
 
