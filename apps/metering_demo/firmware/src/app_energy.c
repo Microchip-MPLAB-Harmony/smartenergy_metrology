@@ -575,8 +575,10 @@ static void _APP_ENERGY_SupplyMonitorCallback(uint32_t supc_status, uintptr_t co
 {
     if (supc_status & SUPC_IMR_VDD3V3SMEV_Msk)
     {
-        // Go to Low Power mode
-        APP_METROLOGY_SetLowPowerMode();
+        // User may set Low Power mode upon this event
+        // This application demonstrates Low Power mode through a console command
+        // or through a switch button combination
+        // Refer to documentation for more details
     }
 }
 
@@ -616,6 +618,9 @@ void APP_ENERGY_Initialize (void)
      /* Initialize Energy callbacks */
     app_energyData.maxDemandCallback = NULL;
     app_energyData.monthEnergyCallback = NULL;
+
+    /* Clear SUPC Interrupt Source */
+    SYS_INT_SourceStatusClear(SUPC_IRQn);
 
     /* Set callback for the supply monitor */
     SUPC_CallbackRegister(_APP_ENERGY_SupplyMonitorCallback, 0);

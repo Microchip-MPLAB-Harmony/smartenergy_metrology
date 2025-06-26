@@ -69,6 +69,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#define MAX_WAIT_LOOPS 100000
+
 typedef enum {
     PENERGY = 0U,
     QENERGY = 1U,
@@ -1205,6 +1207,8 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode, DRV_METR
 
 DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
 {
+    uint32_t loopCount;
+
     if (gDrvMetObj.inUse == false)
     {
         return DRV_METROLOGY_ERROR;
@@ -1217,8 +1221,14 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
     /* Keep Metrology Lib in reset */
     gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
     /* Wait until the metrology resets */
+    loopCount = 0;
     while (gDrvMetObj.metRegisters->MET_STATUS.STATUS != STATUS_STATUS_RESET)
     {
+        if (++loopCount > MAX_WAIT_LOOPS)
+        {
+            /* Way out */
+            break;
+        }
     }
 
     /* Update Driver state */
