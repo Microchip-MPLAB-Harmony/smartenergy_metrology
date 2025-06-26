@@ -69,6 +69,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#define MAX_WAIT_LOOPS 100000
+
 typedef enum {
     PENERGY = 0U,
     QENERGY = 2U,
@@ -189,8 +191,8 @@ void IPC1_InterruptHandler (void)
             uint8_t index;
 
             /* Update Accumulators Data */
-            (void) memcpy(&gDrvMCMetObj.metAccData, 
-                          &gDrvMCMetObj.metRegisters->MET_ACCUMULATORS, 
+            (void) memcpy(&gDrvMCMetObj.metAccData,
+                          &gDrvMCMetObj.metRegisters->MET_ACCUMULATORS,
                           sizeof(DRV_MCMETROLOGY_REGS_ACCUMULATORS));
             /* Store samples in period */
             gDrvMCMetObj.samplesInPeriod = gDrvMCMetObj.metRegisters->MET_STATUS.N;
@@ -211,8 +213,8 @@ void IPC1_InterruptHandler (void)
             if (gDrvMCMetObj.harmonicAnalysisData.holdRegs == false)
             {
                 /* Update Harmonics Data */
-                (void) memcpy(&gDrvMCMetObj.metHarData, 
-                              &gDrvMCMetObj.metRegisters->MET_HARMONICS, 
+                (void) memcpy(&gDrvMCMetObj.metHarData,
+                              &gDrvMCMetObj.metRegisters->MET_HARMONICS,
                               sizeof(DRV_MCMETROLOGY_REGS_HARMONICS));
             }
         }
@@ -330,7 +332,7 @@ static float lDRV_Mcmetrology_GetEnergy(DRV_MCMETROLOGY_ENERGY_TYPE id)
 {
     double energy;
     uint8_t index;
-    
+
     energy = 0.0f;
     for (index = 0; index < DRV_MCMETROLOGY_POWERS_NUMBER; index++)
     {
@@ -565,7 +567,7 @@ SYS_MODULE_OBJ DRV_MCMETROLOGY_Reinitialize (SYS_MODULE_INIT * init)
 
     gDrvMCMetObj.binStartAddress = metInit->binStartAddress;
     gDrvMCMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
-    
+
     /* De-assert the reset of the peripherals (Core 1) */
     RSTC_CoProcessorPeripheralEnable(true);
 
@@ -616,7 +618,7 @@ DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_Open (DRV_MCMETROLOGY_START_MODE mode, DR
     {
         /* Enable the coprocessor clock (Core 1) */
         CLK_Core1ProcessorClkEnable();
-        
+
         /* De-assert the reset of the coprocessor (Core 1) */
         RSTC_CoProcessorEnable(true);
 
@@ -656,6 +658,8 @@ DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_Open (DRV_MCMETROLOGY_START_MODE mode, DR
 
 DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_Close (void)
 {
+    uint32_t loopCount;
+
     if (gDrvMCMetObj.inUse == false)
     {
         return DRV_MCMETROLOGY_ERROR;
@@ -668,8 +672,14 @@ DRV_MCMETROLOGY_RESULT DRV_MCMETROLOGY_Close (void)
     /* Keep Metrology Lib in reset */
     gDrvMCMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
     /* Wait until the metrology resets */
+    loopCount = 0;
     while (gDrvMCMetObj.metRegisters->MET_STATUS.STATUS != STATUS_STATUS_RESET)
     {
+        if (++loopCount > MAX_WAIT_LOOPS)
+        {
+            /* Way out */
+            break;
+        }
     }
 
     /* Update Driver state */

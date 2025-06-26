@@ -29204,7 +29204,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology.c</file>
-         <hash>df5e6efe0ac85f971fed049ad928ac960072e2cc51efdfa55d83eca37450b372</hash>
+         <hash>b7a458451b02a99f9d0a011941e03df49b0dbf0c1bb81e3602b02ffad37df75f</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\driver\mcmetrology\drv_mcmetrology.h</file>

@@ -66,6 +66,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#define MAX_WAIT_LOOPS 100000
+
 typedef enum {
     PENERGY = 0U,
     QENERGY = 1U,
@@ -162,7 +164,7 @@ static double lDRV_Metrology_GetDouble(int64_t value)
 
 static void lDRV_METROLOGY_UpdateEvents(void)
 {
-    /* Update Swell/Sag events */
+    /* Update Swell/Sag/Creep/Phase Active events */
     gDrvMetObj.metAFEData.afeEvents.sagA = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk) > 0U? 1U : 0U;
     gDrvMetObj.metAFEData.afeEvents.sagB = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk) > 0U? 1U : 0U;
     gDrvMetObj.metAFEData.afeEvents.sagC = (gDrvMetObj.stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk) > 0U? 1U : 0U;
@@ -222,7 +224,7 @@ void IPC1_InterruptHandler (void)
     {
         /* Update State Flag Register */
         gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
-        /* Update Swell/Sag events */
+        /* Update events */
         lDRV_METROLOGY_UpdateEvents();
         if (gDrvMetObj.fullCycleCallback != NULL)
         {
@@ -234,7 +236,7 @@ void IPC1_InterruptHandler (void)
     {
         /* Update State Flag Register */
         gDrvMetObj.stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
-        /* Update Swell/Sag events */
+        /* Update events */
         lDRV_METROLOGY_UpdateEvents();
         if (gDrvMetObj.halfCycleCallback != NULL)
         {
@@ -669,7 +671,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     gDrvMetObj.metAFEData.energy += lDRV_Metrology_GetPQEnergy(PENERGY);
 
-    /* Update Swell/Sag events */
+    /* Update events */
     lDRV_METROLOGY_UpdateEvents();
 }
 
@@ -1097,6 +1099,8 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode, DRV_METR
 
 DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
 {
+    uint32_t loopCount;
+
     if (gDrvMetObj.inUse == false)
     {
         return DRV_METROLOGY_ERROR;
@@ -1109,8 +1113,14 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
     /* Keep Metrology Lib in reset */
     gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
     /* Wait until the metrology resets */
+    loopCount = 0;
     while (gDrvMetObj.metRegisters->MET_STATUS.STATUS != STATUS_STATUS_RESET)
     {
+        if (++loopCount > MAX_WAIT_LOOPS)
+        {
+            /* Way out */
+            break;
+        }
     }
 
     /* Update Driver state */
