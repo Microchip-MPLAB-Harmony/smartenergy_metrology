@@ -4,7 +4,7 @@
 
 
 project: muti_channel_demo
-creation_date: 2025-06-23T16:43:46.296+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2025-06-27T18:20:33.866+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 11
 mcc_mode: IDE            # [IDE|Standalone|Headless]
 mcc_version: v5.5.3
@@ -16,7 +16,7 @@ compiler: XC32 4.60
 modules:
     - {name: "core", version: "v3.15.1"}
     - {name: "csp", version: "v3.22.2"}
-    - {name: "smartenergy_metrology", version: "MH3-113812-capture-and-register-events-in-cycle-half-cycle-interrupts"}
+    - {name: "smartenergy_metrology", version: "MH3-113814-power-offset-compensation-on-p-accumulators"}
     - {name: "CMSIS_5", version: "5.9.0"}
     - {name: "gfx", version: "v3.16.0"}
     - {name: "shd", version: "dev"}

@@ -11157,7 +11157,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>a4ed3e63faadc72ab6c09ace2967d1b5ffacfe9e03891ff02dd958c9af9727af</hash>
+         <hash>09746ad8227a2d4e04aa2e3cc8396628b4de926be32acfb191c7155bad49e17b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\device.h</file>
@@ -11213,15 +11213,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>b5f6e4e405effedeb5923b74fb72c22170acaf17715e1a61b3ff54c8552548b2</hash>
+         <hash>4214745a64ec2616939a706249580d3fa5f2141253b406674ac407590124cfd5</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>05811532892ed01491c44779763400e7e4571eead047930f60e0e3ca5c284cc4</hash>
+         <hash>8e0b9a3f2b6806f4b9e3f411b71d6ade38b92bff63b8f44f26b210529ace845b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>69f44f4b81cf406a8fee8881873af66099a1eb1c363329d2438920e5774907b1</hash>
+         <hash>b117462af3a4cbb7c2bde835f841c23d8fdfadf98c32208c1d3123a291efaa9b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_local.h</file>
@@ -11229,7 +11229,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>472f88dbc345170de6d7359594586b9a61f103528620c8eff27e0cadd91a816b</hash>
+         <hash>e22353f78b1db0e63fd977448615abd4a4ab44d967a81865d04904288c0f41dc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\sst26\drv_sst26.h</file>
@@ -11281,7 +11281,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>361c3f561588a64e4c506eccf193835738575e05539fd308e06dd5ac771a10c7</hash>
+         <hash>20fd7cafb38b531080377df8cb3b378268cefd1b6dc4527569ee32c61426c021</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>

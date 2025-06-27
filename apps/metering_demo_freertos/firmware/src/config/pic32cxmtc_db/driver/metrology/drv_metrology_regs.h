@@ -478,18 +478,18 @@ Microchip or any third party.
 #define   POWER_OFFSET_CTRL_P_OFFSET_ACC_C_DISABLED_Val        _UINT32_(0x0)                   /* (POWER_OFFSET_CTRL) Active Power Offset disabled */
 #define   POWER_OFFSET_CTRL_P_OFFSET_ACC_C_ENABLED_Val         _UINT32_(0x1)                   /* (POWER_OFFSET_CTRL) Active Power Offset enabled */
 #define POWER_OFFSET_CTRL_S_OFFSET_PUL_Pos         _UINT32_(24)                                /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable Position */
-#define POWER_OFFSET_CTRL_S_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_S_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable Mask */
-#define POWER_OFFSET_CTRL_S_OFFSET_PUL(value)      (POWER_OFFSET_S_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_Q_OFFSET_PUL_Pos))
+#define POWER_OFFSET_CTRL_S_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_CTRL_S_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable Mask */
+#define POWER_OFFSET_CTRL_S_OFFSET_PUL(value)      (POWER_OFFSET_CTRL_S_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_CTRL_S_OFFSET_PUL_Pos))
 #define   POWER_OFFSET_CTRL_S_OFFSET_PUL_DISABLED_Val      _UINT32_(0x0)                            /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable disabled */
 #define   POWER_OFFSET_CTRL_S_OFFSET_PUL_ENABLED_Val       _UINT32_(0x1)                            /* (POWER_OFFSET_CTRL) Apparent Power Offset for Pulse Quantities Enable enabled */
 #define POWER_OFFSET_CTRL_Q_OFFSET_PUL_Pos         _UINT32_(27)                                /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable Position */
-#define POWER_OFFSET_CTRL_Q_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_Q_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable Mask */
-#define POWER_OFFSET_CTRL_Q_OFFSET_PUL(value)      (POWER_OFFSET_Q_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_Q_OFFSET_PUL_Pos))
+#define POWER_OFFSET_CTRL_Q_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_CTRL_Q_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable Mask */
+#define POWER_OFFSET_CTRL_Q_OFFSET_PUL(value)      (POWER_OFFSET_CTRL_Q_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_CTRL_Q_OFFSET_PUL_Pos))
 #define   POWER_OFFSET_CTRL_Q_OFFSET_PUL_DISABLED_Val      _UINT32_(0x0)                            /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable disabled */
 #define   POWER_OFFSET_CTRL_Q_OFFSET_PUL_ENABLED_Val       _UINT32_(0x1)                            /* (POWER_OFFSET_CTRL) Reactive Power Offset for Pulse Quantities Enable enabled */
 #define POWER_OFFSET_CTRL_P_OFFSET_PUL_Pos         _UINT32_(31)                                /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable Position */
-#define POWER_OFFSET_CTRL_P_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_P_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable Mask */
-#define POWER_OFFSET_CTRL_P_OFFSET_PUL(value)      (POWER_OFFSET_P_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_P_OFFSET_PUL_Pos))
+#define POWER_OFFSET_CTRL_P_OFFSET_PUL_Msk         (_UINT32_(0x1) << POWER_OFFSET_CTRL_P_OFFSET_PUL_Pos)        /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable Mask */
+#define POWER_OFFSET_CTRL_P_OFFSET_PUL(value)      (POWER_OFFSET_CTRL_P_OFFSET_PUL_Msk & (_UINT32_(value) << POWER_OFFSET_CTRL_P_OFFSET_PUL_Pos))
 #define   POWER_OFFSET_CTRL_P_OFFSET_PUL_DISABLED_Val      _UINT32_(0x0)                            /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable disabled */
 #define   POWER_OFFSET_CTRL_P_OFFSET_PUL_ENABLED_Val       _UINT32_(0x1)                            /* (POWER_OFFSET_CTRL) Active Power Offset for Pulse Quantities Enable enabled */
 
@@ -1341,9 +1341,9 @@ typedef struct
    __IO  uint32_t CREEP_THRESHOLD_I;       /**< Offset: 0x3C (R/W  32) Creep Threshold of Phase Current (uQ2.30) */
    __IO  uint32_t CREEP_THRESHOLD_S;       /**< Offset: 0x40 (R/W  32) Creep Threshold of Phase Apparent Power (uQ2.30) */
    __IO  uint32_t POWER_OFFSET_CTRL;       /**< Offset: 0x44 (R/W  32) Power offset control */
-   __IO  uint32_t POWER_OFFSET_P;          /**< Offset: 0x48 (R/W  32) Active Power Offset (sQ1.30) */
-   __IO  uint32_t POWER_OFFSET_Q;          /**< Offset: 0x4C (R/W  32) Reactive Power Offset (sQ1.30) */
-   __IO  uint32_t POWER_OFFSET_S;          /**< Offset: 0x50 (R/W  32) Apparent Power Offset (sQ1.30) */
+   __IO  int32_t POWER_OFFSET_P;           /**< Offset: 0x48 (R/W  32) Active Power Offset (sQ1.30) */
+   __IO  int32_t POWER_OFFSET_Q;           /**< Offset: 0x4C (R/W  32) Reactive Power Offset (sQ1.30) */
+   __IO  int32_t POWER_OFFSET_S;           /**< Offset: 0x50 (R/W  32) Apparent Power Offset (sQ1.30) */
    __IO  uint32_t SWELL_THRESHOLD_VA;      /**< Offset: 0x54 (R/W  32) Voltage swell threshold for each half cycle of phase-A voltage (uQ0.32) */
    __IO  uint32_t SWELL_THRESHOLD_VB;      /**< Offset: 0x58 (R/W  32) Voltage swell threshold for each half cycle of phase-B voltage (uQ0.32) */
    __IO  uint32_t SWELL_THRESHOLD_VC;      /**< Offset: 0x5C (R/W  32) Voltage swell threshold for each half cycle of phase-C voltage (uQ0.32) */
@@ -1364,13 +1364,13 @@ typedef struct
    __IO  uint32_t CAL_M_IC;                /**< Offset: 0x98 (R/W  32) Current magnitude calibration constant, I_C  (sQ2.29) */
    __IO  uint32_t CAL_M_VC;                /**< Offset: 0x9C (R/W  32) Voltage magnitude calibration constant, V_C  (sQ2.29) */
    __IO  uint32_t CAL_M_IN;                /**< Offset: 0xA0 (R/W  32) Current magnitude calibration constant, I_N  (sQ2.29) */
-   __IO  uint32_t CAL_PH_IA;               /**< Offset: 0xA4 (R/W  32) Current phase calibration constant, I_A (sQ0.31) */
-   __IO  uint32_t CAL_PH_VA;               /**< Offset: 0xA8 (R/W  32) Voltage phase calibration constant, V_A (sQ0.31) */
-   __IO  uint32_t CAL_PH_IB;               /**< Offset: 0xAC (R/W  32) Current phase calibration constant, I_B (sQ0.31) */
-   __IO  uint32_t CAL_PH_VB;               /**< Offset: 0xB0 (R/W  32) Voltage phase calibration constant, V_B (sQ0.31) */
-   __IO  uint32_t CAL_PH_IC;               /**< Offset: 0xB4 (R/W  32) Current phase calibration constant, I_C (sQ0.31) */
-   __IO  uint32_t CAL_PH_VC;               /**< Offset: 0xB8 (R/W  32) Voltage phase calibration constant, V_C (sQ0.31) */
-   __IO  uint32_t CAL_PH_IN;               /**< Offset: 0xBC (R/W  32) Current phase calibration constant, I_N (sQ0.31) */
+   __IO  int32_t CAL_PH_IA;                /**< Offset: 0xA4 (R/W  32) Current phase calibration constant, I_A (sQ0.31) */
+   __IO  int32_t CAL_PH_VA;                /**< Offset: 0xA8 (R/W  32) Voltage phase calibration constant, V_A (sQ0.31) */
+   __IO  int32_t CAL_PH_IB;                /**< Offset: 0xAC (R/W  32) Current phase calibration constant, I_B (sQ0.31) */
+   __IO  int32_t CAL_PH_VB;                /**< Offset: 0xB0 (R/W  32) Voltage phase calibration constant, V_B (sQ0.31) */
+   __IO  int32_t CAL_PH_IC;                /**< Offset: 0xB4 (R/W  32) Current phase calibration constant, I_C (sQ0.31) */
+   __IO  int32_t CAL_PH_VC;                /**< Offset: 0xB8 (R/W  32) Voltage phase calibration constant, V_C (sQ0.31) */
+   __IO  int32_t CAL_PH_IN;                /**< Offset: 0xBC (R/W  32) Current phase calibration constant, I_N (sQ0.31) */
    __IO  uint32_t CAPTURE_CTRL;            /**< Offset: 0xC0 (R/W  32) Waveform capture control register */
    __IO  uint32_t CAPTURE_BUFF_SIZE;       /**< Offset: 0xC4 (R/W  32) Waveform capture buffer size in units of 32-bits */
    __IO  uint32_t CAPTURE_ADDR;            /**< Offset: 0xC8 (R/W  32) Waveform capture buffer address pointer */
@@ -1381,12 +1381,12 @@ typedef struct
    __IO  uint32_t ATSENSE_CTRL_24_27;      /**< Offset: 0xDC (R/W  32) ATSense control: channels V2,I3,V3,ANA */
    __IO  uint32_t ATSENSE_CTRL_28_2B;      /**< Offset: 0xE0 (R/W  32) ATSense control: Registers: x28, x2A-2B, x2D */
    __IO  uint32_t Reserved4;
-   __IO  uint32_t POWER_OFFSET_P_A;        /**< Offset: 0xE8 (R/W  32) Phase-A active power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_P_B;        /**< Offset: 0xEC (R/W  32) Phase-B active power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_P_C;        /**< Offset: 0xF0 (R/W  32) Phase-C active power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_Q_A;        /**< Offset: 0xF4 (R/W  32) Phase-A reactive power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_Q_B;        /**< Offset: 0xF8 (R/W  32) Phase-B reactive power offset (sQ9.40) */
-   __IO  uint32_t POWER_OFFSET_Q_C;        /**< Offset: 0xFC (R/W  32) Phase-C reactive power offset (sQ9.40) */
+   __IO  int32_t POWER_OFFSET_P_A;         /**< Offset: 0xE8 (R/W  32) Phase-A active power offset (sQ-9.40) */
+   __IO  int32_t POWER_OFFSET_P_B;         /**< Offset: 0xEC (R/W  32) Phase-B active power offset (sQ-9.40) */
+   __IO  int32_t POWER_OFFSET_P_C;         /**< Offset: 0xF0 (R/W  32) Phase-C active power offset (sQ-9.40) */
+   __IO  int32_t POWER_OFFSET_Q_A;         /**< Offset: 0xF4 (R/W  32) Phase-A reactive power offset (sQ-9.40) */
+   __IO  int32_t POWER_OFFSET_Q_B;         /**< Offset: 0xF8 (R/W  32) Phase-B reactive power offset (sQ-9.40) */
+   __IO  int32_t POWER_OFFSET_Q_C;         /**< Offset: 0xFC (R/W  32) Phase-C reactive power offset (sQ-9.40) */
 } DRV_METROLOGY_REGS_CONTROL;
 
 /** \brief METROLOGY register API structure */

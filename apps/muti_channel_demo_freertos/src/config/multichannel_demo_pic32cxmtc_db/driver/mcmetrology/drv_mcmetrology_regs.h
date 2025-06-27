@@ -598,13 +598,13 @@ typedef struct
    __IO  uint32_t CREEP_THRESHOLD_I;                    /**< Offset: 0x94 (R/W 32) Creep Threshold of Phase Current (uQ12.20) */
    __IO  uint32_t P_POWER_OFFSET_CTRL;                  /**< Offset: 0x98 (R/W 32) Active Power offset control */
    __IO  uint32_t Q_POWER_OFFSET_CTRL;                  /**< Offset: 0x9C (R/W 32) Reactive Power offset control */
-   __IO  uint32_t POWER_OFFSET_P;                       /**< Offset: 0xA0 (R/W 32) Active Power Offset (sQ1.30) */
-   __IO  uint32_t POWER_OFFSET_Q;                       /**< Offset: 0xA4 (R/W 32) Reactive Power Offset (sQ1.30) */
+   __IO  int32_t POWER_OFFSET_P;                       /**< Offset: 0xA0 (R/W 32) Active Power Offset (sQ1.30) */
+   __IO  int32_t POWER_OFFSET_Q;                       /**< Offset: 0xA4 (R/W 32) Reactive Power Offset (sQ1.30) */
    __IO  uint32_t SWELL_OVERCURRENT_THRESHOLD_CHx[32];  /**< Offset: 0xA8 (R/W 32) Voltage swells or overcurrent threshold for each half cycle of CHx channel (uQ0.32) */
    __IO  uint32_t SAG_THRESHOLD_CHx[32];                /**< Offset: 0x128 (R/W 32) Voltage sag threshold for each half cycle of CHx voltage (uQ0.32) */
    __IO  uint32_t K_CHx[32];                            /**< Offset: 0x1A8 (R/W 32) ADC input channel conversion factor (I_A(rms)/Vadc(rms) or V_A(rms)/Vadc(rms)) (uQ22.10) */
    __IO  uint32_t CAL_M_CHx[32];                        /**< Offset: 0x228 (R/W 32) Magnitude calibration constant for channel CHx (sQ2.29) */
-   __IO  uint32_t CAL_PH_CHx[32];                       /**< Offset: 0x2A8 (R/W 32) Phase calibration constant for channel CHx (sQ0.31) */
+   __IO  int32_t CAL_PH_CHx[32];                       /**< Offset: 0x2A8 (R/W 32) Phase calibration constant for channel CHx (sQ0.31) */
    __IO  uint32_t CAPTURE_CTRL;                         /**< Offset: 0x328 (R/W 32) Waveform capture control register */
    __IO  uint32_t CAPTURE_SH_SEL;                       /**< Offset: 0x32C (R/W 32) Waveform capture channel selection */
    __IO  uint32_t CAPTURE_BUFF_SIZE;                    /**< Offset: 0x330 (R/W 32) Waveform capture buffer size */
@@ -613,9 +613,9 @@ typedef struct
    __IO  uint32_t MCP391x_GAIN[4];                      /**< Offset: 0x344 (R/W 32) MCP391x GAIN register */
    __IO  uint32_t MCP391x_CONFIG[4];                    /**< Offset: 0x354 (R/W 32) MCP391x CONFIG register */
    __IO  uint32_t Reserved5;             
-   __IO  uint32_t POWER_OFFSET_P_x[31];                 /**< Offset: 0x368 (R/W 32) Phase-x accumulation active power offset compensation used to eliminate voltage effects at small current (cross talk) (sQ9.40) */
+   __IO  int32_t POWER_OFFSET_P_x[31];                 /**< Offset: 0x368 (R/W 32) Phase-x accumulation active power offset compensation used to eliminate voltage effects at small current (cross talk) (sQ9.40) */
    __IO  uint32_t Reserved6;             
-   __IO  uint32_t POWER_OFFSET_Q_x[31];                 /**< Offset: 0x3E8 (R/W 32) Phase-x accumulation reactive power offset compensation used to eliminate voltage effects at small current (cross talk) (sQ9.40) */
+   __IO  int32_t POWER_OFFSET_Q_x[31];                 /**< Offset: 0x3E8 (R/W 32) Phase-x accumulation reactive power offset compensation used to eliminate voltage effects at small current (cross talk) (sQ9.40) */
    __IO  uint32_t Reserved7;             
 } DRV_MCMETROLOGY_REGS_CONTROL;
 

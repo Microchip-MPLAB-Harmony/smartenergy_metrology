@@ -172,7 +172,6 @@ typedef struct {
   Description:
     - Voltage channel
     - Current channel
-    - Calibration references
 
 */
 typedef struct {
@@ -322,8 +321,7 @@ typedef enum {
     Identifies the data calculated from the metrology AFE measurements.
 
   Description:
-    - energy. Active energy calculated value.
-    - afeEvents. AFE events data.
+    - events. AFE events data.
     - chnMeasure. Measure calculated values depending on channel.
     - powMeasure. Measure calculated values depending on power source.
     - measure. Measure calculated values.

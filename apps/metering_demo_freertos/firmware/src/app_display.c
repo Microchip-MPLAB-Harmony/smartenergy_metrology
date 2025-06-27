@@ -245,7 +245,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(int64_t value)
                  (unsigned int)(value%1000));
         cl010_show_icon(CL010_ICON_DOT_1);
     }
-    else if (value < -(int64_t)(ENERGY_ACCURACY_INT*100000))
+    else if (value <= -(int64_t)(ENERGY_ACCURACY_INT*100000))
     {
         /* Format: -xxxxxx.x kWh */
         cl010_show_units(CL010_UNIT_kWh);

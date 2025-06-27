@@ -944,21 +944,20 @@ void DRV_MCMETROLOGY_SetControl(DRV_MCMETROLOGY_REGS_CONTROL * pControl);
     Gets the active energy value.
 
   Description:
-    Gets the active energy value. Energy value should be previously updated by the DRV_MCMETROLOGY_UpdateMeasurements() routine.
+    Gets the active energy value.
+    Energy is updated at the end of each integration period.
 
   Precondition:
     None.
 
   Parameters:
-    restartEnergy - Flag to indicate if the energy value should be restarted or accumulated to the previous calculated value.
+    restartEnergy - Flag to indicate if the accumulated energy value should be restarted after calling this routine.
 
   Returns:
-    The active energy value obtained according to the last call to DRV_MCMETROLOGY_UpdateMeasurements() routine..
+    The active energy value obtained according to the last integration period.
 
   Example:
     <code>
-        DRV_MCMETROLOGY_UpdateMeasurements();
-
         app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
         if (app_metrologyData.queueFree)
         {
@@ -988,11 +987,13 @@ float DRV_MCMETROLOGY_GetEnergyValue(bool restartEnergy);
     Gets the last value of the selected measurement type on the selected channel.
 
   Description:
+    Gets the last value of the selected measurement type.
+    Values are updated at the end of each integration period.
     For further information about Measurement types, refer to DRV_MCMETROLOGY_CHANNEL_MEASURE_TYPE
     definition.
 
   Precondition:
-    Values should be previously updated by the DRV_MCMETROLOGY_UpdateMeasurements() routine.
+    None.
 
   Parameters:
     channel - Channel index
@@ -1003,8 +1004,6 @@ float DRV_MCMETROLOGY_GetEnergyValue(bool restartEnergy);
 
   Example:
     <code>
-        DRV_MCMETROLOGY_UpdateMeasurements();
-
         rmsChannel0 = DRV_MCMETROLOGY_GetChannelMeasureValue(0, CHN_MEASURE_RMS);
         freqChannel2 = DRV_MCMETROLOGY_GetChannelMeasureValue(2, CHN_MEASURE_FREQ);
     </code>
@@ -1028,11 +1027,13 @@ float DRV_MCMETROLOGY_GetChannelMeasureValue(
     Gets the last value of the selected measurement type on the selected power.
 
   Description:
+    Gets the last value of the selected measurement type on the selected power.
+    Values are updated at the end of each integration period.
     For further information about Measurement types, refer to DRV_MCMETROLOGY_POWER_MEASURE_TYPE
     definition.
 
   Precondition:
-    Values should be previously updated by the DRV_MCMETROLOGY_UpdateMeasurements() routine.
+    None.
 
   Parameters:
     power - Power index
@@ -1043,8 +1044,6 @@ float DRV_MCMETROLOGY_GetChannelMeasureValue(
 
   Example:
     <code>
-        DRV_MCMETROLOGY_UpdateMeasurements();
-
         activePower0 = DRV_MCMETROLOGY_GetPowerMeasureValue(0, POW_MEASURE_P);
         reactivePower2 = DRV_MCMETROLOGY_GetPowerMeasureValue(2, POW_MEASURE_Q);
     </code>
@@ -1067,10 +1066,12 @@ float DRV_MCMETROLOGY_GetPowerMeasureValue(
     Gets the last value of the selected measurement.
 
   Description:
+    Gets the last value of the selected measurement.
+    Values are updated at the end of each integration period.
     For further information about Measurement types, refer to DRV_MCMETROLOGY_MEASURE_TYPE definition.
 
   Precondition:
-    Values should be previously updated by the DRV_MCMETROLOGY_UpdateMeasurements() routine.
+    None.
 
   Parameters:
     type - Indicate what type of measurement is obtained.
@@ -1080,8 +1081,6 @@ float DRV_MCMETROLOGY_GetPowerMeasureValue(
 
   Example:
     <code>
-        DRV_MCMETROLOGY_UpdateMeasurements();
-
         totalActivePower = DRV_MCMETROLOGY_GetMeasureValue(MEASURE_PT);
         totalEnergy = DRV_MCMETROLOGY_GetMeasureValue(MEASURE_ENERGY);
     </code>
@@ -1146,7 +1145,8 @@ void DRV_MCMETROLOGY_SetConfiguration(DRV_MCMETROLOGY_CONFIGURATION * config);
     Gets the last metrology AFE events data.
 
   Description:
-    Events data should be previously updated by the DRV_MCMETROLOGY_UpdateMeasurements() routine.
+    Gets the last metrology AFE events data.
+    Events are updated at the end of each Half-Cycle and Full-Cycle.
     For further information about the event data, refer to DRV_MCMETROLOGY_AFE_EVENTS definition.
 
   Precondition:
@@ -1160,8 +1160,6 @@ void DRV_MCMETROLOGY_SetConfiguration(DRV_MCMETROLOGY_CONFIGURATION * config);
 
   Example:
     <code>
-        DRV_MCMETROLOGY_UpdateMeasurements();
-
         app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
         if (app_metrologyData.queueFree)
         {

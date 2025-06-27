@@ -10112,7 +10112,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>23be0fd20348575e2c0d38e15bc3eb243f8c8793730990903d9227b51a0444d9</hash>
+         <hash>b1442dae43a5a342f3d8315a30be90ccb58c7fd79065b1f220626b307bd4374d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -10168,15 +10168,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>b5f6e4e405effedeb5923b74fb72c22170acaf17715e1a61b3ff54c8552548b2</hash>
+         <hash>4214745a64ec2616939a706249580d3fa5f2141253b406674ac407590124cfd5</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
-         <hash>05811532892ed01491c44779763400e7e4571eead047930f60e0e3ca5c284cc4</hash>
+         <hash>8e0b9a3f2b6806f4b9e3f411b71d6ade38b92bff63b8f44f26b210529ace845b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>69f44f4b81cf406a8fee8881873af66099a1eb1c363329d2438920e5774907b1</hash>
+         <hash>b117462af3a4cbb7c2bde835f841c23d8fdfadf98c32208c1d3123a291efaa9b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_local.h</file>
@@ -10184,7 +10184,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>472f88dbc345170de6d7359594586b9a61f103528620c8eff27e0cadd91a816b</hash>
+         <hash>e22353f78b1db0e63fd977448615abd4a4ab44d967a81865d04904288c0f41dc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26.h</file>

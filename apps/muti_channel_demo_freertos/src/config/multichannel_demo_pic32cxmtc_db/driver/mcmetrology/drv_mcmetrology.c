@@ -315,6 +315,59 @@ static float lDRV_Mcmetrology_GetPQ(int64_t val, uint32_t k_ix, uint32_t k_vx)
     return (float)m;
 }
 
+static double lDRV_Mcmetrology_GetPQOffsetTimesFreq(int32_t powerOffsetReg)
+{
+    double offset;
+    double freq;
+    uint32_t divisor;
+    
+    divisor = (1UL << FORMAT_CONST_sQ130);
+    offset = (double)powerOffsetReg;
+    offset = offset / (double)divisor; /* offset = offset/2^30 (Wh/Var per cycle) */
+    divisor = (1UL << FORMAT_CONST_uQ2012);
+    freq = (double)gDrvMCMetObj.freq;
+    freq = freq / (double)divisor; /* freq = freq/2^12 (Hz) */
+    offset = offset * freq;
+
+    return offset;
+}
+
+static float lDRV_Mcmetrology_GetPowerOffset(int32_t powerOffsetReg)
+{
+    double offset;
+
+    offset = lDRV_Mcmetrology_GetPQOffsetTimesFreq(powerOffsetReg);
+    offset = offset * SECS_IN_HOUR_DOUBLE; /* offset = offset * 3600 * freq (Wh/Var) */
+
+    return (float)offset;
+}
+
+static float lDRV_Mcmetrology_GetPOffset(void)
+{
+    float offsetP = 0.0f;
+
+    if ((gDrvMCMetObj.metRegisters->MET_CONTROL.P_POWER_OFFSET_CTRL & P_POWER_OFFSET_CTRL_PUL_Msk) != 0U)
+    {
+        /* Compute global active power offset in W */
+        offsetP = lDRV_Mcmetrology_GetPowerOffset(gDrvMCMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_P);
+    }
+
+    return offsetP;
+}
+
+static float lDRV_Mcmetrology_GetQOffset(void)
+{
+    float offsetQ = 0.0f;
+
+    if ((gDrvMCMetObj.metRegisters->MET_CONTROL.Q_POWER_OFFSET_CTRL & Q_POWER_OFFSET_CTRL_PUL_Msk) != 0U)
+    {
+        /* Compute global active power offset in W */
+        offsetQ = lDRV_Mcmetrology_GetPowerOffset(gDrvMCMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_Q);
+    }
+
+    return offsetQ;
+}
+
 static float lDRV_Mcmetrology_GetAngle(int64_t p, int64_t q)
 {
     double angle, pd, qd;
@@ -330,16 +383,35 @@ static float lDRV_Mcmetrology_GetAngle(int64_t p, int64_t q)
 
 static float lDRV_Mcmetrology_GetEnergy(DRV_MCMETROLOGY_ENERGY_TYPE id)
 {
-    double energy;
+    double energy = 0;
     uint8_t index;
+    double offset = 0;
 
-    energy = 0.0f;
     for (index = 0; index < DRV_MCMETROLOGY_POWERS_NUMBER; index++)
     {
         energy += gDrvMCMetObj.metAFEData.powMeasure[index][id];
     }
 
-    energy = energy / SECS_IN_HOUR_DOUBLE;   /* (P[Wh]; Q[Varh] */
+    if (id == PENERGY)
+    {
+        if ((gDrvMCMetObj.metRegisters->MET_CONTROL.P_POWER_OFFSET_CTRL & P_POWER_OFFSET_CTRL_PUL_Msk) != 0U)
+        {
+            /* Compute global active power offset in Wh */
+            offset = lDRV_Mcmetrology_GetPQOffsetTimesFreq(gDrvMCMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_P);
+        }
+    }
+    else
+    {
+        if ((gDrvMCMetObj.metRegisters->MET_CONTROL.Q_POWER_OFFSET_CTRL & Q_POWER_OFFSET_CTRL_PUL_Msk) != 0U)
+        {
+            /* Compute global active power offset in Wh */
+            offset = lDRV_Mcmetrology_GetPQOffsetTimesFreq(gDrvMCMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_Q);
+        }
+    }
+
+    energy = energy / SECS_IN_HOUR_DOUBLE;   /* (P[Wh]; Q[Varh]) */
+    offset = offset * (double)gDrvMCMetObj.samplesInPeriod / SAMPLING_FREQ; /* offset = offset * num_cycles (P[Wh]; Q[Varh]) */
+    energy = energy - offset;
 
     return (float)energy;
 }
@@ -364,6 +436,7 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
     float ptf = 0.0f;
     float qt = 0.0f;
     float qtf = 0.0f;
+    float powerOffset;
     uint32_t divisor;
     uint32_t kxData;
     uint8_t index;
@@ -443,10 +516,12 @@ static void lDRV_MCMETROLOGY_UpdateMeasurements(void)
     *(pDstData + (uint8_t)MEASURE_ACC_T2) = (float)pAccData->ACC_T2 / (float)divisor;
 
     /* Update Active/Reactive Total Accumulated Quantities */
-    *(pDstData + (uint8_t)MEASURE_PT) = pt;
-    *(pDstData + (uint8_t)MEASURE_PT_F) = ptf;
-    *(pDstData + (uint8_t)MEASURE_QT) = qt;
-    *(pDstData + (uint8_t)MEASURE_QT_F) = qtf;
+    powerOffset = lDRV_Mcmetrology_GetPOffset();
+    *(pDstData + (uint8_t)MEASURE_PT) = pt - powerOffset;
+    *(pDstData + (uint8_t)MEASURE_PT_F) = ptf - powerOffset;
+    powerOffset = lDRV_Mcmetrology_GetQOffset();
+    *(pDstData + (uint8_t)MEASURE_QT) = qt - powerOffset;
+    *(pDstData + (uint8_t)MEASURE_QT_F) = qtf - powerOffset;
 
     /* Update Total Accumulated Energy */
     *(pDstData + (uint8_t)MEASURE_ENERGY) += lDRV_Mcmetrology_GetEnergy(PENERGY);
