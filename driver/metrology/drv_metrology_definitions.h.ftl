@@ -292,6 +292,8 @@ typedef struct {
     - qXDir. Identifies the sign of the reactive power in channel X. "1" means a negative value, "0" is a positive value.
     - sagX. Voltage Sag Detected Flag for Channel X. "1" means that voltage sag is detected.
     - swellX. Voltage Swell Detected Flag for Channel X. "1" means that voltage Swell is detected.
+    - creepX. Channel X Current or Power Creep Detected Flag. "1" means that Creep is detected.
+    - phActiveX. Voltage Active Detected Flag for Channel X. "1" means that voltage Active is detected.
 */
 typedef struct {
     unsigned int paDir : 1;

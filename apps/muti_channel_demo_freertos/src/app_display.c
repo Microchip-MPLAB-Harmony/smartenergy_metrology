@@ -233,27 +233,47 @@ static void APP_DISPLAY_ChangeInfo(void)
     Show Energy data and units depending on its value
  */
 
-static void APP_DISPLAY_ShowEnergyDataUnits(uint64_t value)
+static void APP_DISPLAY_ShowEnergyDataUnits(float value)
 {
     uint8_t buff1[9];
+    uint32_t valueInt;
 
     /* Check magnitude to select units to show */
-    if (value > 999999999) {
+    if (value >= 99999.5f)
+    {
         /* Format: xxxxxx.xx kWh */
         cl010_show_units(CL010_UNIT_kWh);
-        value = value/100000;
-        sprintf((char *)buff1, "%6u%02u", (unsigned int)(value/100),
-                 (unsigned int)(value%100));
+        valueInt = (uint32_t)(value / 10);
+        sprintf((char *)buff1, "%6u%02u", (unsigned int)(valueInt/100),
+                 (unsigned int)(valueInt%100));
         cl010_show_icon(CL010_ICON_DOT_2);
     }
-    else
+    else if (value >= 0.0f)
     {
         /* Format: xxxxx.xxx Wh */
         cl010_show_units(CL010_UNIT_Wh);
-        value = value/10;
-        sprintf((char *)buff1, "%5u%03u", (unsigned int)(value/1000),
-                 (unsigned int)(value%1000));
+        valueInt = (uint32_t)(value * 1000);
+        sprintf((char *)buff1, "%5u%03u", (unsigned int)(valueInt/1000),
+                 (unsigned int)(valueInt%1000));
         cl010_show_icon(CL010_ICON_DOT_1);
+    }
+    else if (value < -99999.5f)
+    {
+        /* Format: -xxxxxx.x kWh */
+        cl010_show_units(CL010_UNIT_kWh);
+        valueInt = (uint32_t)(-value / 100);
+        sprintf((char *)buff1, "-%6u%01u", (unsigned int)(valueInt/10),
+                 (unsigned int)(valueInt%10));
+        cl010_show_icon(CL010_ICON_DOT_3);
+    }
+    else
+    {
+        /* Format: -xxxxx.xx Wh */
+        cl010_show_units(CL010_UNIT_Wh);
+        valueInt = (uint32_t)(-value * 100);
+        sprintf((char *)buff1, "-%5u%02u", (unsigned int)(valueInt/100),
+                 (unsigned int)(valueInt%100));
+        cl010_show_icon(CL010_ICON_DOT_2);
     }
 
     cl010_show_numeric_string(CL010_LINE_UP, buff1);
@@ -266,7 +286,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(uint64_t value)
 
 static void APP_DISPLAY_Process(void)
 {
-    uint64_t total;
+    float total;
     uint64_t upd_symbols = 1;
 //    uint32_t value;
     uint8_t buff1[12];

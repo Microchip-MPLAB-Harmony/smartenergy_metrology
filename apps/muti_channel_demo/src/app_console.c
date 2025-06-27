@@ -2970,7 +2970,7 @@ void APP_CONSOLE_Tasks(void)
 
         case APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY:
         {
-            uint64_t total = 0;
+            float total = 0.0f;
             int8_t idx;
 
             for (idx = 0; idx < TARIFF_NUM_TYPE; idx++)
@@ -2986,8 +2986,8 @@ void APP_CONSOLE_Tasks(void)
             SYS_CMD_PRINT("Last %d Month Energy is:\r\n", idx);
 
             SYS_CMD_PRINT("TT=%.2fkWh T1=%.2fkWh T2=%.2fkWh T3=%.2fkWh T4=%.2fkWh\r\n",
-                          (float) total / 10000000, (float) energyData.tariff[0] / 10000000, (float) energyData.tariff[1] / 10000000,
-                          (float) energyData.tariff[2] / 10000000, (float) energyData.tariff[3] / 10000000);
+                          total / 1000, energyData.tariff[0] / 1000, energyData.tariff[1] / 1000,
+                          energyData.tariff[2] / 1000, energyData.tariff[3] / 1000);
 
             /* Introduce a delay to wait console visualization */
             app_consoleData.nextState = APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY_NEXT;

@@ -622,7 +622,6 @@ static int32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
         {
             /* Compute global active power offset in Wh */
             offset = lDRV_Metrology_GetPQSOffsetTimesFreq(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_P);
-            offset = offset * (double)gDrvMetObj.samplesInPeriod / SAMPLING_FREQ; /* offset = offset * num_cycles (Wh) */
         }
     }
     else
@@ -653,11 +652,11 @@ static int32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
         {
             /* Compute global reactive power offset in Varh */
             offset = lDRV_Metrology_GetPQSOffsetTimesFreq(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_Q);
-            offset = offset * (double)gDrvMetObj.samplesInPeriod / SAMPLING_FREQ; /* offset = offset * num_cycles (Varh) */
         }
     }
 
     k = k / SECS_IN_HOUR_DOUBLE; /* (Wh/Varh) */
+    offset = offset * (double)gDrvMetObj.samplesInPeriod / SAMPLING_FREQ; /* offset = offset * num_cycles (Wh/Varh) */
     k -= offset; /* Compensate global offset */
     k = k * ENERGY_ACCURACY_DOUBLE;
 

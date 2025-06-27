@@ -249,7 +249,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(int64_t value)
     {
         /* Format: -xxxxxx.x kWh */
         cl010_show_units(CL010_UNIT_kWh);
-        value = value/(ENERGY_ACCURACY_INT*100);
+        value = (-value)/(ENERGY_ACCURACY_INT*100);
         sprintf((char *)buff1, "-%6u%01u", (unsigned int)(value/10),
                  (unsigned int)(value%10));
         cl010_show_icon(CL010_ICON_DOT_3);
@@ -258,7 +258,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(int64_t value)
     {
         /* Format: -xxxxx.xx Wh */
         cl010_show_units(CL010_UNIT_Wh);
-        value = value/(ENERGY_ACCURACY_INT/100);
+        value = (-value)/(ENERGY_ACCURACY_INT/100);
         sprintf((char *)buff1, "-%5u%02u", (unsigned int)(value/100),
                  (unsigned int)(value%100));
         cl010_show_icon(CL010_ICON_DOT_2);

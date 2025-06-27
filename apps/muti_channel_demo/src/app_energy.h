@@ -127,7 +127,7 @@ typedef struct {
 } APP_ENERGY_DEMAND;
 
 typedef struct {
-    double tariff[TARIFF_NUM_TYPE];
+    float tariff[TARIFF_NUM_TYPE];
 } APP_ENERGY_ACCUMULATORS;
 
 typedef void (* APP_ENERGY_MAXDEMAND_CALLBACK) (struct tm * time, bool dataValid);
