@@ -984,10 +984,10 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         afeMeasure[MEASURE_STF] = 0U;
     }
 
-    afeMeasure[MEASURE_FREQ]  = (gDrvMetObj.metFreqData.freq * FREQ_ACCURACY_INT) >> FREQ_Q;
-    afeMeasure[MEASURE_FREQA]  = (gDrvMetObj.metFreqData.freqA * FREQ_ACCURACY_INT) >> FREQ_Q;
-    afeMeasure[MEASURE_FREQB]  = (gDrvMetObj.metFreqData.freqB * FREQ_ACCURACY_INT) >> FREQ_Q;
-    afeMeasure[MEASURE_FREQC]  = (gDrvMetObj.metFreqData.freqC * FREQ_ACCURACY_INT) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQ]  = ((gDrvMetObj.metFreqData.freq * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQA]  = ((gDrvMetObj.metFreqData.freqA * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQB]  = ((gDrvMetObj.metFreqData.freqB * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQC]  = ((gDrvMetObj.metFreqData.freqC * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
 
     afeMeasure[MEASURE_ANGLEA]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
     afeMeasure[MEASURE_ANGLEB]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);
