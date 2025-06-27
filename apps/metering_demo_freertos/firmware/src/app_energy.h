@@ -71,7 +71,7 @@ extern "C" {
 // *****************************************************************************
 
 typedef struct {
-  uint32_t energy;
+  int32_t energy;
   uint32_t Pt;
 } APP_ENERGY_QUEUE_DATA;
 
@@ -116,7 +116,7 @@ typedef struct {
 } APP_ENERGY_DEMAND;
 
 typedef struct {
-    uint64_t tariff[TARIFF_NUM_TYPE];
+    int64_t tariff[TARIFF_NUM_TYPE];
 } APP_ENERGY_ACCUMULATORS;
 
 typedef void (* APP_ENERGY_MAXDEMAND_CALLBACK) (struct tm * time, bool dataValid);

@@ -2835,7 +2835,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY:
         {
-            uint64_t total = 0;
+            int64_t total = 0;
             int8_t idx;
 
             for (idx = 0; idx < TARIFF_NUM_TYPE; idx ++)
@@ -2851,8 +2851,8 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_PRINT("Last %d Month Energy is:\r\n", idx);
 
             SYS_CMD_PRINT("TT=%.2fkWh T1=%.2fkWh T2=%.2fkWh T3=%.2fkWh T4=%.2fkWh\r\n",
-                (float)total/10000000, (float)energyData.tariff[0]/10000000, (float)energyData.tariff[1]/10000000,
-                    (float)energyData.tariff[2]/10000000, (float)energyData.tariff[3]/10000000);
+                (float)total/10000000, (float)energyData.tariff[0]/(ENERGY_ACCURACY_INT*1000), (float)energyData.tariff[1]/(ENERGY_ACCURACY_INT*1000),
+                    (float)energyData.tariff[2]/(ENERGY_ACCURACY_INT*1000), (float)energyData.tariff[3]/(ENERGY_ACCURACY_INT*1000));
 
             // Check pending monthly requests
             app_consoleData.requestCounter--;

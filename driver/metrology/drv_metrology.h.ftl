@@ -938,27 +938,26 @@ void DRV_METROLOGY_SetControl(DRV_METROLOGY_REGS_CONTROL * pControl);
 
 // *****************************************************************************
 /* Function:
-    uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
+    int32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
 
   Summary:
     Gets the active energy value.
 
   Description:
-    Gets the active energy value. Energy value should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    Gets the active energy value.
+    Energy is updated at the end of each integration period.
 
   Precondition:
     None.
 
   Parameters:
-    restartEnergy - Flag to indicate if the energy value should be restarted or accumulated to the previous calculated value.
+    restartEnergy - Flag to indicate if the accumulated energy value should be restarted after calling this routine.
 
   Returns:
-    The active energy value obtained according to the last call to DRV_METROLOGY_UpdateMeasurements() routine..
+    The active energy value obtained according to the last integration period.
 
   Example:
     <code>
-        DRV_METROLOGY_UpdateMeasurements();
-
         app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
         if (app_metrologyData.queueFree)
         {
@@ -975,7 +974,7 @@ void DRV_METROLOGY_SetControl(DRV_METROLOGY_REGS_CONTROL * pControl);
   Remarks:
     None.
 */
-uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
+int32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
 
 // *****************************************************************************
 /* Function:
@@ -985,7 +984,8 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
     Gets the last value of the selected measurement type.
 
   Description:
-    Values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    Gets the last value of the selected measurement type.
+    Values are updated at the end of each integration period.
     For further information about Measurement types, refer to DRV_METROLOGY_MEASURE_TYPE definition.
 
   Precondition:
@@ -999,8 +999,6 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
 
   Example:
     <code>
-        DRV_METROLOGY_UpdateMeasurements();
-
         app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
         if (app_metrologyData.queueFree)
         {
@@ -1027,7 +1025,8 @@ uint32_t DRV_METROLOGY_GetMeasureValue(DRV_METROLOGY_MEASURE_TYPE type);
     Gets the sign of the last value of the selected measurement type.
 
   Description:
-    Sign values should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    Gets the sign of the last value of the selected measurement type.
+    Values are updated at the end of each integration period.
     For further information about Measurement types, refer to DRV_METROLOGY_MEASURE_TYPE definition.
 
   Precondition:
@@ -1103,7 +1102,8 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
     Gets the last metrology AFE events data.
 
   Description:
-    Events data should be previously updated by the DRV_METROLOGY_UpdateMeasurements() routine.
+    Gets the last metrology AFE events data.
+    Events are updated at the end of each Half-Cycle and Full-Cycle.
     For further information about the event data, refer to DRV_METROLOGY_AFE_EVENTS definition.
 
   Precondition:
@@ -1117,8 +1117,6 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
   Example:
     <code>
-        DRV_METROLOGY_UpdateMeasurements();
-
         app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
         if (app_metrologyData.queueFree)
         {

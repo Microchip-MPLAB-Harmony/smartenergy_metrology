@@ -391,7 +391,7 @@ static uint32_t lDRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
         m = m * VI_ACCURACY_DOUBLE;
     }
 
-    return ((uint32_t)(m));
+    return ((uint32_t)round(m));
 }
 
 static uint32_t lDRV_Metrology_GetInxRMS(uint64_t val)
@@ -411,7 +411,7 @@ static uint32_t lDRV_Metrology_GetInxRMS(uint64_t val)
         m = m * (double)10000U;
     }
 
-    return ((uint32_t)(m));
+    return ((uint32_t)round(m));
 }
 
 static uint32_t lDRV_Metrology_GetPQ(int64_t val, uint32_t k_ix, uint32_t k_vx)
@@ -428,7 +428,7 @@ static uint32_t lDRV_Metrology_GetPQ(int64_t val, uint32_t k_ix, uint32_t k_vx)
     m = (m * mult) / divisor;
     m = m * PQS_ACCURACY_DOUBLE;
 
-    return ((uint32_t)(m));
+    return ((uint32_t)round(m));
 }
 
 static unsigned char lDRV_Metrology_CheckPQDir(int64_t val)
@@ -489,7 +489,71 @@ static uint32_t lDRV_Metrology_GetS(uint64_t i_val, uint64_t v_val, uint32_t k_i
     s_m = i_m * v_m;
     s_m = s_m * PQS_ACCURACY_DOUBLE;
 
-    return ((uint32_t)(s_m));
+    return ((uint32_t)round(s_m));
+}
+
+static double lDRV_Metrology_GetPQSOffsetTimesFreq(int32_t powerOffsetReg)
+{
+    double offset;
+    double freq;
+
+    offset = (double)powerOffsetReg;
+    offset = offset / (double)DIV_PQ_OFFSET_Q_FACTOR; /* offset = offset/2^30 (Wh/Var/VA per cycle) */
+    freq = (double)gDrvMetObj.metFreqData.freq;
+    freq = freq / (double)DIV_FREQ_Q_FACTOR; /* freq = freq/2^12 (Hz) */
+    offset = offset * freq;
+
+    return offset;
+}
+
+static int32_t lDRV_Metrology_GetPowerOffset(int32_t powerOffsetReg)
+{
+    double offset;
+
+    offset = lDRV_Metrology_GetPQSOffsetTimesFreq(powerOffsetReg);
+    offset = offset * SECS_IN_HOUR_DOUBLE; /* offset = offset * 3600 * freq (Wh/Var/VA) */
+    offset = offset * PQS_ACCURACY_DOUBLE;
+
+    return ((int32_t)round(offset));
+}
+
+static int32_t lDRV_Metrology_GetPOffset(void)
+{
+    int32_t offsetP = 0;
+
+    if ((gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_CTRL & POWER_OFFSET_CTRL_P_OFFSET_PUL_Msk) != 0U)
+    {
+        /* Compute global active power offset in W */
+        offsetP = lDRV_Metrology_GetPowerOffset(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_P);
+    }
+
+    return offsetP;
+}
+
+static int32_t lDRV_Metrology_GetQOffset(void)
+{
+    int32_t offsetQ = 0;
+
+    if ((gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_CTRL & POWER_OFFSET_CTRL_Q_OFFSET_PUL_Msk) != 0U)
+    {
+        /* Compute global active power offset in Var */
+        offsetQ = lDRV_Metrology_GetPowerOffset(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_Q);
+    }
+
+    return offsetQ;
+}
+
+static int32_t lDRV_Metrology_GetSOffset(void)
+{
+    int32_t offsetS = 0;
+
+    if ((gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_CTRL & POWER_OFFSET_CTRL_S_OFFSET_PUL_Msk) != 0U)
+    {
+        /* Compute global active power offset in VA */
+        offsetS = lDRV_Metrology_GetPowerOffset(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_S);
+    }
+
+    return offsetS;
 }
 
 static uint32_t lDRV_Metrology_GetAngle(int64_t p, int64_t q)
@@ -510,78 +574,94 @@ static uint32_t lDRV_Metrology_GetAngle(int64_t p, int64_t q)
     {
         /* Get the positive value and set the MSB */
         n = -n;
-        angle = (uint32_t)n;
+        angle = (uint32_t)round(n);
         angle |= 0x80000000UL;
     }
     else
     {
-        angle = (uint32_t)n;
+        angle = (uint32_t)round(n);
     }
 
     return angle;
 }
 
-static uint32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
+static int32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 {
     double m, k;
     double divisor;
     double ki, kv;
+    double offset = 0;
 
     divisor = (double)DIV_GAIN * (double)DIV_GAIN;
 
     /* Calculated as absolute values */
     if (id == PENERGY)
     {
-        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_A);
+        m = (double)gDrvMetObj.metAccData.P_A;
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
         k = m / SAMPLING_FREQ;          /* k =k/fs */
 
-        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_B);
+        m = (double)gDrvMetObj.metAccData.P_B;
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
         k += m / SAMPLING_FREQ;         /* k =k/fs */
 
-        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_C);
+        m = (double)gDrvMetObj.metAccData.P_C;
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
         k += m / SAMPLING_FREQ;         /* k =k/fs */
+
+        if ((gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_CTRL & POWER_OFFSET_CTRL_P_OFFSET_PUL_Msk) != 0U)
+        {
+            /* Compute global active power offset in Wh */
+            offset = lDRV_Metrology_GetPQSOffsetTimesFreq(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_P);
+            offset = offset * (double)gDrvMetObj.samplesInPeriod / SAMPLING_FREQ; /* offset = offset * num_cycles (Wh) */
+        }
     }
     else
     {
         /* reactive energy */
-        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_A);
+        m = (double)gDrvMetObj.metAccData.Q_A;
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
         k = m / SAMPLING_FREQ;          /* k =k/fs */
 
-        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_B);
+        m = (double)gDrvMetObj.metAccData.Q_B;
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
         k += m / SAMPLING_FREQ;         /* k =k/fs */
 
-        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_C);
+        m = (double)gDrvMetObj.metAccData.Q_C;
         ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
         kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
         m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
         m = m / (double)DIV_Q_FACTOR;   /* k =k/2^40 */
         k += m / SAMPLING_FREQ;         /* k =k/fs */
+
+        if ((gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_CTRL & POWER_OFFSET_CTRL_Q_OFFSET_PUL_Msk) != 0U)
+        {
+            /* Compute global reactive power offset in Varh */
+            offset = lDRV_Metrology_GetPQSOffsetTimesFreq(gDrvMetObj.metRegisters->MET_CONTROL.POWER_OFFSET_Q);
+            offset = offset * (double)gDrvMetObj.samplesInPeriod / SAMPLING_FREQ; /* offset = offset * num_cycles (Varh) */
+        }
     }
 
-    k = k / SECS_IN_HOUR_DOUBLE; /* xxxxxx (Wh/Varh) */
-    k = k * 10000.0;        /* *10000 (kWh/kVarh) */
+    k = k / SECS_IN_HOUR_DOUBLE; /* (Wh/Varh) */
+    k -= offset; /* Compensate global offset */
+    k = k * ENERGY_ACCURACY_DOUBLE;
 
-    return ((uint32_t)(k));  /* xxxx (kWh/kVarh) */
+    return ((int32_t)round(k));  /* xxxx (kWh/kVarh) */
 }
 
 static void lDRV_Metrology_IpcInitialize (void)
@@ -655,6 +735,8 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle(uint32_t measured, double
 static void lDRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeMeasure = NULL;
+    int32_t totalPower;
+    int32_t powerOffset;
 
     /* Update Measure values */
     afeMeasure = gDrvMetObj.metAFEData.measure;
@@ -717,21 +799,190 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     afeMeasure[MEASURE_SBF]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.I_B_F, gDrvMetObj.metAccData.V_B_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
     afeMeasure[MEASURE_SCF]  = lDRV_Metrology_GetS(gDrvMetObj.metAccData.I_C_F, gDrvMetObj.metAccData.V_C_F, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
 
-    afeMeasure[MEASURE_PT]  = afeMeasure[MEASURE_PA] + afeMeasure[MEASURE_PB] + afeMeasure[MEASURE_PC];
-    gDrvMetObj.metAFEData.afeEvents.ptDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A + gDrvMetObj.metAccData.P_B + gDrvMetObj.metAccData.P_C);
+    powerOffset = lDRV_Metrology_GetPOffset();
+    totalPower = -powerOffset;
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_PA];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_PA];
+    }
 
-    afeMeasure[MEASURE_QT]  = afeMeasure[MEASURE_QA] + afeMeasure[MEASURE_QB] + afeMeasure[MEASURE_QC];
-    gDrvMetObj.metAFEData.afeEvents.qtDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A + gDrvMetObj.metAccData.Q_B + gDrvMetObj.metAccData.Q_C);
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_PB];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_PB];
+    }
 
-    afeMeasure[MEASURE_PTF]  = afeMeasure[MEASURE_PAF] + afeMeasure[MEASURE_PBF] + afeMeasure[MEASURE_PCF];
-    gDrvMetObj.metAFEData.afeEvents.ptfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A_F + gDrvMetObj.metAccData.P_B_F + gDrvMetObj.metAccData.P_C_F);
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_PC];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_PC];
+    }
 
-    afeMeasure[MEASURE_QTF]  = afeMeasure[MEASURE_QAF] + afeMeasure[MEASURE_QBF] + afeMeasure[MEASURE_QCF];
-    gDrvMetObj.metAFEData.afeEvents.qtfDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A_F + gDrvMetObj.metAccData.Q_B_F + gDrvMetObj.metAccData.Q_C_F);
+    if (totalPower >= 0)
+    {
+        afeMeasure[MEASURE_PT] = (uint32_t)totalPower;
+        gDrvMetObj.metAFEData.afeEvents.ptDir = 0U;
+    }
+    else
+    {
+        afeMeasure[MEASURE_PT] = (uint32_t)(-totalPower);
+        gDrvMetObj.metAFEData.afeEvents.ptDir = 1U;
+    }
 
-    afeMeasure[MEASURE_ST]  = afeMeasure[MEASURE_SA] + afeMeasure[MEASURE_SB] + afeMeasure[MEASURE_SC];
+    totalPower = -powerOffset;
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A_F))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_PAF];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_PAF];
+    }
 
-    afeMeasure[MEASURE_STF]  = afeMeasure[MEASURE_SAF] + afeMeasure[MEASURE_SBF] + afeMeasure[MEASURE_SCF];
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B_F))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_PBF];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_PBF];
+    }
+
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C_F))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_PCF];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_PCF];
+    }
+
+    if (totalPower >= 0)
+    {
+        afeMeasure[MEASURE_PTF] = (uint32_t)totalPower;
+        gDrvMetObj.metAFEData.afeEvents.ptfDir = 0U;
+    }
+    else
+    {
+        afeMeasure[MEASURE_PTF] = (uint32_t)(-totalPower);
+        gDrvMetObj.metAFEData.afeEvents.ptfDir = 1U;
+    }
+
+    powerOffset = lDRV_Metrology_GetQOffset();
+    totalPower = -powerOffset;
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_QA];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_QA];
+    }
+
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_QB];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_QB];
+    }
+
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_QC];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_QC];
+    }
+
+    if (totalPower >= 0)
+    {
+        afeMeasure[MEASURE_QT] = (uint32_t)totalPower;
+        gDrvMetObj.metAFEData.afeEvents.qtDir = 0U;
+    }
+    else
+    {
+        afeMeasure[MEASURE_QT] = (uint32_t)(-totalPower);
+        gDrvMetObj.metAFEData.afeEvents.qtDir = 1U;
+    }
+
+    totalPower = -powerOffset;
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A_F))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_QAF];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_QAF];
+    }
+
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B_F))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_QBF];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_QBF];
+    }
+
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C_F))
+    {
+        totalPower -= (int32_t)afeMeasure[MEASURE_QCF];
+    }
+    else
+    {
+        totalPower += (int32_t)afeMeasure[MEASURE_QCF];
+    }
+
+    if (totalPower >= 0)
+    {
+        afeMeasure[MEASURE_QTF] = (uint32_t)totalPower;
+        gDrvMetObj.metAFEData.afeEvents.qtfDir = 0U;
+    }
+    else
+    {
+        afeMeasure[MEASURE_QTF] = (uint32_t)(-totalPower);
+        gDrvMetObj.metAFEData.afeEvents.qtfDir = 1U;
+    }
+
+    powerOffset = lDRV_Metrology_GetSOffset();
+    totalPower = -powerOffset;
+    totalPower += (int32_t)afeMeasure[MEASURE_SA];
+    totalPower += (int32_t)afeMeasure[MEASURE_SB];
+    totalPower += (int32_t)afeMeasure[MEASURE_SC];
+    if (totalPower >= 0)
+    {
+        afeMeasure[MEASURE_ST] = (uint32_t)totalPower;
+    }
+    else
+    {
+        afeMeasure[MEASURE_ST] = 0U;
+    }
+
+    totalPower = -powerOffset;
+    totalPower += (int32_t)afeMeasure[MEASURE_SAF];
+    totalPower += (int32_t)afeMeasure[MEASURE_SBF];
+    totalPower += (int32_t)afeMeasure[MEASURE_SCF];
+    if (totalPower >= 0)
+    {
+        afeMeasure[MEASURE_STF] = (uint32_t)totalPower;
+    }
+    else
+    {
+        afeMeasure[MEASURE_STF] = 0U;
+    }
 
     afeMeasure[MEASURE_FREQ]  = (gDrvMetObj.metFreqData.freq * FREQ_ACCURACY_INT) >> FREQ_Q;
     afeMeasure[MEASURE_FREQA]  = (gDrvMetObj.metFreqData.freqA * FREQ_ACCURACY_INT) >> FREQ_Q;
@@ -1523,13 +1774,13 @@ void DRV_METROLOGY_SetControl (DRV_METROLOGY_REGS_CONTROL * pControl)
    /* MISRAC 2012 deviation block end */
 }
 
-uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
+int32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
 {
-    uint32_t energy = gDrvMetObj.metAFEData.energy;
+    int32_t energy = gDrvMetObj.metAFEData.energy;
 
     if (restartEnergy == true)
     {
-        gDrvMetObj.metAFEData.energy = 0UL;
+        gDrvMetObj.metAFEData.energy = 0;
     }
 
     return energy;

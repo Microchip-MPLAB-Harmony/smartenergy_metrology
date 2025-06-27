@@ -101,6 +101,7 @@ extern uint8_t met_bin_end;
 </#if>
 
 #define FREQ_Q                 12U
+#define DIV_FREQ_Q_FACTOR      0x1000UL /* (1 << FREQ_Q) */
 #define GAIN_P_K_T_Q           24U
 #define GAIN_VI_Q              10U
 #define DIV_GAIN               1024U /* (1 << GAIN_VI_Q) */
@@ -110,6 +111,8 @@ extern uint8_t met_bin_end;
 #define DIV_Q_FACTOR           0x10000000000ULL /* (1 << Q_FACTOR) */
 #define Inx_Q_FACTOR           20U
 #define DIV_Inx_Q_FACTOR       0x100000UL /* (1 << Inx_Q_FACTOR) */
+#define PQ_OFFSET_Q_FACTOR     30U
+#define DIV_PQ_OFFSET_Q_FACTOR 0x40000000UL /* (1 << PQ_OFFSET_Q_FACTOR) */
 #define PQ_SYMB                0x8000000000000000ULL /* p/q symbol bit */
 #define HARMONIC_FACTOR        0x80000000UL
 #define CONST_Pi               3.1415926
@@ -122,6 +125,8 @@ extern uint8_t met_bin_end;
 #define FREQ_ACCURACY_INT      100U
 #define ANGLE_ACCURACY_DOUBLE  100000.0
 #define ANGLE_ACCURACY_INT     100000U
+#define ENERGY_ACCURACY_DOUBLE 10000.0
+#define ENERGY_ACCURACY_INT    10000U
 
 /* Metrology Driver Sensor Type
 
@@ -401,7 +406,7 @@ typedef enum {
     - measure[MEASURE_TYPE_NUM]. Measure calculated values.
 */
 typedef struct {
-    uint32_t energy;
+    int32_t energy;
     DRV_METROLOGY_AFE_EVENTS afeEvents;
     uint32_t measure[MEASURE_TYPE_NUM];
 } DRV_METROLOGY_AFE_DATA;
