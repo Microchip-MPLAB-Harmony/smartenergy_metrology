@@ -41,72 +41,92 @@
 #include <stdbool.h>
 #include <string.h>
 #include "device.h"
+#include "interrupts.h"
 #include "plib_emafe.h"
 #include "plib_emafe_regs.h"
 #include "peripheral/mcspi/mcspi_master/plib_mcspi_master.h"
 #include "bsp/bsp.h"
 #include "device.h"
 
-#define EMAFE_MCSPI_TXFER_TIMEOUT    15000U  /* Pending to be calibrated */
+#define EMAFE_MCSPI_TXFER_TIMEOUT    15000U
 #define EMAFE_DATA_BUFFER_SIZE       5U
 #define EMAFE_ADDRESS_MASK           0x7F
 
 static uint8_t emafeTxBuffer[EMAFE_DATA_BUFFER_SIZE];
 static uint8_t emafeRxBuffer[EMAFE_DATA_BUFFER_SIZE];
 
-EMAFE_CALLBACK emafeCallback;
+static EMAFE_CALLBACK emafeCallback = NULL;
 
-static bool _writeEmafeData(uint8_t address, uint8_t *pData, uint8_t length)
+static bool writeEmafeData(EMAFE_ADC_CONTROL address, uint8_t *pData, uint8_t length)
 {
     uint32_t timeout;
 
+    /* Check for NULL pointer */
+    if (pData == NULL) {
+        return false;
+    }
+
     /* Waiting previous transfers */
     timeout = EMAFE_MCSPI_TXFER_TIMEOUT;
-    while (MCSPI_IsTransmitterBusy()) {
-        if (!timeout--) {
+    while (MCSPI_IsTransmitterBusy() == true) {
+        if (timeout == 0U) {
             return false;
+        } else {
+            timeout--;
         }
     }
-    
-    /* Configure command */
-    emafeTxBuffer[0] = address & EMAFE_ADDRESS_MASK;
-    /* Add Data */
-    memcpy(&emafeTxBuffer[1], pData, length);
 
-    return MCSPI_Write(emafeTxBuffer, length + 1);
+    /* Configure command */
+    emafeTxBuffer[0] = (uint8_t)((uint8_t)address & (uint8_t)EMAFE_ADDRESS_MASK);
+
+    /* Add Data */
+    (void)memcpy(&emafeTxBuffer[1], pData, (size_t)length);
+
+    /* Write data and return result */
+    return MCSPI_Write(emafeTxBuffer, (size_t)((uint32_t)length + 1U));
 }
 
-static bool _readEmafeData(uint8_t address, uint8_t *pData, uint8_t length)
+static bool readEmafeData(EMAFE_ADC_CONTROL address, uint8_t *pData, uint8_t length)
 {
     bool result = false;
     uint32_t timeout;
 
+    /* Check for NULL pointer */
+    if (pData == NULL) {
+        return false;
+    }
+
     /* Waiting previous transfers */
     timeout = EMAFE_MCSPI_TXFER_TIMEOUT;
-    while (MCSPI_IsTransmitterBusy()) {
-        if (!timeout--) {
+    while (MCSPI_IsTransmitterBusy() == true) {
+        if (timeout == 0U) {
             return false;
+        } else {
+            timeout--;
         }
     }
-    
-    /* Configure command */
-    emafeTxBuffer[0] = (1 << 7) | (address & EMAFE_ADDRESS_MASK);
 
-    if (MCSPI_WriteRead(emafeTxBuffer, length + 1, emafeRxBuffer, length + 1))
+    /* Configure command */
+    emafeTxBuffer[0] = (uint8_t)((uint8_t)(1U << 7) | (uint8_t)((uint8_t)address & (uint8_t)EMAFE_ADDRESS_MASK));
+
+    if (MCSPI_WriteRead(emafeTxBuffer, (size_t)((uint32_t)length + 1U), emafeRxBuffer, 
+                        (size_t)((uint32_t)length + 1U)) == true)
     {
         /* Waiting transfer */
         timeout = EMAFE_MCSPI_TXFER_TIMEOUT;
-        while (MCSPI_IsTransmitterBusy()) {
-            if (!timeout--) {
+        while (MCSPI_IsTransmitterBusy() == true) {
+            if (timeout == 0U) {
                 return false;
+            } else {
+                timeout--;
             }
         }
-        
-        memcpy(pData, &emafeRxBuffer[1], length);
+
+        (void)memcpy(pData, &emafeRxBuffer[1], (size_t)length);
         result = true;
     }
 
-  return result;
+    return result;
 }
 
 /***************************** EMAFE API *******************************/
@@ -140,7 +160,7 @@ void EMAFE_SoftReset(void)
 
 void EMAFE_SetSincDecimationFiltersReset(bool enable)
 {
-    if (enable)
+    if (enable == true)
     {
         EMAFE_REGS->EMAFE_CR &= ~EMAFE_CR_SWRST_DECIM_Msk;
     }
@@ -154,18 +174,32 @@ void EMAFE_EnableFilter(uint32_t filterMask)
 {
     uint32_t regValue;
     
+    /* Read, clear, and set filter bits */
     regValue = EMAFE_REGS->EMAFE_MR;
     regValue &= ~EMAFE_MR_LPF_ON_Msk;
     regValue |= (filterMask & EMAFE_MR_LPF_ON_Msk);
     
-    if (((PIOD_REGS->PIO_PDSR) & PIO_PDSR_P24_Msk)) {
-        while (((PIOD_REGS->PIO_PDSR) & PIO_PDSR_P24_Msk)) {}
+    /* Wait for P24 to go low and then high, as per hardware protocol */
+    if ((PIOD_REGS->PIO_PDSR & PIO_PDSR_P24_Msk) != 0U) {
+        while ((PIOD_REGS->PIO_PDSR & PIO_PDSR_P24_Msk) != 0U) {
+            /* Intentional empty loop: waiting for P24 to go low */
+        }
     } else {
-        while (((PIOD_REGS->PIO_PDSR) & PIO_PDSR_P24_Msk)==0) {}
-        while (((PIOD_REGS->PIO_PDSR) & PIO_PDSR_P24_Msk)) {}
+        while ((PIOD_REGS->PIO_PDSR & PIO_PDSR_P24_Msk) == 0U) {
+            /* Intentional empty loop: waiting for P24 to go high */
+        }
+        while ((PIOD_REGS->PIO_PDSR & PIO_PDSR_P24_Msk) != 0U) {
+            /* Intentional empty loop: waiting for P24 to go low */
+        }
     }
-    while (((PIOD_REGS->PIO_PDSR) & PIO_PDSR_P24_Msk)==0) {}
-    while (((PIOD_REGS->PIO_PDSR) & PIO_PDSR_P24_Msk)) {}
+    while ((PIOD_REGS->PIO_PDSR & PIO_PDSR_P24_Msk) == 0U) {
+        /* Intentional empty loop: waiting for P24 to go high */
+    }
+    while ((PIOD_REGS->PIO_PDSR & PIO_PDSR_P24_Msk) != 0U) {
+        /* Intentional empty loop: waiting for P24 to go low */
+    }
+    
+    /* Write back the modified register value */
     EMAFE_REGS->EMAFE_MR = regValue;
 }
 
@@ -185,7 +219,7 @@ void EMAFE_EnableDMAChannel(uint32_t channelMask)
     
     regValue = EMAFE_REGS->EMAFE_MR;
     regValue &= ~EMAFE_MR_DMACH_Msk;
-    regValue |= (channelMask & EMAFE_MR_DMACH_Msk) | EMAFE_MR_DMA_ON_Msk;
+    regValue |= ((channelMask & EMAFE_MR_DMACH_Msk) | EMAFE_MR_DMA_ON_Msk);
     EMAFE_REGS->EMAFE_MR = regValue;
 }
 
@@ -195,31 +229,31 @@ void EMAFE_DisableDMAChannel(uint32_t channelMask)
     
     regValue = EMAFE_REGS->EMAFE_MR;
     regValue &= ~(channelMask & EMAFE_MR_DMACH_Msk);
-    if ((regValue & EMAFE_MR_DMACH_Msk) == 0)
+    if ((regValue & EMAFE_MR_DMACH_Msk) == 0U)
     {
         regValue &= ~EMAFE_MR_DMA_ON_Msk;
     }
     EMAFE_REGS->EMAFE_MR = regValue;
 }
 
-uint32_t EMAFE_GetDMAChannelEnableMask()
+uint32_t EMAFE_GetDMAChannelEnableMask(void)
 {
     uint32_t mask;
 
-    mask = EMAFE_MR_DMACH_Msk | EMAFE_MR_DMA_ON_Msk;
+    mask = (EMAFE_MR_DMACH_Msk | EMAFE_MR_DMA_ON_Msk);
 
     return (EMAFE_REGS->EMAFE_MR & mask);
 }
 
 void EMAFE_DMASetup(uint32_t *pData, uint16_t samplesNum, uint32_t *pNextData, uint16_t samplesNextNum)
 {
-    if ((pData != NULL) & (samplesNum > 0))
+    if ((pData != NULL) && (samplesNum != 0U))
     {
         EMAFE_REGS->EMAFE_RPR = (uint32_t)pData;
         EMAFE_REGS->EMAFE_RCR = (uint32_t)samplesNum;
     }
 
-    if ((pNextData != NULL) & (samplesNextNum > 0))
+    if ((pNextData != NULL) && (samplesNextNum != 0U))
     {
         EMAFE_REGS->EMAFE_RPR = (uint32_t)pNextData;
         EMAFE_REGS->EMAFE_RCR = (uint32_t)samplesNextNum;
@@ -228,7 +262,7 @@ void EMAFE_DMASetup(uint32_t *pData, uint16_t samplesNum, uint32_t *pNextData, u
 
 void EMAFE_DMATransfer(bool enable, uint32_t controlMask)
 {
-    if (enable)
+    if (enable == true)
     {
         EMAFE_REGS->EMAFE_PTCR = controlMask & (EMAFE_PTCR_RXTEN_Msk | EMAFE_PTCR_TXTEN_Msk |
 			EMAFE_PTCR_RXCBEN_Msk | EMAFE_PTCR_TXCBEN_Msk | EMAFE_PTCR_ERRCLR_Msk);
@@ -248,7 +282,15 @@ uint32_t EMAFE_GetDataChannel(EMAFE_CHANNEL_ID channel)
 
 void EMAFE_GetAllDataChannel(uint8_t *pData)
 {
-    memcpy(pData, (uint8_t *)&EMAFE_REGS->EMAFE_DATA[0], EMAFE_CHN_NUM << 2);
+    uint32_t data[5];
+    
+    data[0] = EMAFE_REGS->EMAFE_DATA[0];
+    data[1] = EMAFE_REGS->EMAFE_DATA[1];
+    data[2] = EMAFE_REGS->EMAFE_DATA[2];
+    data[3] = EMAFE_REGS->EMAFE_DATA[3];
+    data[4] = EMAFE_REGS->EMAFE_DATA[4];
+    
+    (void)memcpy(pData, (uint8_t *)data, 20U);
 }
 
 </#if>
@@ -271,9 +313,9 @@ void EMAFE_DisableVariationDetection(void)
     EMAFE_REGS->EMAFE_MR = regValue;
 }
 
-bool EMAFE_IsEnableVariationDetection()
+bool EMAFE_IsEnableVariationDetection(void)
 {
-    if (EMAFE_REGS->EMAFE_MR & EMAFE_MR_VAR_ON_Msk)
+    if ((EMAFE_REGS->EMAFE_MR & EMAFE_MR_VAR_ON_Msk) != 0U)
     {
         return true;
     }
@@ -379,7 +421,7 @@ uint32_t EMAFE_GetStatus(void)
 
 void EMAFE_WriteProtectionSet(uint32_t mode)
 {
-    EMAFE_REGS->EMAFE_WPMR = EMAFE_WPMR_WPKEY_PASSWD | mode;
+    EMAFE_REGS->EMAFE_WPMR = (EMAFE_WPMR_WPKEY_PASSWD | mode);
 }
 
 uint32_t EMAFE_WriteProtectionGet(void)
@@ -398,27 +440,28 @@ void EMAFE_ADCI0Enable(bool tempEnable)
     uint8_t data;
 
     data = EMAFE_ADC_ADCI0_CTRL_ONADC_Msk;
-    if (tempEnable) {
+    if (tempEnable == true) 
+	{
         data |= EMAFE_ADC_ADCI0_CTRL_TEMPMEAS_Msk;
     }
 
-    _writeEmafeData(EMAFE_ADC_ADCI0_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCI0_CTRL, &data, 1U);
 }
 
 void EMAFE_ADCI0Disable(void)
 {
     uint8_t data = 0;
 
-    _writeEmafeData(EMAFE_ADC_ADCI0_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCI0_CTRL, &data, 1U);
 }
 
 bool EMAFE_ADCI0IsEnable(void)
 {
     uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ADCI0_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ADCI0_CTRL, &data, 1U);
 
-    if (data & EMAFE_ADC_ADCI0_CTRL_ONADC_Msk)
+    if ((data & EMAFE_ADC_ADCI0_CTRL_ONADC_Msk) != 0U)
     {
         return true;
     }
@@ -430,27 +473,27 @@ bool EMAFE_ADCI0IsEnable(void)
 
 void EMAFE_ADCI1Enable(uint8_t gain)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    data = EMAFE_ADC_ADCI1_CTRL_ONADC_Msk | EMAFE_ADC_ADCI1_CTRL_GAIN(gain);
+    data = (uint8_t)(EMAFE_ADC_ADCI1_CTRL_ONADC_Msk | EMAFE_ADC_ADCI1_CTRL_GAIN(gain));
 
-    _writeEmafeData(EMAFE_ADC_ADCI1_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCI1_CTRL, &data, 1U);
 }
 
 void EMAFE_ADCI1Disable(void)
 {
     uint8_t data = 0;
 
-    _writeEmafeData(EMAFE_ADC_ADCI1_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCI1_CTRL, &data, 1U);
 }
 
 bool EMAFE_ADCI1IsEnable(void)
 {
     uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ADCI1_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ADCI1_CTRL, &data, 1U);
 
-    if (data & EMAFE_ADC_ADCI1_CTRL_ONADC_Msk)
+    if ((data & EMAFE_ADC_ADCI1_CTRL_ONADC_Msk) != 0U)
     {
         return true;
     }
@@ -466,23 +509,23 @@ void EMAFE_ADCV1Enable(void)
 
     data = EMAFE_ADC_ADCV1_CTRL_ONADC_Msk;
 
-    _writeEmafeData(EMAFE_ADC_ADCV1_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCV1_CTRL, &data, 1U);
 }
 
 void EMAFE_ADCV1Disable(void)
 {
     uint8_t data = 0;
 
-    _writeEmafeData(EMAFE_ADC_ADCV1_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCV1_CTRL, &data, 1U);
 }
 
 bool EMAFE_ADCV1IsEnable(void)
 {
     uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ADCV1_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ADCV1_CTRL, &data, 1U);
 
-    if (data & EMAFE_ADC_ADCV1_CTRL_ONADC_Msk)
+    if ((data & EMAFE_ADC_ADCV1_CTRL_ONADC_Msk) != 0U)
     {
         return true;
     }
@@ -496,25 +539,25 @@ void EMAFE_ADCI2Enable(uint8_t gain)
 {
     uint8_t data;
 
-    data = EMAFE_ADC_ADCI2_CTRL_ONADC_Msk | EMAFE_ADC_ADCI2_CTRL_GAIN(gain);
+    data = (uint8_t)(EMAFE_ADC_ADCI2_CTRL_ONADC_Msk | EMAFE_ADC_ADCI2_CTRL_GAIN(gain));
 
-    _writeEmafeData(EMAFE_ADC_ADCI2_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCI2_CTRL, &data, 1U);
 }
 
 void EMAFE_ADCI2Disable(void)
 {
     uint8_t data = 0;
 
-    _writeEmafeData(EMAFE_ADC_ADCI2_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCI2_CTRL, &data, 1U);
 }
 
 bool EMAFE_ADCI2IsEnable(void)
 {
     uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ADCI2_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ADCI2_CTRL, &data, 1U);
 
-    if (data & EMAFE_ADC_ADCI2_CTRL_ONADC_Msk)
+    if ((data & EMAFE_ADC_ADCI2_CTRL_ONADC_Msk) != 0U)
     {
         return true;
     }
@@ -530,23 +573,23 @@ void EMAFE_ADCV2Enable(void)
 
     data = EMAFE_ADC_ADCV2_CTRL_ONADC_Msk;
 
-    _writeEmafeData(EMAFE_ADC_ADCV2_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCV2_CTRL, &data, 1U);
 }
 
 void EMAFE_ADCV2Disable(void)
 {
     uint8_t data = 0;
 
-    _writeEmafeData(EMAFE_ADC_ADCV2_CTRL, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_ADCV2_CTRL, &data, 1U);
 }
 
 bool EMAFE_ADCV2IsEnable(void)
 {
     uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ADCV2_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ADCV2_CTRL, &data, 1U);
 
-    if (data & EMAFE_ADC_ADCV2_CTRL_ONADC_Msk)
+    if ((data & EMAFE_ADC_ADCV2_CTRL_ONADC_Msk) != 0U)
     {
         return true;
     }
@@ -558,44 +601,44 @@ bool EMAFE_ADCV2IsEnable(void)
 
 void EMAFE_ADCSetClockConfig(uint8_t freqRatio, uint8_t mclkdiv)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    data = EMAFE_ADC_CLOCK_FREQRATIO(freqRatio) | EMAFE_ADC_CLOCK_MCLKDIV_ANA(mclkdiv);
+    data = (uint8_t)(EMAFE_ADC_CLOCK_FREQRATIO(freqRatio) | EMAFE_ADC_CLOCK_MCLKDIV_ANA(mclkdiv));
 
-    _writeEmafeData(EMAFE_ADC_CLOCK, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_CLOCK, &data, 1U);
 }
 
 void EMAFE_ADCEnableBIAS(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
-    if ((data & EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk) == 0)
+    if ((data & EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk) == 0U)
     {
         data |= EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk;
-        _writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+        (void)writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
     }
 }
 
 void EMAFE_ADCDisableBIAS(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
     if ((data & EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk) == EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk)
     {
-        data &= ~EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk;
-        _writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+        data &= (uint8_t)~EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk;
+        (void)writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
     }
 }
 
 bool EMAFE_ADCIsBIASEnable(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
     if ((data & EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk) == EMAFE_ADC_ANALOG_CTRL_ONBIAS_Msk)
     {
@@ -609,35 +652,35 @@ bool EMAFE_ADCIsBIASEnable(void)
 
 void EMAFE_ADCEnableREF(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
-    if ((data & EMAFE_ADC_ANALOG_CTRL_ONREF_Msk) == 0)
+    if ((data & EMAFE_ADC_ANALOG_CTRL_ONREF_Msk) == 0U)
     {
         data |= EMAFE_ADC_ANALOG_CTRL_ONREF_Msk;
-        _writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+        (void)writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
     }
 }
 
 void EMAFE_ADCDisableREF(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
     if ((data & EMAFE_ADC_ANALOG_CTRL_ONREF_Msk) == EMAFE_ADC_ANALOG_CTRL_ONREF_Msk)
     {
-        data &= ~EMAFE_ADC_ANALOG_CTRL_ONREF_Msk;
-        _writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+        data &= (uint8_t)~EMAFE_ADC_ANALOG_CTRL_ONREF_Msk;
+        (void)writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
     }
 }
 
 bool EMAFE_ADCIsREFEnable(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
     if ((data & EMAFE_ADC_ANALOG_CTRL_ONREF_Msk) == EMAFE_ADC_ANALOG_CTRL_ONREF_Msk)
     {
@@ -651,35 +694,35 @@ bool EMAFE_ADCIsREFEnable(void)
 
 void EMAFE_ADCEnableLDO(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
-    if ((data & EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk) == 0)
+    if ((data & EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk) == 0U)
     {
         data |= EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk;
-        _writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+        (void)writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
     }
 }
 
 void EMAFE_ADCDisableLDO(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
     if ((data & EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk) == EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk)
     {
-        data &= ~EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk;
-        _writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+        data &= (uint8_t)~EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk;
+        (void)writeEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
     }
 }
 
 bool EMAFE_ADCIsLDOEnable(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_CTRL, &data, 1U);
 
     if ((data & EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk) == EMAFE_ADC_ANALOG_CTRL_ONLDO_Msk)
     {
@@ -693,11 +736,11 @@ bool EMAFE_ADCIsLDOEnable(void)
 
 bool EMAFE_ADCIsAnalogSystemReady(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_ANALOG_STATUS, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_ANALOG_STATUS, &data, 1U);
 
-    if (data & EMAFE_ADC_ANALOG_STATUS_SYSRDY_Msk)
+    if ((data & EMAFE_ADC_ANALOG_STATUS_SYSRDY_Msk) != 0U)
     {
         return true;
     }
@@ -711,67 +754,67 @@ void EMAFE_ADCEnableSoftReset(void)
 {
     uint8_t data = 0;
 
-    _writeEmafeData(EMAFE_ADC_NRESET, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_NRESET, &data, 1U);
 }
 
 void EMAFE_ADCDisableSoftReset(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
     data = EMAFE_ADC_ANALOG_STATUS_SYSRDY_Msk;
-    _writeEmafeData(EMAFE_ADC_NRESET, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_NRESET, &data, 1U);
 }
 
 void EMAFE_ADCSetSecurityControls(uint8_t mask)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
     data = EMAFE_ADC_SECURITY_SECKEY(EMAFE_ADC_SECURITY_SECKEY_PASSWD);
     data |= mask;
-    _writeEmafeData(EMAFE_ADC_SECURITY, &data, 1);
+    (void)writeEmafeData(EMAFE_ADC_SECURITY, &data, 1U);
 }
 
 uint8_t EMAFE_ADCGetSecurityControls(void)
 {
-    uint8_t data;
+    uint8_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_SECURITY, &data, 1);
+    (void)readEmafeData(EMAFE_ADC_SECURITY, &data, 1U);
 
     return data;
 }
 
 uint16_t EMAFE_ADCGGetVREFLowTemp(void)
 {
-    uint16_t data;
+    uint16_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_VREF_TL, (uint8_t *)&data, 2);
+    (void)readEmafeData(EMAFE_ADC_VREF_TLOW, (uint8_t *)&data, 2U);
 
     return data;
 }
 
 uint16_t EMAFE_ADCGGetTEMPLowTemp(void)
 {
-    uint16_t data;
+    uint16_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_TEMP_TL, (uint8_t *)&data, 2);
+    (void)readEmafeData(EMAFE_ADC_TEMP_TLOW, (uint8_t *)&data, 2U);
 
     return data;
 }
 
 uint16_t EMAFE_ADCGGetVREFHighTemp(void)
 {
-    uint16_t data;
+    uint16_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_VREF_TH, (uint8_t *)&data, 2);
+    (void)readEmafeData(EMAFE_ADC_VREF_THIGH, (uint8_t *)&data, 2U);
 
     return data;
 }
 
 uint16_t EMAFE_ADCGGetTEMPHighTemp(void)
 {
-    uint16_t data;
+    uint16_t data = 0;
 
-    _readEmafeData(EMAFE_ADC_TEMP_TH, (uint8_t *)&data, 2);
+    (void)readEmafeData(EMAFE_ADC_TEMP_THIGH, (uint8_t *)&data, 2U);
 
     return data;
 }
@@ -781,7 +824,7 @@ void EMAFE_DATA_InterruptHandler(void)
     volatile uint32_t status;
     status = EMAFE_REGS->EMAFE_IMR & EMAFE_REGS->EMAFE_ISR;
 
-    if (emafeCallback)
+    if (emafeCallback != NULL)
     {
         emafeCallback(status);
     }

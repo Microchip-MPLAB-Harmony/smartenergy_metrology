@@ -68,7 +68,7 @@ typedef enum {
 } EMAFE_STATUS;
 
 typedef enum {
-	EMAFE_CHN_0_ID = 0,
+	EMAFE_CHN_0_ID = 0U,
 	EMAFE_CHN_1_ID,
 	EMAFE_CHN_2_ID,
 	EMAFE_CHN_3_ID,
@@ -77,7 +77,7 @@ typedef enum {
 } EMAFE_CHANNEL_ID;
 
 typedef enum {
-	EMAFE_COMP_CHN_0_ID = 0,
+	EMAFE_COMP_CHN_0_ID = 0U,
 	EMAFE_COMP_CHN_1_ID,
 	EMAFE_COMP_CHN_2_ID,
 	EMAFE_COMP_CHN_3_ID,
@@ -87,7 +87,7 @@ typedef enum {
 } EMAFE_COMP_CHANNEL_ID;
 
 typedef enum {
-	EMAFE_COMPARISON_HIGH = 0,
+	EMAFE_COMPARISON_HIGH = 0U,
 	EMAFE_COMPARISON_LOW
 } EMAFE_DIFF_COMPARISON_TYPE;
 
@@ -100,7 +100,7 @@ typedef struct {
 } EMAFE_DIFF_COMPARISON_DATA;
 
 typedef enum {
-	EMAFE_CONDITION_OR = 0,
+	EMAFE_CONDITION_OR = 0U,
 	EMAFE_CONDITION_AND
 } EMAFE_CONDITION_TYPE;
 
@@ -123,7 +123,7 @@ void EMAFE_DisableFilter(uint32_t filterMask);
 <#if EMAFE_LPFIF_DMA_ENABLE == true>
 void EMAFE_EnableDMAChannel(uint32_t channelMask);
 void EMAFE_DisableDMAChannel(uint32_t channelMask);
-uint32_t EMAFE_GetDMAChannelEnableMask();
+uint32_t EMAFE_GetDMAChannelEnableMask(void);
 void EMAFE_DMASetup(uint32_t *pData, uint16_t samplesNum, uint32_t *pNextData, uint16_t samplesNextNum);
 void EMAFE_DMATransfer(bool enable, uint32_t controlMask);
 <#else>
@@ -132,7 +132,7 @@ void EMAFE_GetAllDataChannel(uint8_t *pData);
 </#if>
 void EMAFE_EnableVariationDetection(EMAFE_COMP_CHANNEL_ID channel, uint16_t limit);
 void EMAFE_DisableVariationDetection(void);
-bool EMAFE_IsEnableVariationDetection();
+bool EMAFE_IsEnableVariationDetection(void);
 void EMAFE_SetDifferenceComparisonMode(EMAFE_DIFF_COMPARISON_DATA *data);
 void EMAFE_SetDataFormat(uint32_t format);
 void EMAFE_SetClockPrescalerRatio(uint32_t mclkdiv);

@@ -196,6 +196,9 @@ def instantiateComponent(icmComponent):
     icmInstance = icmComponent.getID()
     Log.writeInfoMessage("Loading ICM Metrology Driver: {}".format(icmInstance))
 
+    # Enable clock for ICM
+    Database.setSymbolValue("core", "ICM_CLOCK_ENABLE", True, 1)
+
     # ICM Configuration
     icmCfgDaprot = icmComponent.createKeyValueSetSymbol("ICM_CONFIG_DAPROT", None)
     icmCfgDaprot.setLabel("Region Descriptor Area Protection")
@@ -428,3 +431,10 @@ def instantiateComponent(icmComponent):
     icmPlibSystemInitFile.setSourcePath("peripheral/icm/templates/system/initialization.c.ftl")
     icmPlibSystemInitFile.setMarkup(True)
 
+def destroyComponent(icmComponent):
+    # Disable clock for ICM
+    Database.setSymbolValue("core", "ICM_CLOCK_ENABLE", True, 0)
+    # Disable ICM interrupt
+    Database.clearSymbolValue("core", "ICM_INTERRUPT_ENABLE")
+    Database.clearSymbolValue("core", "ICM_INTERRUPT_HANDLER")
+    Database.clearSymbolValue("core", "ICM_INTERRUPT_HANDLER_LOCK")
