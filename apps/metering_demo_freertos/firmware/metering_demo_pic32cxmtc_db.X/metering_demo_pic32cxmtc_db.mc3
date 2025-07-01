@@ -1105,7 +1105,7 @@
       &lt;/Boolean&gt;
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;100&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;5&quot;/&gt;
     &lt;/Values&gt;
   &lt;/HarmonyCore&gt;
 &lt;/HarmonyCore&gt;
@@ -10112,7 +10112,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>b1442dae43a5a342f3d8315a30be90ccb58c7fd79065b1f220626b307bd4374d</hash>
+         <hash>56d82af5e48158c785f3441a7059bd8a202450c3c7dea35a244fef3d10752252</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -10564,7 +10564,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\tasks.c</file>
-         <hash>ffefee5b3188df514cba909973ee8cbbf30939bf439b34fa0b9ea748c1ad08ec</hash>
+         <hash>6e38ac227525076484e3ec86ad0639740b0d23e818b66a830603a59db10c7bd8</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\toolchain_specifics.h</file>

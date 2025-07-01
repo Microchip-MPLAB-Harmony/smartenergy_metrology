@@ -146,7 +146,7 @@ static void lAPP_DATALOG_Tasks(  void *pvParameters  )
     while(true)
     {
         APP_DATALOG_Tasks();
-        vTaskDelay(100U / portTICK_PERIOD_MS);
+        vTaskDelay(5U / portTICK_PERIOD_MS);
     }
 }
 

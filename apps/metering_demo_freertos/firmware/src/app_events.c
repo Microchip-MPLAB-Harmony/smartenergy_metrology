@@ -280,8 +280,8 @@ void APP_EVENTS_Initialize ( void )
         app_eventsData.state = APP_EVENTS_STATE_ERROR;
     }
 
-    // Create a queue capable of containing 5 queue data elements.
-    appEventsQueueID = xQueueCreate(5, sizeof(APP_EVENTS_QUEUE_DATA));
+    // Create a queue capable of containing APP_EVENTS_QUEUE_DATA_SIZE queue data elements.
+    appEventsQueueID = xQueueCreate(APP_EVENTS_QUEUE_DATA_SIZE, sizeof(APP_EVENTS_QUEUE_DATA));
 
     if (appEventsQueueID == NULL)
     {

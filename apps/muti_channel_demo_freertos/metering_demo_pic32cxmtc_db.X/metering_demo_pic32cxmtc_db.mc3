@@ -3656,7 +3656,7 @@
       &lt;/Boolean&gt;
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;100&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;5&quot;/&gt;
     &lt;/Values&gt;
   &lt;/HarmonyCore&gt;
 &lt;/HarmonyCore&gt;
@@ -30837,7 +30837,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\definitions.h</file>
-         <hash>7ae1863dd4e892f44f56e25bca7d5df12719bd095d4daa4b2c64388896e08eae</hash>
+         <hash>8e31c54b4fc1c315c940bd8ac0fd88b5161c7a089e98745dcc2c9b6f386f5403</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\device.h</file>
@@ -31293,7 +31293,7 @@
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\tasks.c</file>
-         <hash>caaf2e4fda18bc8de1236e238fd7b69ebe74ab5bbcbdfa6e3c0104a2a007ddc4</hash>
+         <hash>2ba3bf74bc3292acb276d4596d270b5d6cb28f23737ca4cbdf480c55beb976ba</hash>
       </entry>
       <entry>
          <file>..\src\config\multichannel_demo_pic32cxmtc_db\toolchain_specifics.h</file>

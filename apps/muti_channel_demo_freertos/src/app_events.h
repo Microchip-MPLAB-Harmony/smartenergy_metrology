@@ -171,7 +171,7 @@ typedef struct {
 
 } APP_EVENTS_QUEUE_DATA;
 
-#define APP_EVENTS_QUEUE_DATA_SIZE     5
+#define APP_EVENTS_QUEUE_DATA_SIZE     10
 
 typedef struct {
     float currentValue;
