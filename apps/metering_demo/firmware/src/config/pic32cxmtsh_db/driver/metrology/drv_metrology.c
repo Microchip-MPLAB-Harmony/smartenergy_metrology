@@ -1808,9 +1808,9 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 
 }
 
-void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
+void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS_UNION * events)
 {
-    *events = gDrvMetObj.metAFEData.afeEvents;
+    *events = (DRV_METROLOGY_AFE_EVENTS_UNION) gDrvMetObj.metAFEData.afeEvents;
 }
 
 void DRV_METROLOGY_StartCalibration(void)

@@ -134,6 +134,8 @@ typedef struct
     DRV_MCMETROLOGY_HARMONICS_CALLBACK pHarmonicAnalysisCallback;
     DRV_MCMETROLOGY_REGS_HARMONICS harmonicsData;
 
+    DRV_MCMETROLOGY_AFE_EVENTS eventFlagsPrev;
+
     uint32_t queueFree;
 
     bool setConfiguration;

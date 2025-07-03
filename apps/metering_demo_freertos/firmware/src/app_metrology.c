@@ -469,6 +469,7 @@ void APP_METROLOGY_Initialize (void)
     /* Initialize integration Flag */
     app_metrologyData.integrationFlag = false;
     app_metrologyData.halfFullCycleFlag = false;
+    app_metrologyData.eventFlagsPrev.afeEventsMask = 0;
 
     /* Create the Metrology Integration Semaphore. */
     if (OSAL_SEM_Create(&appMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
@@ -494,6 +495,8 @@ void APP_METROLOGY_Tasks (void)
 {
     APP_ENERGY_QUEUE_DATA newMetrologyData;
     APP_EVENTS_QUEUE_DATA newEvent;
+    DRV_METROLOGY_AFE_EVENTS_UNION newEventFlags;
+
     
     if (app_metrologyData.metBinMismatch)
     {
@@ -692,8 +695,13 @@ void APP_METROLOGY_Tasks (void)
                 if (app_metrologyData.queueFree)
                 {
                     RTC_TimeGet(&newEvent.eventTime);
-                    DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
-                    xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    DRV_METROLOGY_GetEventsData(&newEventFlags);
+                    if (newEventFlags.afeEventsMask != app_metrologyData.eventFlagsPrev.afeEventsMask)
+                    {
+                        app_metrologyData.eventFlagsPrev.afeEventsMask = newEventFlags.afeEventsMask;
+                        newEvent.eventFlags = newEventFlags.afeEvents;
+                        xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    }
                 }
                 else
                 {
@@ -709,8 +717,13 @@ void APP_METROLOGY_Tasks (void)
                 if (app_metrologyData.queueFree)
                 {
                     RTC_TimeGet(&newEvent.eventTime);
-                    DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
-                    xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    DRV_METROLOGY_GetEventsData(&newEventFlags);
+                    if (newEventFlags.afeEventsMask != app_metrologyData.eventFlagsPrev.afeEventsMask)
+                    {
+                        app_metrologyData.eventFlagsPrev.afeEventsMask = newEventFlags.afeEventsMask;
+                        newEvent.eventFlags = newEventFlags.afeEvents;
+                        xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    }
                 }
                 else
                 {

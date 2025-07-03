@@ -258,6 +258,10 @@ void APP_METROLOGY_Initialize(void)
     app_metrologyData.integrationFlag = false;
     app_metrologyData.halfFullCycleFlag = false;
     app_metrologyData.dataFlag = false;
+    app_metrologyData.eventFlagsPrev.swell = 0;
+    app_metrologyData.eventFlagsPrev.sag = 0;
+    app_metrologyData.eventFlagsPrev.creep = 0;
+    app_metrologyData.eventFlagsPrev.phActive = 0;
 
 }
 
@@ -455,9 +459,16 @@ void APP_METROLOGY_Tasks(void)
                 // Send new Events to the Events Task
                 RTC_TimeGet(&newEvent.eventTime);
                 DRV_MCMETROLOGY_GetEventsData(&newEvent.eventFlags);
-                if (APP_EVENTS_RegisterEventsData(&newEvent) == false)
+                if ((app_metrologyData.eventFlagsPrev.swell != newEvent.eventFlags.swell) || 
+                        (app_metrologyData.eventFlagsPrev.sag != newEvent.eventFlags.sag) ||
+                        (app_metrologyData.eventFlagsPrev.creep != newEvent.eventFlags.creep) ||
+                        (app_metrologyData.eventFlagsPrev.phActive != newEvent.eventFlags.phActive))
                 {
-                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    app_metrologyData.eventFlagsPrev = newEvent.eventFlags;
+                    if (APP_EVENTS_RegisterEventsData(&newEvent) == false)
+                    {
+                        SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    }
                 }
             }
             
@@ -469,9 +480,16 @@ void APP_METROLOGY_Tasks(void)
                 // Send new Events to the Events Task
                 RTC_TimeGet(&newEvent.eventTime);
                 DRV_MCMETROLOGY_GetEventsData(&newEvent.eventFlags);
-                if (APP_EVENTS_RegisterEventsData(&newEvent) == false)
+                if ((app_metrologyData.eventFlagsPrev.swell != newEvent.eventFlags.swell) || 
+                        (app_metrologyData.eventFlagsPrev.sag != newEvent.eventFlags.sag) ||
+                        (app_metrologyData.eventFlagsPrev.creep != newEvent.eventFlags.creep) ||
+                        (app_metrologyData.eventFlagsPrev.phActive != newEvent.eventFlags.phActive))
                 {
-                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    app_metrologyData.eventFlagsPrev = newEvent.eventFlags;
+                    if (APP_EVENTS_RegisterEventsData(&newEvent) == false)
+                    {
+                        SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    }
                 }
             }
 

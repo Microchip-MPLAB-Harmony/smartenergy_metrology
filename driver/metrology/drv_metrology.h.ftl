@@ -1096,7 +1096,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
 // *****************************************************************************
 /* Function:
-    void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
+    void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS_UNION * events);
 
   Summary:
     Gets the last metrology AFE events data.
@@ -1104,7 +1104,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
   Description:
     Gets the last metrology AFE events data.
     Events are updated at the end of each Half-Cycle and Full-Cycle.
-    For further information about the event data, refer to DRV_METROLOGY_AFE_EVENTS definition.
+    For further information about the event data, refer to DRV_METROLOGY_AFE_EVENTS_UNION definition.
 
   Precondition:
     None.
@@ -1133,7 +1133,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
   Remarks:
     None.
 */
-void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
+void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS_UNION * events);
 
 // *****************************************************************************
 /* Function:

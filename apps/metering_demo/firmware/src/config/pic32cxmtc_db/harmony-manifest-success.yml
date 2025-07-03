@@ -4,10 +4,10 @@
 
 
 project: metering_demo
-creation_date: 2025-07-04T08:27:12.255+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2025-07-04T11:36:58.943+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 11
 mcc_mode: IDE            # [IDE|Standalone|Headless]
-mcc_version: v5.5.2
+mcc_version: v5.5.3
 mcc_core_version: v5.7.1
 mplabx_version: v6.25        # if MPLAB X plugin only
 harmony_version: v1.5.5
@@ -15,11 +15,11 @@ compiler: XC32 4.60
 
 modules:
     - {name: "core", version: "v3.15.1"}
-    - {name: "csp", version: "Branch_v3.22.5"}
-    - {name: "smartenergy_metrology", version: "MH3-113930-add-integrity-check-icm-in-demo-metrology-apps"}
+    - {name: "csp", version: "v3.22.5"}
+    - {name: "smartenergy_metrology", version: "v1.1.0-E1-27-gea5a985"}
     - {name: "CMSIS_5", version: "5.9.0"}
-    - {name: "gfx", version: "dev"}
-    - {name: "shd", version: "master"}
+    - {name: "gfx", version: "v3.16.1"}
+    - {name: "shd", version: "v1.2.0"}
 
 packs:
     - {name: "PIC32CX-MT_DFP", version: "1.3.132"}

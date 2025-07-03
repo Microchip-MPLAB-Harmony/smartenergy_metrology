@@ -462,6 +462,7 @@ void APP_METROLOGY_Initialize (void)
     app_metrologyData.integrationFlag = false;
     app_metrologyData.halfFullCycleFlag = false;
     app_metrologyData.dataFlag = false;
+    app_metrologyData.eventFlagsPrev.afeEventsMask = 0;
 
 }
 
@@ -476,6 +477,8 @@ void APP_METROLOGY_Tasks (void)
 {
     APP_ENERGY_QUEUE_DATA newMetrologyData;
     APP_EVENTS_QUEUE_DATA newEvent;
+    DRV_METROLOGY_AFE_EVENTS_UNION newEventFlags;
+
     
     if (app_metrologyData.metBinMismatch)
     {
@@ -658,10 +661,15 @@ void APP_METROLOGY_Tasks (void)
 
                 // Send new Events to the Events Task
                 RTC_TimeGet(&newEvent.eventTime);
-                DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
-                if (APP_EVENTS_SendEventsData(&newEvent) == false)
+                DRV_METROLOGY_GetEventsData(&newEventFlags);
+                if (newEventFlags.afeEventsMask != app_metrologyData.eventFlagsPrev.afeEventsMask)
                 {
-                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    app_metrologyData.eventFlagsPrev.afeEventsMask = newEventFlags.afeEventsMask;
+                    newEvent.eventFlags = newEventFlags.afeEvents;
+                    if (APP_EVENTS_SendEventsData(&newEvent) == false)
+                    {
+                        SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    }
                 }
             }
             
@@ -672,10 +680,15 @@ void APP_METROLOGY_Tasks (void)
 
                 // Send new Events to the Events Task
                 RTC_TimeGet(&newEvent.eventTime);
-                DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
-                if (APP_EVENTS_SendEventsData(&newEvent) == false)
+                DRV_METROLOGY_GetEventsData(&newEventFlags);
+                if (newEventFlags.afeEventsMask != app_metrologyData.eventFlagsPrev.afeEventsMask)
                 {
-                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    app_metrologyData.eventFlagsPrev.afeEventsMask = newEventFlags.afeEventsMask;
+                    newEvent.eventFlags = newEventFlags.afeEvents;
+                    if (APP_EVENTS_SendEventsData(&newEvent) == false)
+                    {
+                        SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                    }
                 }
             }
 

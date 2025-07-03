@@ -266,6 +266,10 @@ void APP_METROLOGY_Initialize(void)
     /* Initialize integration Flag */
     app_metrologyData.integrationFlag = false;
     app_metrologyData.halfFullCycleFlag = false;
+    app_metrologyData.eventFlagsPrev.swell = 0;
+    app_metrologyData.eventFlagsPrev.sag = 0;
+    app_metrologyData.eventFlagsPrev.creep = 0;
+    app_metrologyData.eventFlagsPrev.phActive = 0;
 
     /* Create the Metrology Integration Semaphore. */
     if (OSAL_SEM_Create(&appMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
@@ -481,7 +485,14 @@ void APP_METROLOGY_Tasks(void)
                 {
                     RTC_TimeGet(&newEvent.eventTime);
                     DRV_MCMETROLOGY_GetEventsData(&newEvent.eventFlags);
-                    xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    if ((app_metrologyData.eventFlagsPrev.swell != newEvent.eventFlags.swell) || 
+                        (app_metrologyData.eventFlagsPrev.sag != newEvent.eventFlags.sag) ||
+                        (app_metrologyData.eventFlagsPrev.creep != newEvent.eventFlags.creep) ||
+                        (app_metrologyData.eventFlagsPrev.phActive != newEvent.eventFlags.phActive))
+                    {
+                        app_metrologyData.eventFlagsPrev = newEvent.eventFlags;
+                        xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    }
                 }
                 else
                 {
@@ -499,7 +510,14 @@ void APP_METROLOGY_Tasks(void)
                 {
                     RTC_TimeGet(&newEvent.eventTime);
                     DRV_MCMETROLOGY_GetEventsData(&newEvent.eventFlags);
-                    xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    if ((app_metrologyData.eventFlagsPrev.swell != newEvent.eventFlags.swell) || 
+                        (app_metrologyData.eventFlagsPrev.sag != newEvent.eventFlags.sag) ||
+                        (app_metrologyData.eventFlagsPrev.creep != newEvent.eventFlags.creep) ||
+                        (app_metrologyData.eventFlagsPrev.phActive != newEvent.eventFlags.phActive))
+                    {
+                        app_metrologyData.eventFlagsPrev = newEvent.eventFlags;
+                        xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                    }
                 }
                 else
                 {

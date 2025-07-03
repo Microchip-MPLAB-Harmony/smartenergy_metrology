@@ -314,6 +314,11 @@ typedef struct {
     unsigned int reserved : 1;
 } DRV_METROLOGY_AFE_EVENTS;
 
+typedef union {
+    DRV_METROLOGY_AFE_EVENTS afeEvents;
+    uint32_t afeEventsMask;
+} DRV_METROLOGY_AFE_EVENTS_UNION;
+
 /* Metrology Driver Measurements type
 
   Summary:

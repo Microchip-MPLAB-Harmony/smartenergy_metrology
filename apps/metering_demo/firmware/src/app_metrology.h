@@ -344,6 +344,8 @@ typedef struct
 
     DRV_METROLOGY_CALIBRATION_CALLBACK pCalibrationCallback;
 
+    DRV_METROLOGY_AFE_EVENTS_UNION eventFlagsPrev;
+
     uint32_t queueFree;
 
     bool setConfiguration;
