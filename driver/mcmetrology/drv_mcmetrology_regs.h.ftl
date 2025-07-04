@@ -46,43 +46,43 @@ Microchip or any third party.
 #define   STATE_CTRL_STATE_CTRL_RUN_Val                         _UINT32_(0x2)                           /* (STATE_CTRL) Metrology filters are free to run, and outputs are updated at commanded rate.  */
 
 /* -------- FEATURE_CTRL0 : (MET_CONTROL) (R/W 32) Metrology feature setting register 0 -------- */
-#define FEATURE_CTRL0_SYNCH_Pos                               _UINT32_(0)                               /* (FEATURE_CTRL) Active Voltage Channel Selection Position */
-#define FEATURE_CTRL0_SYNCH_Msk                               (_UINT32_(0x7F) << FEATURE_CTRL_SYNCH_Pos)    /* (FEATURE_CTRL) Active Voltage Channel Selection Mask */
-#define FEATURE_CTRL0_SYNCH(value)                            (FEATURE_CTRL_SYNCH_Msk & (_UINT32_(value) << FEATURE_CTRL_SYNCH_Pos))
-#define   FEATURE_CTRL0_SYNCH_ACTIVE_CH                         _UINT32_(0x0)                           /* (FEATURE_CTRL) Measurement interval based on active channel, determined dynamically */
-#define FEATURE_CTRL0_RZC_THRESH_DIS_EN_Pos                   _UINT32_(7)                               /* (FEATURE_CTRL) Enable Phase A Position */
-#define FEATURE_CTRL0_RZC_THRESH_DIS_EN_Msk                   (_UINT32_(0x1) << FEATURE_CTRL_RZC_THRESH_DIS_EN_Pos)    /* (FEATURE_CTRL) Enable Phase A Mask */
-#define FEATURE_CTRL0_RZC_THRESH_DIS_EN(value)                (FEATURE_CTRL_RZC_THRESH_DIS_EN_Msk & (_UINT32_(value) << FEATURE_CTRL_RZC_THRESH_DIS_EN_Pos))
-#define   FEATURE_CTRL0_RZC_THRESH_DIS_EN_DISABLED_Val          _UINT32_(0x0)                           /* (FEATURE_CTRL) Threshold set to the average value computed in the last integration period */
-#define   FEATURE_CTRL0_RZC_THRESH_DIS_EN_ENABLED_Val           _UINT32_(0x1)                           /* (FEATURE_CTRL) Threshold set to 0 */
-#define FEATURE_CTRL0_POWER_NUMBER_Pos                        _UINT32_(8)                               /* (FEATURE_CTRL) Number of powers computed Position */
-#define FEATURE_CTRL0_POWER_NUMBER_Msk                        (_UINT32_(0x1F) << FEATURE_CTRL_POWER_NUMBER_Pos)    /* (FEATURE_CTRL) Number of powers computed Mask */
-#define FEATURE_CTRL0_POWER_NUMBER(value)                     (FEATURE_CTRL_POWER_NUMBER_Msk & (_UINT32_(value) << FEATURE_CTRL_POWER_NUMBER_Pos))
-#define FEATURE_CTRL0_MAX_INT_SELECT_Pos                      _UINT32_(15)                               /* (FEATURE_CTRL) Max Integration Period Select Position */
-#define FEATURE_CTRL0_MAX_INT_SELECT_Msk                      (_UINT32_(0x1) << FEATURE_CTRL_MAX_INT_SELECT_Pos)    /* (FEATURE_CTRL) Max Integration Period Select A Mask */
-#define FEATURE_CTRL0_MAX_INT_SELECT(value)                   (FEATURE_CTRL_MAX_INT_SELECT_Msk & (_UINT32_(value) << FEATURE_CTRL_MAX_INT_SELECT_Pos))
-#define   FEATURE_CTRL0_MAX_INT_SELECT_1S_Val                   _UINT32_(0x0)                           /* (FEATURE_CTRL) Metrology DSP will integrate for an integral number of cycles closest to 1 second */
-#define   FEATURE_CTRL0_MAX_INT_SELECT_LESS1S_Val               _UINT32_(0x1)                           /* (FEATURE_CTRL) Metrology DSP will integrate for an integral number of cycles no greater than 1 second */
-#define FEATURE_CTRL0_RZC_CHAN_SELECT_Pos                     _UINT32_(16)                               /* (FEATURE_CTRL) Raw Zero-Crossing Channel Select and Enable Position */
-#define FEATURE_CTRL0_RZC_CHAN_SELECT_Msk                     (_UINT32_(0x7F) << FEATURE_CTRL_RZC_CHAN_SELECT_Pos)    /* (FEATURE_CTRL) Raw Zero-Crossing Channel Select and Enable Mask */
-#define FEATURE_CTRL0_RZC_CHAN_SELECT(value)                  (FEATURE_CTRL_RZC_CHAN_SELECT_Msk & (_UINT32_(value) << FEATURE_CTRL_RZC_CHAN_SELECT_Pos))
-#define   FEATURE_CTRL0_RZC_CHAN_SELECT_DISABLED_Val            _UINT32_(0x0)                           /* (FEATURE_CTRL) Raw Zero-Crossing detection is disabled */
-#define FEATURE_CTRL0_RZC_DIR_Pos                             _UINT32_(23)                               /* (FEATURE_CTRL) Raw Zero-Crossing Direction Selection Position */
-#define FEATURE_CTRL0_RZC_DIR_Msk                             (_UINT32_(0x1) << FEATURE_CTRL_RZC_DIR_Pos)    /* (FEATURE_CTRL) Raw Zero-Crossing Direction Selection Mask */
-#define FEATURE_CTRL0_RZC_DIR(value)                          (FEATURE_CTRL_RZC_DIR_Msk & (_UINT32_(value) << FEATURE_CTRL_RZC_DIR_Pos))
-#define   FEATURE_CTRL0_RZC_RZC_DIR_POSITIVE_Val                _UINT32_(0x0)                           /* (FEATURE_CTRL) Positive-going raw zero-crossings selected */
-#define   FEATURE_CTRL0_RZC_RZC_DIR_NEGATIVE_Val                _UINT32_(0x1)                           /* (FEATURE_CTRL) Negative-going raw zero-crossings selected */
-#define FEATURE_CTRL_AFE_SELECTION_Pos                        _UINT32_(28)                               /* (FEATURE_CTRL) AFE Selection Position */
-#define FEATURE_CTRL_AFE_SELECTION_Msk                        (_UINT32_(0xF) << FEATURE_CTRL_AFE_SELECTION_Pos)    /* (FEATURE_CTRL) AFE Selection Mask */
-#define FEATURE_CTRL_AFE_SELECTION(value)                     (FEATURE_CTRL_AFE_SELECTION_Msk & (_UINT32_(value) << FEATURE_CTRL_AFE_SELECTION_Pos))
-#define   FEATURE_CTRL_AFE_SELECTION_1_MCP3914                  _UINT32_(0x0)                           /* (FEATURE_CTRL) 8 channels and up to 7 powers are allowed. Not tested */
-#define   FEATURE_CTRL_AFE_SELECTION_2_MCP3914                  _UINT32_(0x1)                           /* (FEATURE_CTRL) 16 channels and up to 15 powers are allowed. Not tested */
-#define   FEATURE_CTRL_AFE_SELECTION_3_MCP3914                  _UINT32_(0x2)                           /* (FEATURE_CTRL) 24 channels and up to 23 powers are allowed. Not supported in this version */
-#define   FEATURE_CTRL_AFE_SELECTION_4_MCP3914                  _UINT32_(0x3)                           /* (FEATURE_CTRL) 32 channels and up to 31 powers are allowed. Not supported in this version */
-#define   FEATURE_CTRL_AFE_SELECTION_1_MCP3913                  _UINT32_(0x4)                           /* (FEATURE_CTRL) 6 channels and up to 5 powers are allowed */
-#define   FEATURE_CTRL_AFE_SELECTION_2_MCP3913                  _UINT32_(0x5)                           /* (FEATURE_CTRL) 12 channels and up to 11 powers are allowed */
-#define   FEATURE_CTRL_AFE_SELECTION_3_MCP3913                  _UINT32_(0x6)                           /* (FEATURE_CTRL) 18 channels and up to 17 powers are allowed. Not supported in this version */
-#define   FEATURE_CTRL_AFE_SELECTION_4_MCP3913                  _UINT32_(0x7)                           /* (FEATURE_CTRL) 24 channels and up to 23 powers are allowed. Not supported in this version */
+#define FEATURE_CTRL0_SYNCH_Pos                               _UINT32_(0)                               /* (FEATURE_CTRL0) Active Voltage Channel Selection Position */
+#define FEATURE_CTRL0_SYNCH_Msk                               (_UINT32_(0x7F) << FEATURE_CTRL0_SYNCH_Pos)    /* (FEATURE_CTRL0) Active Voltage Channel Selection Mask */
+#define FEATURE_CTRL0_SYNCH(value)                            (FEATURE_CTRL0_SYNCH_Msk & (_UINT32_(value) << FEATURE_CTRL0_SYNCH_Pos))
+#define   FEATURE_CTRL0_SYNCH_ACTIVE_CH                         _UINT32_(0x0)                           /* (FEATURE_CTRL0) Measurement interval based on active channel, determined dynamically */
+#define FEATURE_CTRL0_RZC_THRESH_DIS_EN_Pos                   _UINT32_(7)                               /* (FEATURE_CTRL0) Enable Phase A Position */
+#define FEATURE_CTRL0_RZC_THRESH_DIS_EN_Msk                   (_UINT32_(0x1) << FEATURE_CTRL0_RZC_THRESH_DIS_EN_Pos)    /* (FEATURE_CTRL0) Enable Phase A Mask */
+#define FEATURE_CTRL0_RZC_THRESH_DIS_EN(value)                (FEATURE_CTRL0_RZC_THRESH_DIS_EN_Msk & (_UINT32_(value) << FEATURE_CTRL0_RZC_THRESH_DIS_EN_Pos))
+#define   FEATURE_CTRL0_RZC_THRESH_DIS_EN_DISABLED_Val          _UINT32_(0x0)                           /* (FEATURE_CTRL0) Threshold set to the average value computed in the last integration period */
+#define   FEATURE_CTRL0_RZC_THRESH_DIS_EN_ENABLED_Val           _UINT32_(0x1)                           /* (FEATURE_CTRL0) Threshold set to 0 */
+#define FEATURE_CTRL0_POWER_NUMBER_Pos                        _UINT32_(8)                               /* (FEATURE_CTRL0) Number of powers computed Position */
+#define FEATURE_CTRL0_POWER_NUMBER_Msk                        (_UINT32_(0x1F) << FEATURE_CTRL0_POWER_NUMBER_Pos)    /* (FEATURE_CTRL0) Number of powers computed Mask */
+#define FEATURE_CTRL0_POWER_NUMBER(value)                     (FEATURE_CTRL0_POWER_NUMBER_Msk & (_UINT32_(value) << FEATURE_CTRL0_POWER_NUMBER_Pos))
+#define FEATURE_CTRL0_MAX_INT_SELECT_Pos                      _UINT32_(15)                               /* (FEATURE_CTRL0) Max Integration Period Select Position */
+#define FEATURE_CTRL0_MAX_INT_SELECT_Msk                      (_UINT32_(0x1) << FEATURE_CTRL0_MAX_INT_SELECT_Pos)    /* (FEATURE_CTRL0) Max Integration Period Select A Mask */
+#define FEATURE_CTRL0_MAX_INT_SELECT(value)                   (FEATURE_CTRL0_MAX_INT_SELECT_Msk & (_UINT32_(value) << FEATURE_CTRL0_MAX_INT_SELECT_Pos))
+#define   FEATURE_CTRL0_MAX_INT_SELECT_1S_Val                   _UINT32_(0x0)                           /* (FEATURE_CTRL0) Metrology DSP will integrate for an integral number of cycles closest to 1 second */
+#define   FEATURE_CTRL0_MAX_INT_SELECT_LESS1S_Val               _UINT32_(0x1)                           /* (FEATURE_CTRL0) Metrology DSP will integrate for an integral number of cycles no greater than 1 second */
+#define FEATURE_CTRL0_RZC_CHAN_SELECT_Pos                     _UINT32_(16)                               /* (FEATURE_CTRL0) Raw Zero-Crossing Channel Select and Enable Position */
+#define FEATURE_CTRL0_RZC_CHAN_SELECT_Msk                     (_UINT32_(0x7F) << FEATURE_CTRL0_RZC_CHAN_SELECT_Pos)    /* (FEATURE_CTRL0) Raw Zero-Crossing Channel Select and Enable Mask */
+#define FEATURE_CTRL0_RZC_CHAN_SELECT(value)                  (FEATURE_CTRL0_RZC_CHAN_SELECT_Msk & (_UINT32_(value) << FEATURE_CTRL0_RZC_CHAN_SELECT_Pos))
+#define   FEATURE_CTRL0_RZC_CHAN_SELECT_DISABLED_Val            _UINT32_(0x0)                           /* (FEATURE_CTRL0) Raw Zero-Crossing detection is disabled */
+#define FEATURE_CTRL0_RZC_DIR_Pos                             _UINT32_(23)                               /* (FEATURE_CTRL0) Raw Zero-Crossing Direction Selection Position */
+#define FEATURE_CTRL0_RZC_DIR_Msk                             (_UINT32_(0x1) << FEATURE_CTRL0_RZC_DIR_Pos)    /* (FEATURE_CTRL0) Raw Zero-Crossing Direction Selection Mask */
+#define FEATURE_CTRL0_RZC_DIR(value)                          (FEATURE_CTRL0_RZC_DIR_Msk & (_UINT32_(value) << FEATURE_CTRL0_RZC_DIR_Pos))
+#define   FEATURE_CTRL0_RZC_RZC_DIR_POSITIVE_Val                _UINT32_(0x0)                           /* (FEATURE_CTRL0) Positive-going raw zero-crossings selected */
+#define   FEATURE_CTRL0_RZC_RZC_DIR_NEGATIVE_Val                _UINT32_(0x1)                           /* (FEATURE_CTRL0) Negative-going raw zero-crossings selected */
+#define FEATURE_CTRL0_AFE_SELECTION_Pos                        _UINT32_(28)                               /* (FEATURE_CTRL0) AFE Selection Position */
+#define FEATURE_CTRL0_AFE_SELECTION_Msk                        (_UINT32_(0xF) << FEATURE_CTRL0_AFE_SELECTION_Pos)    /* (FEATURE_CTRL0) AFE Selection Mask */
+#define FEATURE_CTRL0_AFE_SELECTION(value)                     (FEATURE_CTRL0_AFE_SELECTION_Msk & (_UINT32_(value) << FEATURE_CTRL0_AFE_SELECTION_Pos))
+#define   FEATURE_CTRL0_AFE_SELECTION_1_MCP3914                  _UINT32_(0x0)                           /* (FEATURE_CTRL0) 8 channels and up to 7 powers are allowed. Not tested */
+#define   FEATURE_CTRL0_AFE_SELECTION_2_MCP3914                  _UINT32_(0x1)                           /* (FEATURE_CTRL0) 16 channels and up to 15 powers are allowed. Not tested */
+#define   FEATURE_CTRL0_AFE_SELECTION_3_MCP3914                  _UINT32_(0x2)                           /* (FEATURE_CTRL0) 24 channels and up to 23 powers are allowed. Not supported in this version */
+#define   FEATURE_CTRL0_AFE_SELECTION_4_MCP3914                  _UINT32_(0x3)                           /* (FEATURE_CTRL0) 32 channels and up to 31 powers are allowed. Not supported in this version */
+#define   FEATURE_CTRL0_AFE_SELECTION_1_MCP3913                  _UINT32_(0x4)                           /* (FEATURE_CTRL0) 6 channels and up to 5 powers are allowed */
+#define   FEATURE_CTRL0_AFE_SELECTION_2_MCP3913                  _UINT32_(0x5)                           /* (FEATURE_CTRL0) 12 channels and up to 11 powers are allowed */
+#define   FEATURE_CTRL0_AFE_SELECTION_3_MCP3913                  _UINT32_(0x6)                           /* (FEATURE_CTRL0) 18 channels and up to 17 powers are allowed. Not supported in this version */
+#define   FEATURE_CTRL0_AFE_SELECTION_4_MCP3913                  _UINT32_(0x7)                           /* (FEATURE_CTRL0) 24 channels and up to 23 powers are allowed. Not supported in this version */
 
 /* -------- FEATURE_CTRL1 : (MET_CONTROL) (R/W 32) Metrology feature setting register 1 -------- */
 #define FEATURE_CTRL1_CREEP_I_EN_Pos             _UINT32_(0)                                 /* (FEATURE_CTRL1) Current Creep Threshold Function Enable Position */
@@ -303,8 +303,8 @@ Microchip or any third party.
 #define STATUS_STATE_FLAG_AFE_FAIL(value)           (STATUS_STATE_FLAG_AFE_FAIL_Msk & (_UINT32_(value) << STATUS_STATE_FLAG_AFE_FAIL_Pos))
 #define   STATUS_STATE_FLAG_AFE_FAIL_DISABLED_Val      _UINT32_(0x0)                   /* (STATUS) ATSENSE initialization is successful  */
 #define   STATUS_STATE_FLAG_AFE_FAIL_ENABLED_Val       _UINT32_(0x1)                   /* (STATUS) ATSENSE initialization is failed */
-#define STATUS_STATE_FLAG_HARMONIC_M_CFG_Pos            _UINT32_(9)                                /* (FEATURE_CTRL1) Enable Harmonic Analysis Position */
-#define STATUS_STATE_FLAG_HARMONIC_M_CFG_Msk            (_UINT32_(0x7F) << STATUS_STATE_FLAG_HARMONIC_M_CFG_Pos)    /* (FEATURE_CTRL1) Enable Harmonic Analysis Mask */
+#define STATUS_STATE_FLAG_HARMONIC_M_CFG_Pos            _UINT32_(9)                                /* (STATUS) Enable Harmonic Analysis Position */
+#define STATUS_STATE_FLAG_HARMONIC_M_CFG_Msk            (_UINT32_(0x7F) << STATUS_STATE_FLAG_HARMONIC_M_CFG_Pos)    /* (STATUS) Enable Harmonic Analysis Mask */
 #define STATUS_STATE_FLAG_HARMONIC_M_CFG(value)         (STATUS_STATE_FLAG_HARMONIC_M_CFG_Msk & (_UINT32_(value) << STATUS_STATE_FLAG_HARMONIC_M_CFG_Pos))
 #define STATUS_STATE_FLAG_HOST_ID_FAIL_Pos           _UINT32_(15)                       /* (STATUS) Host Identification Failure Indication Position */
 #define STATUS_STATE_FLAG_HOST_ID_FAIL_Msk           (_UINT32_(0x01) << STATUS_STATE_FLAG_HOST_ID_FAIL_Pos)      /* (STATUS) Host Identification Failure Indication Mask */

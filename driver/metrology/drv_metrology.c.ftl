@@ -69,7 +69,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#define MAX_WAIT_LOOPS 100000
+#define MAX_WAIT_LOOPS 100000UL
 
 typedef enum {
     PENERGY = 0U,
@@ -103,9 +103,9 @@ static const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
     (uint32_t)(DRV_METROLOGY_CONF_CREEP_I),           /* 15 CREEP_THR_I */
     (uint32_t)(DRV_METROLOGY_CONF_CREEP_S),           /* 16 CREEP_THR_S */
     (uint32_t)(0x00000000UL),                         /* 17 POWER_OFFSET_CTRL */
-    (uint32_t)(0x00000000UL),                         /* 18 POWER_OFFSET_P */
-    (uint32_t)(0x00000000UL),                         /* 19 POWER_OFFSET_Q */
-    (uint32_t)(0x00000000UL),                         /* 20 POWER_OFFSET_S */
+    (int32_t)(0x00000000L),                           /* 18 POWER_OFFSET_P */
+    (int32_t)(0x00000000L),                           /* 19 POWER_OFFSET_Q */
+    (int32_t)(0x00000000L),                           /* 20 POWER_OFFSET_S */
     (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 21 SWELL_THR_VA */
     (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 22 SWELL_THR_VB */
     (uint32_t)(DRV_METROLOGY_CONF_SWELL),             /* 23 SWELL_THR_VC */
@@ -126,13 +126,13 @@ static const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
     (uint32_t)(0x20000000UL),                         /* 38 CAL_M_IC */
     (uint32_t)(0x20000000UL),                         /* 39 CAL_M_VC */
     (uint32_t)(0x20000000UL),                         /* 40 CAL_M_IN */
-    (uint32_t)(0x00000000UL),                         /* 41 CAL_PH_IA */
-    (uint32_t)(0x00000000UL),                         /* 42 CAL_PH_VA */
-    (uint32_t)(0x00000000UL),                         /* 43 CAL_PH_IB */
-    (uint32_t)(0x00000000UL),                         /* 44 CAL_PH_VB */
-    (uint32_t)(0x00000000UL),                         /* 45 CAL_PH_IC */
-    (uint32_t)(0x00000000UL),                         /* 46 CAL_PH_VC */
-    (uint32_t)(0x00000000UL),                         /* 47 CAL_PH_IN */
+    (int32_t)(0x00000000L),                           /* 41 CAL_PH_IA */
+    (int32_t)(0x00000000L),                           /* 42 CAL_PH_VA */
+    (int32_t)(0x00000000L),                           /* 43 CAL_PH_IB */
+    (int32_t)(0x00000000L),                           /* 44 CAL_PH_VB */
+    (int32_t)(0x00000000L),                           /* 45 CAL_PH_IC */
+    (int32_t)(0x00000000L),                           /* 46 CAL_PH_VC */
+    (int32_t)(0x00000000L),                           /* 47 CAL_PH_IN */
     (uint32_t)(DRV_METROLOGY_CONF_WAVEFORM),          /* 48 CAPTURE_CTRL */
     (uint32_t)(DRV_METROLOGY_CAPTURE_BUF_SIZE),       /* 49 CAPTURE_BUFF_SIZE */
 <#if DRV_MET_WAVEFORM_CAPTURE == true>
@@ -147,12 +147,12 @@ static const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
     (uint32_t)(DRV_METROLOGY_CONF_ATS2427),           /* 55 ATSENSE_CTRL_24_27 */
     (uint32_t)(0x00000003UL),                         /* 56 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
     (uint32_t)(0x00000000UL),                         /* 57 RESERVED_C54 */
-    (uint32_t)(0x00000000UL),                         /* 58 POWER_OFFSET_P_A */
-    (uint32_t)(0x00000000UL),                         /* 59 POWER_OFFSET_P_B */
-    (uint32_t)(0x00000000UL),                         /* 60 POWER_OFFSET_P_C */
-    (uint32_t)(0x00000000UL),                         /* 61 POWER_OFFSET_Q_A */
-    (uint32_t)(0x00000000UL),                         /* 62 POWER_OFFSET_Q_B */
-    (uint32_t)(0x00000000UL)                          /* 63 POWER_OFFSET_Q_C */
+    (int32_t)(0x00000000L),                           /* 58 POWER_OFFSET_P_A */
+    (int32_t)(0x00000000L),                           /* 59 POWER_OFFSET_P_B */
+    (int32_t)(0x00000000L),                           /* 60 POWER_OFFSET_P_C */
+    (int32_t)(0x00000000L),                           /* 61 POWER_OFFSET_Q_A */
+    (int32_t)(0x00000000L),                           /* 62 POWER_OFFSET_Q_B */
+    (int32_t)(0x00000000L),                           /* 63 POWER_OFFSET_Q_C */
 };
 
 // *****************************************************************************
@@ -574,12 +574,12 @@ static uint32_t lDRV_Metrology_GetAngle(int64_t p, int64_t q)
     {
         /* Get the positive value and set the MSB */
         n = -n;
-        angle = (uint32_t)round(n);
+        angle = (uint32_t)round((double)n);
         angle |= 0x80000000UL;
     }
     else
     {
-        angle = (uint32_t)round(n);
+        angle = (uint32_t)round((double)n);
     }
 
     return angle;
@@ -590,7 +590,7 @@ static int32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
     double m, k;
     double divisor;
     double ki, kv;
-    double offset = 0;
+    double offset = 0.0;
 
     divisor = (double)DIV_GAIN * (double)DIV_GAIN;
 
@@ -690,7 +690,7 @@ static void lDRV_Metrology_IpcInitialize (void)
         DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
-static uint32_t lDRV_Metrology_CorrectCalibrationAngle(uint32_t measured, double reference)
+static int32_t lDRV_Metrology_CorrectCalibrationAngle(uint32_t measured, double reference)
 {
     double bams, phase_correction;
     int64_t correction_angle;
@@ -728,7 +728,7 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle(uint32_t measured, double
     phase_correction = bams * 2147483648.00; /* sQ0.31 */
     correction_angle = (int64_t)phase_correction;
 
-    return (uint32_t)correction_angle;
+    return (int32_t)correction_angle;
 }
 
 static void lDRV_METROLOGY_UpdateMeasurements(void)
@@ -800,7 +800,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     powerOffset = lDRV_Metrology_GetPOffset();
     totalPower = -powerOffset;
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_PA];
     }
@@ -809,7 +809,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_PA];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_PB];
     }
@@ -818,7 +818,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_PB];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_PC];
     }
@@ -839,7 +839,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     }
 
     totalPower = -powerOffset;
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A_F))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A_F) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_PAF];
     }
@@ -848,7 +848,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_PAF];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B_F))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B_F) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_PBF];
     }
@@ -857,7 +857,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_PBF];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C_F))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C_F) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_PCF];
     }
@@ -879,7 +879,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
 
     powerOffset = lDRV_Metrology_GetQOffset();
     totalPower = -powerOffset;
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_QA];
     }
@@ -888,7 +888,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_QA];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_QB];
     }
@@ -897,7 +897,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_QB];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_QC];
     }
@@ -918,7 +918,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     }
 
     totalPower = -powerOffset;
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A_F))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A_F) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_QAF];
     }
@@ -927,7 +927,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_QAF];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B_F))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B_F) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_QBF];
     }
@@ -936,7 +936,7 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         totalPower += (int32_t)afeMeasure[MEASURE_QBF];
     }
 
-    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C_F))
+    if (lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C_F) != 0U)
     {
         totalPower -= (int32_t)afeMeasure[MEASURE_QCF];
     }
@@ -983,10 +983,10 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
         afeMeasure[MEASURE_STF] = 0U;
     }
 
-    afeMeasure[MEASURE_FREQ]  = ((gDrvMetObj.metFreqData.freq * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
-    afeMeasure[MEASURE_FREQA]  = ((gDrvMetObj.metFreqData.freqA * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
-    afeMeasure[MEASURE_FREQB]  = ((gDrvMetObj.metFreqData.freqB * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
-    afeMeasure[MEASURE_FREQC]  = ((gDrvMetObj.metFreqData.freqC * FREQ_ACCURACY_INT) + (1 << (FREQ_Q - 1))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQ]  = ((gDrvMetObj.metFreqData.freq * FREQ_ACCURACY_INT) + (1UL << (FREQ_Q - 1U))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQA]  = ((gDrvMetObj.metFreqData.freqA * FREQ_ACCURACY_INT) + (1UL << (FREQ_Q - 1U))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQB]  = ((gDrvMetObj.metFreqData.freqB * FREQ_ACCURACY_INT) + (1UL << (FREQ_Q - 1U))) >> FREQ_Q;
+    afeMeasure[MEASURE_FREQC]  = ((gDrvMetObj.metFreqData.freqC * FREQ_ACCURACY_INT) + (1UL << (FREQ_Q - 1U))) >> FREQ_Q;
 
     afeMeasure[MEASURE_ANGLEA]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
     afeMeasure[MEASURE_ANGLEB]  = lDRV_Metrology_GetAngle(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);
@@ -1294,11 +1294,15 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         uint32_t *pSrc;
         uint32_t *pDst;
 
-        /* Assert reset of the coprocessor */
+        /* Assert reset of the coprocessor and its peripherals */
         RSTC_CoProcessorEnable(false);
+        RSTC_CoProcessorPeripheralEnable(false);
 
         /* Disable coprocessor Clocks */
         CLK_Core1ProcessorClkDisable();
+
+        /* De-assert reset of the coprocessor peripherals */
+        RSTC_CoProcessorPeripheralEnable(true);
 
         gDrvMetObj.binStartAddress = metInit->binStartAddress;
         gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;

@@ -81,9 +81,9 @@ Microchip or any third party.
 /* Metrology Default Config: Reactive Power Offset Control Register */
 #define DRV_MCMETROLOGY_CONF_Q_POWER_OFFSET_CTRL    0x${REG_MCMET_CTRL_Q_POWER_OFFSET_CTRL?left_pad(8, "0")}UL
 /* Metrology Default Config: Active Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POFFSET_P              0x${REG_MCMET_POWER_OFFSET_P?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_POFFSET_P              0x${REG_MCMET_POWER_OFFSET_P?left_pad(8, "0")}L
 /* Metrology Default Config: Rective Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POFFSET_Q              0x${REG_MCMET_POWER_OFFSET_Q?left_pad(8, "0")}UL
+#define DRV_MCMETROLOGY_CONF_POFFSET_Q              0x${REG_MCMET_POWER_OFFSET_Q?left_pad(8, "0")}L
 /* Metrology Default Config: Voltage Swell and Overcurrent Threshold */
 #define DRV_MCMETROLOGY_CONF_SWELL_OVERC_THRS_CHx   {0x${REG_MCMET_SWELL_TH_0?left_pad(8, "0")}UL, \
                                                      0x${REG_MCMET_SWELL_TH_1?left_pad(8, "0")}UL, \
@@ -217,38 +217,38 @@ Microchip or any third party.
                                                      0x20000000UL, \
                                                      0x20000000UL}
 /* Metrology Default Config: Per-Channel Phase Calibration Constants */
-#define DRV_MCMETROLOGY_CONF_CAL_PH_CHx             {0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL}
+#define DRV_MCMETROLOGY_CONF_CAL_PH_CHx             {0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L}
 /* Metrology Default Config: Waveform Capture Control Register */
 #define DRV_MCMETROLOGY_CONF_CAPTURE_CTRL           0x${REG_MCMET_CTRL_CAPTURE_CTRL?left_pad(8, "0")}UL
 /* Metrology Default Config: Waveform Capture Channel Selection Register */
@@ -267,68 +267,68 @@ Microchip or any third party.
                                                      0x00000000UL, \
                                                      0x00000000UL}
 /* Metrology Default Config: Per-Power Active Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_OFFSET_P_x             {0x${DRV_MCMET_CONF_P_OFFSET_0?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_1?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_2?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_3?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_4?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_5?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_6?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_7?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_8?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_9?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_10?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_11?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_12?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_13?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_14?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_15?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_16?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_17?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_18?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_19?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_20?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_21?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_22?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_23?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_24?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_25?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_26?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_27?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_28?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_29?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_P_OFFSET_30?left_pad(8, "0")}UL}
+#define DRV_MCMETROLOGY_CONF_OFFSET_P_x             {0x${DRV_MCMET_CONF_P_OFFSET_0?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_1?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_2?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_3?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_4?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_5?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_6?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_7?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_8?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_9?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_10?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_11?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_12?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_13?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_14?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_15?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_16?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_17?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_18?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_19?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_20?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_21?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_22?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_23?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_24?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_25?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_26?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_27?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_28?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_29?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_P_OFFSET_30?left_pad(8, "0")}L}
 /* Metrology Default Config: Per-Power Reactive Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_OFFSET_Q_x             {0x${DRV_MCMET_CONF_Q_OFFSET_0?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_1?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_2?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_3?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_4?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_5?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_6?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_7?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_8?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_9?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_10?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_11?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_12?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_13?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_14?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_15?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_16?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_17?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_18?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_19?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_20?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_21?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_22?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_23?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_24?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_25?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_26?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_27?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_28?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_29?left_pad(8, "0")}UL, \
-                                                     0x${DRV_MCMET_CONF_Q_OFFSET_30?left_pad(8, "0")}UL}
+#define DRV_MCMETROLOGY_CONF_OFFSET_Q_x             {0x${DRV_MCMET_CONF_Q_OFFSET_0?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_1?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_2?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_3?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_4?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_5?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_6?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_7?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_8?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_9?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_10?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_11?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_12?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_13?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_14?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_15?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_16?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_17?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_18?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_19?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_20?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_21?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_22?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_23?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_24?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_25?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_26?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_27?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_28?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_29?left_pad(8, "0")}L, \
+                                                     0x${DRV_MCMET_CONF_Q_OFFSET_30?left_pad(8, "0")}L}
 
 #endif /* MCMMETROLOGY_CONFIGURATION_H */

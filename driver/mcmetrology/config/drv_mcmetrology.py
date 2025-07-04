@@ -874,9 +874,6 @@ def instantiateComponent(metComponentCommon):
         drvMCMetPowerSourceAdvConfMenu.setLabel("Advanced Configuration")
         drvMCMetPowerSourceAdvConfMenu.setHelp(multichannel_met_helpkeyword)
         
-        drvMCMetConfPHActiveEn = metComponentCommon.createBooleanSymbol("DRV_MCMET_CONF_PHACTIVE_EN_{}".format(powerId), drvMCMetPowerSourceAdvConfMenu)
-        drvMCMetConfPHActiveEn.setLabel("Phase Active Enable")
-
         drvMCMetConfPOffsetEn = metComponentCommon.createBooleanSymbol("DRV_MCMET_CONF_P_OFFSET_EN_{}".format(powerId), drvMCMetPowerSourceAdvConfMenu)
         drvMCMetConfPOffsetEn.setLabel("Active Power Offset Control Enable")
         pPowerOffsetCtrlSymbolList.append("DRV_MCMET_CONF_P_OFFSET_EN_{}".format(powerId))
