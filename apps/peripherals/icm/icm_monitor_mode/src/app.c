@@ -173,6 +173,8 @@ void APP_Tasks ( void )
         {
             if (appData.hashCompleted == true)
             {
+                ICM_Disable();
+            
                 // Disable ICM callbacks (Hash Completed))
                 ICM_CallbackRegister(ICM_INTERRUPT_RHC, NULL);
                 ICM_DisableInterrupt(ICM_INTERRUPT_RHC, ICM_REGION_0);
@@ -180,14 +182,20 @@ void APP_Tasks ( void )
                 printf("Configure ICM Monitor Mode\r\n");
                 
                 // Set ICM Monitor Mode
-                appData.pRegionDescriptor = ICM_GetDefaultRegionDescriptor();
-                appData.pRegionDescriptor[0].config.bitfield.compareMode = 1;
-
+                appData.pRegionDescriptor = ICM_GetRegionDescriptor(ICM_REGION_0);
+                appData.pRegionDescriptor->config.bitfield.compareMode = 1;
+                appData.pRegionDescriptor->config.bitfield.wrap = 1;
+                appData.pRegionDescriptor->config.bitfield.endMonitor = 0;
+                appData.pRegionDescriptor->config.bitfield.mismatchIntDis = 0;
+                
                 // Set ICM callbacks (Digest mismatch)
                 ICM_CallbackRegister(ICM_INTERRUPT_RDM, lAppDigestMismatchCallback);
                 ICM_EnableInterrupt(ICM_INTERRUPT_RDM, ICM_REGION_0);
                 
+                ICM_SetMonitorMode(true, 15);
                 ICM_EnableRegionMonitor(ICM_REGION_0);
+                
+                ICM_Enable();
                 
                 // Launch Periodic Timer to Modify data
                 appData.timer = SYS_TIME_CallbackRegisterMS(lAppTimerCallback, 0, 

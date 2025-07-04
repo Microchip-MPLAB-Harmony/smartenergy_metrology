@@ -44,12 +44,6 @@
 #include "plib_pio.h"
 #include "interrupts.h"
 
-/* Array to store callback objects of each configured interrupt */
-static volatile PIO_PIN_CALLBACK_OBJ portPinCbObj[1];
-
-/* Array to store number of interrupts in each PORT Channel + previous interrupt count */
-static volatile uint8_t portNumCb[7 + 1] = { 0, 1, 1, 1, 1, 1, 1, 1, };
-
 /* PIO base address for each port group */
 static pio_registers_t* const PIO_REGS[PIO_PORT_MAX] = { PIO0_REGS, PIO0_REGS, PIO0_REGS, PIO1_REGS };
 /* Index of each port group */
@@ -71,47 +65,13 @@ void PIO_Initialize ( void )
    PIOA_REGS->PIO_MSKR = 0x30U;
    PIOA_REGS->PIO_CFGR = 0x1U;
 
- /* Port A Peripheral function GPIO configuration */
-   PIOA_REGS->PIO_MSKR = 0x80U;
-   PIOA_REGS->PIO_CFGR = 0x0U;
-
- /* Port A Pin 7 configuration */
-   PIOA_REGS->PIO_MSKR = 0x80U;
-   PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x1000200U;
-
- /* Port A Latch configuration */
-   PIOA_REGS->PIO_CODR = 0x80U;
-
-    /* Clear the ISR register */
-   (uint32_t)PIOA_REGS->PIO_ISR;
-
-
- /* Port D Peripheral function GPIO configuration */
-   PIOD_REGS->PIO_MSKR = 0x10008U;
-   PIOD_REGS->PIO_CFGR = 0x0U;
-
- /* Port D Pin 3 configuration */
-   PIOD_REGS->PIO_MSKR = 0x8U;
-   PIOD_REGS->PIO_CFGR = (PIOD_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
-
- /* Port D Pin 16 configuration */
-   PIOD_REGS->PIO_MSKR = 0x10000U;
-   PIOD_REGS->PIO_CFGR = (PIOD_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
-
- /* Port D Latch configuration */
-   PIOD_REGS->PIO_SODR = 0x10008U;
 
 
 
 
-    uint32_t i;
-    /* Initialize Interrupt Pin data structures */
-    portPinCbObj[0 + 0].pin = PIO_PIN_PA7;
-    
-    for(i = 0U; i < 1U; i++)
-    {
-        portPinCbObj[i].callback = NULL;
-    }
+
+
+
 
 }
 
@@ -260,120 +220,7 @@ void PIO_PortOutputEnable(PIO_PORT port, uint32_t mask)
     PIO_REGS[port]->PIO_GROUP[PIO_INDEX[port]].PIO_MSKR = mask;
     PIO_REGS[port]->PIO_GROUP[PIO_INDEX[port]].PIO_CFGR |= PIO_CFGR_DIR_Msk;
 }
-// *****************************************************************************
-/* Function:
-    void PIO_PortInterruptEnable(PIO_PORT port, uint32_t mask)
 
-  Summary:
-    Enables IO interrupt on selected IO pins of a port.
-
-  Remarks:
-    See plib_pio.h for more details.
-*/
-void PIO_PortInterruptEnable(PIO_PORT port, uint32_t mask)
-{
-    PIO_REGS[port]->PIO_GROUP[PIO_INDEX[port]].PIO_IER = mask;
-}
-
-// *****************************************************************************
-/* Function:
-    void PIO_PortInterruptDisable(PIO_PORT port, uint32_t mask)
-
-  Summary:
-    Disables IO interrupt on selected IO pins of a port.
-
-  Remarks:
-    See plib_pio.h for more details.
-*/
-void PIO_PortInterruptDisable(PIO_PORT port, uint32_t mask)
-{
-    PIO_REGS[port]->PIO_GROUP[PIO_INDEX[port]].PIO_IDR = mask;
-}
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: PIO APIs which operates on one pin at a time
-// *****************************************************************************
-// *****************************************************************************
-
-// *****************************************************************************
-/* Function:
-    bool PIO_PinInterruptCallbackRegister(
-        PIO_PIN pin,
-        const PIO_PIN_CALLBACK callback,
-        uintptr_t context
-    );
-
-  Summary:
-    Allows application to register callback for every pin.
-
-  Remarks:
-    See plib_pio.h for more details.
-*/
-bool PIO_PinInterruptCallbackRegister(
-    PIO_PIN pin,
-    const PIO_PIN_CALLBACK callback,
-    uintptr_t context
-)
-{
-    uint8_t i;
-    uint8_t portIndex;
-
-    portIndex = pin >> 5U;
-
-    for(i = portNumCb[portIndex]; i < portNumCb[portIndex +1U]; i++)
-    {
-        if (portPinCbObj[i].pin == pin)
-        {
-            portPinCbObj[i].callback = callback;
-            portPinCbObj[i].context  = context;
-            return true;
-        }
-    }
-    return false;
-}
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Interrupt Service Routine (ISR) Implementation(s)
-// *****************************************************************************
-// *****************************************************************************
-
-// *****************************************************************************
-/* Function:
-    void PIOA_InterruptHandler (void)
-
-  Summary:
-    Interrupt handler for PORTA.
-
-  Description:
-    This function defines the Interrupt service routine for PORTA.
-    This is the function which by default gets into Interrupt Vector Table.
-
-  Remarks:
-    User should not call this function.
-*/
-void __attribute__((used)) PIOA_InterruptHandler(void)
-{
-    uint32_t status;
-    uint8_t j;
-    /* Additional local variable to prevent MISRA C violations (Rule 13.x) */
-    PIO_PIN pin;
-    uintptr_t context;
-
-    status = PIOA_REGS->PIO_ISR;
-    status &= PIOA_REGS->PIO_IMR;
-
-    for( j = 0U; j < 1U; j++ )
-    {
-        pin = portPinCbObj[j].pin;
-        context = portPinCbObj[j].context;
-        if((portPinCbObj[j].callback != NULL) && ((status & (1UL << (pin & 0x1FU))) != 0U))
-        {
-            portPinCbObj[j].callback ( portPinCbObj[j].pin, context);
-        }
-    }
-}
 
 /*******************************************************************************
  End of File

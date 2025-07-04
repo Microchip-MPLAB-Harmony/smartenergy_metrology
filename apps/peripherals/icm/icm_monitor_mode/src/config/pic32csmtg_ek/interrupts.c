@@ -79,7 +79,7 @@ void __attribute__((optimize("-O1"), long_call, noreturn, used))Dummy_Handler(vo
 }
 
 /* MISRAC 2012 deviation block start */
-/* MISRA C-2012 Rule 8.6 deviated 86 times.  Deviation record ID -  H3_MISRAC_2012_R_8_6_DR_1 */
+/* MISRA C-2012 Rule 8.6 deviated 87 times.  Deviation record ID -  H3_MISRAC_2012_R_8_6_DR_1 */
 /* Device vectors list dummy definition*/
 extern void SVCall_Handler             ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
 extern void PendSV_Handler             ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
@@ -101,6 +101,7 @@ extern void FLEXCOM4_Handler           ( void ) __attribute__((weak, alias("Dumm
 extern void FLEXCOM5_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
 extern void FLEXCOM6_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
 extern void FLEXCOM7_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
+extern void PIOA_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
 extern void PIOA_SEC_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
 extern void PIOB_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
 extern void PIOB_SEC_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler"),noreturn));
@@ -208,7 +209,7 @@ const H3DeviceVectors exception_table=
     .pfnFLEXCOM5_Handler           = FLEXCOM5_Handler,
     .pfnFLEXCOM6_Handler           = FLEXCOM6_Handler,
     .pfnFLEXCOM7_Handler           = FLEXCOM7_Handler,
-    .pfnPIOA_Handler               = PIOA_InterruptHandler,
+    .pfnPIOA_Handler               = PIOA_Handler,
     .pfnPIOA_SEC_Handler           = PIOA_SEC_Handler,
     .pfnPIOB_Handler               = PIOB_Handler,
     .pfnPIOB_SEC_Handler           = PIOB_SEC_Handler,

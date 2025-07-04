@@ -429,6 +429,8 @@ static void PeripheralClockInitialize(void)
 
         { ID_PIOA, 1U, 0U, 0U, 0U},
 
+        { ID_ICM, 1U, 0U, 0U, 0U},
+
         { ID_PIOD, 1U, 0U, 0U, 0U},
 
         { ID_PERIPH_MAX + 1, 0, 0, 0, 0}//end of list marker
@@ -455,7 +457,7 @@ static void PeripheralClockInitialize(void)
 /*********************************************************************************
                                 Clock Initialize
 *********************************************************************************/
-void CLK_Initialize( void )
+void CLOCK_Initialize( void )
 {
     if(RSTC_PMCResetStatusGet())
     {

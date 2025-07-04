@@ -64,34 +64,6 @@
 #define PIC32CXMTG_EK
 #define BOARD_NAME    "PIC32CXMTG-EK"
 
-/*** OUTPUT PIO Macros for LED1 ***/
-#define BSP_LED1_PIN        PIO_PIN_PD3
-#define BSP_LED1_Get()      ((PIOD_REGS->PIO_PDSR >> 3) & 0x1)
-#define BSP_LED1_On()       (PIOD_REGS->PIO_CODR = (1UL<<3))
-#define BSP_LED1_Off()      (PIOD_REGS->PIO_SODR = (1UL<<3))
-#define BSP_LED1_Toggle()   do {\
-                                    PIOD_REGS->PIO_MSKR = (1<<3); \
-                                    PIOD_REGS->PIO_ODSR ^= (1<<3);\
-                                } while (0)
-
-/*** OUTPUT PIO Macros for LED0 ***/
-#define BSP_LED0_PIN        PIO_PIN_PD16
-#define BSP_LED0_Get()      ((PIOD_REGS->PIO_PDSR >> 16) & 0x1)
-#define BSP_LED0_On()       (PIOD_REGS->PIO_CODR = (1UL<<16))
-#define BSP_LED0_Off()      (PIOD_REGS->PIO_SODR = (1UL<<16))
-#define BSP_LED0_Toggle()   do {\
-                                    PIOD_REGS->PIO_MSKR = (1<<16); \
-                                    PIOD_REGS->PIO_ODSR ^= (1<<16);\
-                                } while (0)
-
-
-/*** INPUT PIO Macros for USER_BUTTON1 ***/
-#define BSP_USER_BUTTON1_PIN                    PIO_PIN_PA7
-#define BSP_USER_BUTTON1_Get()                  ((PIOA_REGS->PIO_PDSR >> 7) & 0x1)
-#define BSP_USER_BUTTON1_STATE_PRESSED          0
-#define BSP_USER_BUTTON1_STATE_RELEASED         1
-#define BSP_USER_BUTTON1_InterruptEnable()      (PIOA_REGS->PIO_IER = (1UL<<7))
-#define BSP_USER_BUTTON1_InterruptDisable()     (PIOA_REGS->PIO_IDR = (1UL<<7))
 
 
 

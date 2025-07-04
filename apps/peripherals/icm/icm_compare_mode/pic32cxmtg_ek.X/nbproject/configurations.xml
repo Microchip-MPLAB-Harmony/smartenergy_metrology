@@ -61,24 +61,18 @@
             <logicalFolder name="cache" displayName="cache" projectFiles="true">
               <itemPath>../src/config/pic32cxmtg_ek/system/cache/sys_cache.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="debug" displayName="debug" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtg_ek/system/debug/sys_debug.h</itemPath>
-            </logicalFolder>
             <logicalFolder name="int" displayName="int" projectFiles="true">
               <itemPath>../src/config/pic32cxmtg_ek/system/int/sys_int_mapping.h</itemPath>
               <itemPath>../src/config/pic32cxmtg_ek/system/int/sys_int.h</itemPath>
             </logicalFolder>
-            <itemPath>../src/config/pic32cxmtg_ek/system/system.h</itemPath>
-            <itemPath>../src/config/pic32cxmtg_ek/system/system_module.h</itemPath>
-            <itemPath>../src/config/pic32cxmtg_ek/system/system_common.h</itemPath>
           </logicalFolder>
           <itemPath>../src/config/pic32cxmtg_ek/toolchain_specifics.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/device_cache.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/interrupts.h</itemPath>
-          <itemPath>../src/config/pic32cxmtg_ek/configuration.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/definitions.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/device.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/device_vectors.h</itemPath>
+          <itemPath>../src/config/pic32cxmtg_ek/configuration.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/sys_tasks.h</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/user.h</itemPath>
         </logicalFolder>
@@ -204,7 +198,7 @@
                    displayName="Important Files"
                    projectFiles="true">
       <itemPath>Makefile</itemPath>
-      <itemPath>pic32cxmtg_ek.mc3</itemPath>
+      <itemPath>icm_compare_mode_pic32cxmtg_ek.mc3</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -277,14 +271,14 @@
           <itemPath>../src/config/pic32cxmtg_ek/exceptions.c</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/interrupts.c</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/startup_xc32.c</itemPath>
-          <itemPath>../src/config/pic32cxmtg_ek/tasks.c</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/libc_syscalls.c</itemPath>
           <itemPath>../src/config/pic32cxmtg_ek/initialization.c</itemPath>
+          <itemPath>../src/config/pic32cxmtg_ek/tasks.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/app.c</itemPath>
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/config/pic32cxmtg_ek/pin_configurations.csv</itemPath>
+      <itemPath>../src/app.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
@@ -301,8 +295,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="CMSIS" vendor="ARM" version="6.1.0"/>
         <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.3.132"/>
+        <pack name="CMSIS" vendor="ARM" version="6.1.0"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>

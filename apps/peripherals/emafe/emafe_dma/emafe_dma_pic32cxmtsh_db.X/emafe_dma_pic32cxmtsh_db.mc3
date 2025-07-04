@@ -15207,7 +15207,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>0232dd6f3b342d5a0a866d787b9d73460aeefc0d5f9be1a4207acede6da02e32</hash>
+         <hash>67980e5cbdd0d04d0ca050c35d2c191ef8840b03daa46f2861ba960670d1bdfa</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\device.h</file>
@@ -15235,11 +15235,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>ac4611e0cc896237b48c6261f2992702729419a83e9b4da87dc677313c14ee8d</hash>
+         <hash>8c511bd5a159c3ba321e1a9a13f30e50bf5e6b4b3d1cf29e790a6fe2328c48c7</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>
-         <hash>a54edbe664b5bcbe415073ba904674cc7b08af1a2e778ead80011ba39d27d9a8</hash>
+         <hash>dbfacfec60c3080d08981319ea2183a4458d3a201eab9100264d0fd6f46ba1e9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.h</file>
@@ -15263,11 +15263,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\clk\plib_clk.c</file>
-         <hash>136afbc7d4c61f8517a013cc06c80950cd279d555a1d86e6807fac9aed9102b8</hash>
+         <hash>b731f4fe6066a1b1b2de9e209c8d1c0e6bcdb0beba3a38a09c2b45b48f8cac9e</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\clk\plib_clk.h</file>
-         <hash>b9398a249a46b0925b4674803d35de3a3d94889d8919bf2c8a136acc64dda0e5</hash>
+         <hash>ebfbe4bc247953c3f0a89d3ae6d3487f6f2f6f0ad5fb08a16e0f93bb4707b875</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\cmcc\plib_cmcc.c</file>
@@ -15287,23 +15287,23 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\emafe\plib_emafe.c</file>
-         <hash>aa7ab4a7a92808a6b51fa569195adf78954e562ae661b77e9e464e8e1fe6b7ff</hash>
+         <hash>330a2d31933cea70e34f9e7ca190ff8fe17af70f988e7dabe56adbc64e65acaa</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\emafe\plib_emafe.h</file>
-         <hash>a0913dce280bd9bd60a51fcd87856060d718fd58dd4e7db45a1c55a6c9817c89</hash>
+         <hash>f73e6ec88b5d7af6643b9b95ff4a207826a2fd1c1b4242428db3c5c8773c3d4f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\emafe\plib_emafe_regs.h</file>
-         <hash>b2ea0952dbc56318f04d1a09bf52a52abb4351deea465671766d967615bbe9bb</hash>
+         <hash>321044bf87dfc9da6bbb8c979bc45e67b2e73b9bf911c0c57db0bfbc792c803c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
-         <hash>aadbfb64af43c03212c0d287fccd1844c379431dd83f2bf9c06301309ab9a024</hash>
+         <hash>75439cc457901de6d9c9482a63d99afa9aec9d37b028dfece44ffefa97c9d6b2</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\usart\plib_flexcom0_usart.h</file>
-         <hash>1148edd0d109ee3bc66bf556ae3df0bf24c2846ad44b414aba619b0a861a7af8</hash>
+         <hash>6ff3d26bf626ef771cb42c71342dab16cccd25f77c7febe901bdef788e9de816</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\usart\plib_flexcom_usart_local.h</file>
@@ -15363,15 +15363,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc_common.c</file>
-         <hash>f7e1500368414009b16ba916e612ec780f90f7029ecd550dbae91b49c5b88626</hash>
+         <hash>0c27fb9a65f685636ea4c67725983303f364c576d7608fe4b36b4294e0e0a968</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc_common.h</file>
-         <hash>3baa7dbf8acb6264c697a73035c40a786d850be386c308da4aad0b4f32830bd7</hash>
+         <hash>9766f7ad9b16f211828181e06f535d478284687d4913439e270245a295bcfac8</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.c</file>
-         <hash>bc251b42082d3a046d1b05b3c999d71d57768c208ff2f79f9f7c48a22e9ef4db</hash>
+         <hash>8f62cfd5acf7450f3a5bb27db51d141f191fa1a722b743829df913df2f63eb18</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.h</file>

@@ -71,10 +71,6 @@
 */
 void BSP_Initialize(void )
 {
-    /* Switch off LED1 */
-    BSP_LED1_Off();
-    /* Switch off LED0 */
-    BSP_LED0_Off();
 
 }
 

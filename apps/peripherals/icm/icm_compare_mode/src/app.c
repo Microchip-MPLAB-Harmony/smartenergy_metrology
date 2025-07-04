@@ -189,10 +189,9 @@ void APP_Tasks ( void )
             
             ICM_SetHashAreaAddress((uint32_t)outputSHA);
             
-            appData.pRegionDescriptor = ICM_GetDefaultRegionDescriptor();
-            
             // Configure Secondary List of the region 1
-            appData.pRegionDescriptor[1].secondaryList = &icmSecList;
+            appData.pRegionDescriptor = ICM_GetRegionDescriptor(ICM_REGION_1);
+            appData.pRegionDescriptor->secondaryList = &icmSecList;
             icmSecList.startAddress = (uint32_t)appMessageSHA1Sec;
             icmSecList.transferSize = ICM_GetTransferSize(sizeof(appMessageSHA1Sec));
             icmSecList.nextAddress = 0;
@@ -218,8 +217,10 @@ void APP_Tasks ( void )
         case APP_STATE_MODIFY_REGION0_DATA:
         {
             // Set Compare mode
-            appData.pRegionDescriptor[0].config.bitfield.compareMode = 1;
-            appData.pRegionDescriptor[1].config.bitfield.compareMode = 1;
+            appData.pRegionDescriptor = ICM_GetRegionDescriptor(ICM_REGION_0);
+            appData.pRegionDescriptor->config.bitfield.compareMode = 1;
+            appData.pRegionDescriptor = ICM_GetRegionDescriptor(ICM_REGION_1);
+            appData.pRegionDescriptor->config.bitfield.compareMode = 1;
 
             // Set ICM callbacks
             ICM_CallbackRegister(ICM_INTERRUPT_RDM, _appDigestMismatchCallback);
