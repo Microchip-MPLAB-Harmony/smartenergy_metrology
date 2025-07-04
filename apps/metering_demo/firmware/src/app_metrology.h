@@ -294,7 +294,9 @@ typedef struct
 typedef enum
 {
     /* Application's state machine's initial state. */
-    APP_METROLOGY_STATE_WAITING_DATALOG = 0,
+    APP_METROLOGY_STATE_ICM_GET_HASH = 0,    
+    APP_METROLOGY_STATE_ICM_START_MONITOR,
+    APP_METROLOGY_STATE_WAITING_DATALOG,
     APP_METROLOGY_STATE_INIT,
     APP_METROLOGY_STATE_START,
     APP_METROLOGY_STATE_RUNNING,
@@ -329,6 +331,9 @@ typedef struct
     DRV_METROLOGY_REGS_STATUS * pMetStatus;
     DRV_METROLOGY_REGS_ACCUMULATORS * pMetAccData;
     DRV_METROLOGY_REGS_HARMONICS * pMetHarData;
+    
+    uint32_t metBinStartAddress;
+    uint32_t metBinSize;
 
     bool harmonicAnalysisPending;
     bool stopHarmonicAnalysis;
@@ -352,6 +357,10 @@ typedef struct
     volatile bool halfFullCycleFlag;
 
     bool dataFlag;
+    
+    volatile bool metBinHashCompleted;
+    
+    volatile bool metBinMismatch;
 
 } APP_METROLOGY_DATA;
 

@@ -61,7 +61,7 @@ Microchip or any third party.
 /* Metrology Default Config: PULSE2_CTRL */
 #define DRV_MCMETROLOGY_CONF_PULSE2_CTRL            0x00000000UL
 /* Metrology Default Config: PULSE_CONTRIBUTION_PW */
-#define DRV_MCMETROLOGY_CONF_PULSE_PW               0x00000000UL
+#define DRV_MCMETROLOGY_CONF_PULSE_PW               0x00000007UL
 /* Metrology Default Config: PULSE_CONTRIBUTION_I */
 #define DRV_MCMETROLOGY_CONF_PULSE_I                0x00000000UL
 /* Metrology Default Config: Meter Active Power Pulse Constant */
@@ -81,9 +81,9 @@ Microchip or any third party.
 /* Metrology Default Config: Reactive Power Offset Control Register */
 #define DRV_MCMETROLOGY_CONF_Q_POWER_OFFSET_CTRL    0x00000000UL
 /* Metrology Default Config: Active Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POFFSET_P              0x00000000UL
+#define DRV_MCMETROLOGY_CONF_POFFSET_P              0x00000000L
 /* Metrology Default Config: Rective Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_POFFSET_Q              0x00000000UL
+#define DRV_MCMETROLOGY_CONF_POFFSET_Q              0x00000000L
 /* Metrology Default Config: Voltage Swell and Overcurrent Threshold */
 #define DRV_MCMETROLOGY_CONF_SWELL_OVERC_THRS_CHx   {0x05e84f62UL, \
                                                      0x05e84f62UL, \
@@ -217,44 +217,44 @@ Microchip or any third party.
                                                      0x20000000UL, \
                                                      0x20000000UL}
 /* Metrology Default Config: Per-Channel Phase Calibration Constants */
-#define DRV_MCMETROLOGY_CONF_CAL_PH_CHx             {0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL}
+#define DRV_MCMETROLOGY_CONF_CAL_PH_CHx             {0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L}
 /* Metrology Default Config: Waveform Capture Control Register */
-#define DRV_MCMETROLOGY_CONF_CAPTURE_CTRL           0x00000000UL
+#define DRV_MCMETROLOGY_CONF_CAPTURE_CTRL           0x80000000UL
 /* Metrology Default Config: Waveform Capture Channel Selection Register */
-#define DRV_MCMETROLOGY_CONF_CAPTURE_CH_SEL         0x00000000UL
+#define DRV_MCMETROLOGY_CONF_CAPTURE_CH_SEL         0x0000003fUL
 /* Metrology Default Config: Capture Buffer Size */
-#define DRV_MCMETROLOGY_CAPTURE_BUF_SIZE            0UL
+#define DRV_MCMETROLOGY_CAPTURE_BUF_SIZE            96000UL
 /* Metrology Default Config: MCP391x Control Register 1 */
 #define DRV_MCMETROLOGY_CONF_MCP3914_GAIN           {0x00000000UL, \
                                                      0x00000000UL, \
@@ -266,68 +266,68 @@ Microchip or any third party.
                                                      0x00000000UL, \
                                                      0x00000000UL}
 /* Metrology Default Config: Per-Power Active Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_OFFSET_P_x             {0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL}
+#define DRV_MCMETROLOGY_CONF_OFFSET_P_x             {0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L}
 /* Metrology Default Config: Per-Power Reactive Power Offset Register */
-#define DRV_MCMETROLOGY_CONF_OFFSET_Q_x             {0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL, \
-                                                     0x00000000UL}
+#define DRV_MCMETROLOGY_CONF_OFFSET_Q_x             {0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L, \
+                                                     0x00000000L}
 
 #endif /* MCMMETROLOGY_CONFIGURATION_H */

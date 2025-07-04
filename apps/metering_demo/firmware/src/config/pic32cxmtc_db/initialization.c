@@ -314,7 +314,7 @@ void SYS_Initialize ( void* data )
     SEFC1_Initialize();
   
     DWDT_Initialize();
-    CLK_Initialize();
+    CLOCK_Initialize();
     RSTC_Initialize();
 
     PIO_Initialize();
@@ -333,6 +333,7 @@ void SYS_Initialize ( void* data )
 
     QSPI_Initialize();
     BSP_Initialize();
+	ICM_Initialize();
 
     /* MISRAC 2012 deviation block start */
     /* Following MISRA-C rules deviated in this block  */

@@ -51,6 +51,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include "definitions.h"
+#include "peripheral/icm/plib_icm.h"
 #include "app_metrology.h"
 
 // *****************************************************************************
@@ -58,6 +59,9 @@ Microchip or any third party.
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
+
+/* ICM Hash area */
+uint32_t appMetrologyOutputSHA[0x10] __ALIGNED(128);
 
 extern APP_DATALOG_QUEUE appDatalogQueue;
 APP_DATALOG_QUEUE_DATA appMetrologyDatalogQueueData;
@@ -308,6 +312,22 @@ static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_REGS_CONTROL * con
 // *****************************************************************************
 // *****************************************************************************
 
+static void _APP_METROLOGY_ICMHashCompletedCallback(ICM_REGION_ID regionId)
+{
+	if (regionId == ICM_REGION_0) {
+        app_metrologyData.metBinHashCompleted = true;
+	} 
+}
+
+static void _APP_METROLOGY_ICMDigestMismatchCallback(ICM_REGION_ID regionId)
+{
+	if (regionId == ICM_REGION_0) {
+		/* MCU reset. Additional actions could be done: reload metrology library without restarting MCU,
+		count number of mismatches and store it lin NVM, ... */
+        app_metrologyData.metBinMismatch = true;
+	} 
+}
+
 static void _APP_METROLOGY_IntegrationCallback(void)
 {
     if ((app_metrologyData.state == APP_METROLOGY_STATE_RUNNING) ||
@@ -391,7 +411,13 @@ static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result)
 void APP_METROLOGY_Initialize (void)
 {
     /* Place the App state machine in its initial state. */
-    app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
+    app_metrologyData.state = APP_METROLOGY_STATE_ICM_GET_HASH;
+    
+    /* Get met bin file descriptor to check integrity (ICM) */
+    app_metrologyData.metBinStartAddress = drvMetrologyInitData.binStartAddress;
+    app_metrologyData.metBinSize = drvMetrologyInitData.binEndAddress - drvMetrologyInitData.binStartAddress;
+    app_metrologyData.metBinHashCompleted = false;
+    app_metrologyData.metBinMismatch = false;
 
     /* Flag to indicate if configuration should be applied */
     app_metrologyData.setConfiguration = false;
@@ -450,11 +476,75 @@ void APP_METROLOGY_Tasks (void)
 {
     APP_ENERGY_QUEUE_DATA newMetrologyData;
     APP_EVENTS_QUEUE_DATA newEvent;
-
+    
+    if (app_metrologyData.metBinMismatch)
+    {
+        app_metrologyData.state = APP_METROLOGY_STATE_ERROR;
+    }
+    
     /* Check the application's current state. */
     switch (app_metrologyData.state)
     {
-        /* Application's initial state. */
+        case APP_METROLOGY_STATE_ICM_GET_HASH:
+        {
+            ICM_Disable();
+            
+            ICM_SetRegionDescriptorData(ICM_REGION_0, 
+                                        (uint32_t *)app_metrologyData.metBinStartAddress,
+                                        app_metrologyData.metBinSize);
+            
+            ICM_SetHashAreaAddress((uint32_t)appMetrologyOutputSHA);
+                
+            // Set ICM callbacks (Hash Completed))
+            ICM_CallbackRegister(ICM_INTERRUPT_RHC, _APP_METROLOGY_ICMHashCompletedCallback);
+            ICM_EnableInterrupt(ICM_INTERRUPT_RHC, ICM_REGION_0);
+            
+            app_metrologyData.state = APP_METROLOGY_STATE_ICM_START_MONITOR;
+            app_metrologyData.metBinHashCompleted = false;
+            
+            // Compute de Hash values
+            ICM_Enable();
+            
+            break;
+        }
+        
+        case APP_METROLOGY_STATE_ICM_START_MONITOR:
+        {
+            if (app_metrologyData.metBinHashCompleted == true)
+            {
+                ICM_REGION_DESCRIPTOR *pDescriptor;
+
+                ICM_Disable();
+            
+                ICM_SetRegionDescriptorData(ICM_REGION_0, (uint32_t *)IRAM1_ADDR,
+                                            app_metrologyData.metBinSize);
+
+                // Disable ICM callbacks (Hash Completed))
+                ICM_CallbackRegister(ICM_INTERRUPT_RHC, NULL);
+                ICM_DisableInterrupt(ICM_INTERRUPT_RHC, ICM_REGION_0);
+                
+                // Set ICM Monitor Mode
+                pDescriptor = ICM_GetRegionDescriptor(ICM_REGION_0);
+                pDescriptor->config.bitfield.compareMode = 1;
+                pDescriptor->config.bitfield.wrap = 1;
+                pDescriptor->config.bitfield.endMonitor = 0;
+                pDescriptor->config.bitfield.regHashIntDis = 1;
+                pDescriptor->config.bitfield.mismatchIntDis = 0;
+                
+                // Set ICM callbacks (Digest mismatch)
+                ICM_CallbackRegister(ICM_INTERRUPT_RDM, _APP_METROLOGY_ICMDigestMismatchCallback);
+                ICM_EnableInterrupt(ICM_INTERRUPT_RDM, ICM_REGION_0);
+                
+                ICM_SetMonitorMode(true, 15);
+                ICM_EnableRegionMonitor(ICM_REGION_0);
+                
+                ICM_Enable();
+
+                app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
+            }
+            break;
+        }
+        
         case APP_METROLOGY_STATE_WAITING_DATALOG:
         {
             if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY)
@@ -472,7 +562,6 @@ void APP_METROLOGY_Tasks (void)
                     app_metrologyData.state = APP_METROLOGY_STATE_INIT;
                 }
             }
-
             break;
         }
 
@@ -498,9 +587,6 @@ void APP_METROLOGY_Tasks (void)
                 pConfiguration = &app_metrologyData.configuration;
             }
             
-            /* Reinitialize Metrology, to ensure Core 1 and Peripherals are reset */
-            sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
-
             if (DRV_METROLOGY_Open(app_metrologyData.startMode, pConfiguration) == DRV_METROLOGY_SUCCESS)
             {
                 if (app_metrologyData.startMode == DRV_METROLOGY_START_HARD)
@@ -509,6 +595,11 @@ void APP_METROLOGY_Tasks (void)
                 }
                 else
                 {
+                    // Check ICM status before running metrology
+                    if ((ICM_GetStatus() & ICM_SR_ENABLE_Msk) == 0)
+                    {
+                        ICM_Enable();
+                    }
                     app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
                 }
             }
@@ -533,6 +624,11 @@ void APP_METROLOGY_Tasks (void)
 
                 if (DRV_METROLOGY_Start() == DRV_METROLOGY_SUCCESS)
                 {
+                    // Check ICM status before running metrology
+                    if ((ICM_GetStatus() & ICM_SR_ENABLE_Msk) == 0)
+                    {
+                        ICM_Enable();
+                    }
                     app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
                 }
                 else
@@ -600,6 +696,15 @@ void APP_METROLOGY_Tasks (void)
 
         /* The default state should never be executed. */
         case APP_METROLOGY_STATE_ERROR:
+        {
+            if (app_metrologyData.metBinMismatch)
+            {
+                app_metrologyData.metBinMismatch = false;
+                SYS_CMD_MESSAGE("ERROR: Metrology library has been corrupted. Results are not valid.\r\n");
+            }
+        }
+            break;
+			
         default:
         {
             /* TODO: Handle error in application's state machine. */
@@ -916,6 +1021,9 @@ void APP_METROLOGY_Restart (bool reloadRegsFromMemory)
         }
         app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
 
+        /* Disable ICM before resetting peripheral clocks */
+        ICM_Disable();
+        
         sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
     }
 }

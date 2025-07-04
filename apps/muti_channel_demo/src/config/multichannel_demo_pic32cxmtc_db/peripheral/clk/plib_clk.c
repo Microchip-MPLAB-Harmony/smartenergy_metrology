@@ -72,6 +72,18 @@ static const pmc_pll_cfg_t pllb_cfg = {
 
 
 
+static const pmc_pll_cfg_t pllc_cfg = {
+    .ctrl0   = (PMC_PLL_CTRL0_ENLOCK_Msk | PMC_PLL_CTRL0_ENPLL_Msk | PMC_PLL_CTRL0_PLLMS(0U)
+               ),
+    .ctrl1   = PMC_PLL_CTRL1_MUL(0U),
+    .ctrl2   = PMC_PLL_CTRL2_FRACR(0U),
+    .ssr     = 0U,
+    .acr     = PLLC_RECOMMENDED_ACR,
+    .stuptim = PLLC_UPDT_STUPTIM_VAL
+};
+
+
+
 static bool spreadRestoreStatus[3] = {false, false, false};
 
 /*********************************************************************************
@@ -490,6 +502,8 @@ static void PeripheralClockInitialize(void)
 
         { ID_TC0_CHANNEL0, 1U, 0U, 0U, 0U},
 
+        { ID_ICM, 1U, 0U, 0U, 0U},
+
         { ID_PIOD, 1U, 0U, 0U, 0U},
 
         { ID_IPC1, 1U, 0U, 0U, 0U},
@@ -520,7 +534,7 @@ static void PeripheralClockInitialize(void)
 /*********************************************************************************
                                 Clock Initialize
 *********************************************************************************/
-void CLK_Initialize( void )
+void CLOCK_Initialize( void )
 {
     if(RSTC_PMCResetStatusGet())
     {
@@ -532,6 +546,9 @@ void CLK_Initialize( void )
 
         /* Initialize PLLB */
         PLLInitialize((uint32_t)PLLB, &pllb_cfg);
+
+        /* Initialize PLLC */
+        PLLInitialize((uint32_t)PLLC, &pllc_cfg);
 
         /* Apply flash patch */
         CLK_ApplyFlashPatch(200000000);

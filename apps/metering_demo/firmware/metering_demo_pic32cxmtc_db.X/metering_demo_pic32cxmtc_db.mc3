@@ -42,6 +42,10 @@
          <string>class com.microchip.mcc.harmony.HarmonyModule</string>
       </entry>
       <entry>
+         <string>icm</string>
+         <string>class com.microchip.mcc.harmony.HarmonyModule</string>
+      </entry>
+      <entry>
          <string>le_gfx_slcdc</string>
          <string>class com.microchip.mcc.harmony.HarmonyModule</string>
       </entry>
@@ -775,7 +779,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;704&quot; canvasWidth=&quot;570&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;GraphSettings canvasHeight=&quot;704&quot; canvasWidth=&quot;777&quot; dnOrder=&quot;0&quot;/&gt;
     &lt;PowerProfiles dnOrder=&quot;1&quot;&gt;
       &lt;Profile dnOrder=&quot;0&quot; id=&quot;profile0&quot; name=&quot;Main&quot;/&gt;
     &lt;/PowerProfiles&gt;
@@ -785,22 +789,23 @@
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;core&quot; x=&quot;240&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;dfp&quot; x=&quot;20&quot; y=&quot;20&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;drvMet&quot; x=&quot;491&quot; y=&quot;224&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;drvMet&quot; x=&quot;475&quot; y=&quot;225&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;drv_memory&quot; x=&quot;378&quot; y=&quot;502&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drv_sst26&quot; x=&quot;191&quot; y=&quot;520&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;flexcom0&quot; x=&quot;42&quot; y=&quot;379&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;gfx_disp_slcd1-PIC32CXMT&quot; x=&quot;30&quot; y=&quot;220&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;le_gfx_slcdc&quot; x=&quot;230&quot; y=&quot;220&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;mainBoard_PIC32CXMTC_DB&quot; x=&quot;30&quot; y=&quot;60&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;11&quot; id=&quot;qspi&quot; x=&quot;23&quot; y=&quot;542&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;12&quot; id=&quot;rtc&quot; x=&quot;480&quot; y=&quot;20&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;13&quot; id=&quot;sefc0&quot; x=&quot;479&quot; y=&quot;70&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc1&quot; x=&quot;479&quot; y=&quot;143&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sys_command&quot; x=&quot;396&quot; y=&quot;353&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;sys_console&quot; x=&quot;213&quot; y=&quot;315&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_fs&quot; x=&quot;547&quot; y=&quot;540&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_time&quot; x=&quot;184&quot; y=&quot;91&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;icm&quot; x=&quot;42&quot; y=&quot;309&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;le_gfx_slcdc&quot; x=&quot;230&quot; y=&quot;220&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;11&quot; id=&quot;mainBoard_PIC32CXMTC_DB&quot; x=&quot;30&quot; y=&quot;60&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;12&quot; id=&quot;qspi&quot; x=&quot;23&quot; y=&quot;542&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;13&quot; id=&quot;rtc&quot; x=&quot;480&quot; y=&quot;20&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc0&quot; x=&quot;479&quot; y=&quot;70&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;479&quot; y=&quot;143&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;sys_command&quot; x=&quot;396&quot; y=&quot;353&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_console&quot; x=&quot;213&quot; y=&quot;315&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_fs&quot; x=&quot;547&quot; y=&quot;540&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_time&quot; x=&quot;184&quot; y=&quot;91&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
   &lt;/UserData&gt;
@@ -1093,11 +1098,66 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="ICM_CLOCK_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;ICM_CLOCK_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="ICM_CLOCK_FREQUENCY"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;ICM_CLOCK_FREQUENCY&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;100000000&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="ICM_INTERRUPT_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;ICM_INTERRUPT_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="ICM_INTERRUPT_ENABLE_UPDATE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;ICM_INTERRUPT_ENABLE_UPDATE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="ICM_INTERRUPT_HANDLER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;ICM_INTERRUPT_HANDLER&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;ICM_InterruptHandler&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="ICM_INTERRUPT_HANDLER_LOCK"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;ICM_INTERRUPT_HANDLER_LOCK&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1626,6 +1686,39 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_33_0_HANDLER_LOCK&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="NVIC_57_0_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_57_0_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="NVIC_57_0_HANDLER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_57_0_HANDLER&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;ICM_InterruptHandler&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="NVIC_57_0_HANDLER_LOCK"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_57_0_HANDLER_LOCK&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -8086,6 +8179,625 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="#&amp;__MCC_Group_Parrent_id"/>
+         <value>__ROOTVIEW</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CFG"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CFG&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_ASCD"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_ASCD&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_BBC"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_BBC&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_DAPROT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_DAPROT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_DUALBUFF"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_DUALBUFF&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_EOMDIS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_EOMDIS&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_HAPROT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_HAPROT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_SLBDIS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_SLBDIS&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_UALGO"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_UALGO&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_CONFIG_WBDIS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_CONFIG_WBDIS&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_RCFG_0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_RCFG_0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;16778212&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_RCFG_1"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_RCFG_1&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_RCFG_2"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_RCFG_2&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_RCFG_3"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_RCFG_3&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REGIONS_NUMBER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REGIONS_NUMBER&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_ALGO"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_ALGO&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_BEIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_BEIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_CDWBN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_CDWBN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_DMIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_DMIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_ECIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_ECIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_ENABLED"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_ENABLED&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_EOM"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_EOM&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_MPROT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_MPROT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_PROCDLY"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_PROCDLY&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_RHIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_RHIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_SUIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_SUIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_WCIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_WCIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_0_WRAP"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_0_WRAP&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_ALGO"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_ALGO&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_BEIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_BEIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_CDWBN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_CDWBN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_DMIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_DMIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_ECIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_ECIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_ENABLED"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_ENABLED&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_EOM"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_EOM&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_MPROT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_MPROT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_PROCDLY"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_PROCDLY&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_RHIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_RHIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_SUIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_SUIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_WCIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_WCIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_1_WRAP"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_1_WRAP&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_ALGO"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_ALGO&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_BEIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_BEIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_CDWBN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_CDWBN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_DMIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_DMIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_ECIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_ECIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_ENABLED"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_ENABLED&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_EOM"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_EOM&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_MPROT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_MPROT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_PROCDLY"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_PROCDLY&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_RHIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_RHIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_SUIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_SUIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_WCIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_WCIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_2_WRAP"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_2_WRAP&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_ALGO"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_ALGO&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_BEIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_BEIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_CDWBN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_CDWBN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_DMIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_DMIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_ECIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_ECIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_ENABLED"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_ENABLED&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_EOM"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_EOM&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;icm&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_MPROT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_MPROT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_PROCDLY"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_PROCDLY&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_RHIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_RHIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_SUIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_SUIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_WCIEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_WCIEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="icm" name="ICM_REG_3_WRAP"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;icm&gt;
+  &lt;icm dnOrder=&quot;0&quot; id=&quot;ICM_REG_3_WRAP&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/icm&gt;
+&lt;/icm&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="le_gfx_slcdc" name="!@#harmonyAttachmentState"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;le_gfx_slcdc&gt;
   &lt;le_gfx_slcdc dnOrder=&quot;0&quot;&gt;
@@ -11236,7 +11948,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>268c005e8069d34c82c7842fafae5f2f947a31e9d47986151f6786ebf3720132</hash>
+         <hash>d7e26df6c97c4a11eee2c405b8cdbbb7ca2eed74f976052d5faed85ef46463dd</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -11292,7 +12004,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>f03ed4d03f18954c3c148393d653d10a8236c0619317632bfeda70f5e72bbdd5</hash>
+         <hash>73f7ce401e26ec38f1d63e91f0dd9bdb5c45bfef625c1f4bc0af4a86f115cf7c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
@@ -11356,15 +12068,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\initialization.c</file>
-         <hash>361c3f561588a64e4c506eccf193835738575e05539fd308e06dd5ac771a10c7</hash>
+         <hash>88f0574ecd603227d8bb981aaa41b585c9d7b7dff03cc57824dd0f6d8f8a2b15</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.c</file>
-         <hash>bd4947edb82de8f1160ff93f1c89d16d52a429d0a6b3c523a0c0a43b8d6181ed</hash>
+         <hash>a67ebc31d193297fdd033c61335cfaade72df214ccd2e86e69c20f4c6b8c150c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.h</file>
-         <hash>1da68c6f840024aa770c387eb9fc2e34ee7e2b60b3961439e48bed40adccadaa</hash>
+         <hash>4cc2cac4932852c905878fe5fb29c54e243b5259aad374160bd2805593ccb699</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\libc_syscalls.c</file>
@@ -11384,11 +12096,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\clk\plib_clk.c</file>
-         <hash>41d709bafff13e985e36378a166d2e6b4e4c7edc115ee89c41897dd7d44f448f</hash>
+         <hash>e5b4f2f12557e4317b8981500b57cf80d4b5179774a32c57ede3f4f1251154f2</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\clk\plib_clk.h</file>
-         <hash>b9398a249a46b0925b4674803d35de3a3d94889d8919bf2c8a136acc64dda0e5</hash>
+         <hash>ebfbe4bc247953c3f0a89d3ae6d3487f6f2f6f0ad5fb08a16e0f93bb4707b875</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\cmcc\plib_cmcc.c</file>
@@ -11408,19 +12120,27 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
-         <hash>d0684535de24b1edf330de1c6ebfb30fda5d4677e2aa7a4b0d908f0268937563</hash>
+         <hash>f85d3c923f3c7197f4c691dfa900ce77ae151f8bd5a084e0577f38e04abd1ff9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\flexcom\usart\plib_flexcom0_usart.h</file>
-         <hash>1148edd0d109ee3bc66bf556ae3df0bf24c2846ad44b414aba619b0a861a7af8</hash>
+         <hash>6ff3d26bf626ef771cb42c71342dab16cccd25f77c7febe901bdef788e9de816</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\flexcom\usart\plib_flexcom_usart_local.h</file>
          <hash>44c68d2efb80f2837e7bbcb39073972a6672c61ea2daf8f63e8c7e7da6e1208c</hash>
       </entry>
       <entry>
+         <file>..\src\config\pic32cxmtc_db\peripheral\icm\plib_icm.c</file>
+         <hash>6261ff472c27b5962eae107c407b483d1dcfaef9ac35819d4924d515f99f0451</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtc_db\peripheral\icm\plib_icm.h</file>
+         <hash>26c7429a38df6e83dd55e3d812f89a770efad0b1c3d8852730e3b5037f7a5026</hash>
+      </entry>
+      <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\nvic\plib_nvic.c</file>
-         <hash>31fbea3a28d7345b19954ff6fc29a86c5badfaddbe03589e2b14c52118606370</hash>
+         <hash>58ead869c7e8e70d3de3ea131bfa175cade8cba453841a3cdbd79d2923ae5b22</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\nvic\plib_nvic.h</file>
@@ -11484,15 +12204,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc_common.c</file>
-         <hash>f7e1500368414009b16ba916e612ec780f90f7029ecd550dbae91b49c5b88626</hash>
+         <hash>0c27fb9a65f685636ea4c67725983303f364c576d7608fe4b36b4294e0e0a968</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\sefc\plib_sefc_common.h</file>
-         <hash>3baa7dbf8acb6264c697a73035c40a786d850be386c308da4aad0b4f32830bd7</hash>
+         <hash>9766f7ad9b16f211828181e06f535d478284687d4913439e270245a295bcfac8</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\supc\plib_supc.c</file>
-         <hash>7350974acf52c9d3aa8eec5fd464310f8e72f9e526d82b28f7fbe71d4d380ed6</hash>
+         <hash>0bc0946940fa968c90a9612bd377b764434d2b901a432021b61f66be1c64321f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\supc\plib_supc.h</file>

@@ -71,6 +71,7 @@ void RTC_InterruptHandler (void);
 void FLEXCOM0_InterruptHandler (void);
 void PIOC_InterruptHandler (void);
 void TC0_CH0_InterruptHandler (void);
+void ICM_InterruptHandler (void);
 void IPC1_InterruptHandler (void);
 
 

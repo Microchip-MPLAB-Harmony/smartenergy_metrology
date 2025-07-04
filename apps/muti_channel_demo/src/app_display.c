@@ -287,14 +287,14 @@ static void APP_DISPLAY_ChangeInfo(void)
 static void APP_DISPLAY_ShowEnergyDataUnits(float value)
 {
     uint8_t buff1[9];
-    uint32_t valueInt;
+    int64_t valueInt;
 
     /* Check magnitude to select units to show */
     if (value >= 99999.5f)
     {
         /* Format: xxxxxx.xx kWh */
         cl010_show_units(CL010_UNIT_kWh);
-        valueInt = (uint32_t)(value / 10);
+        valueInt = (int64_t)(value / 10);
         sprintf((char *)buff1, "%6u%02u", (unsigned int)(valueInt/100),
                  (unsigned int)(valueInt%100));
         cl010_show_icon(CL010_ICON_DOT_2);
@@ -303,7 +303,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(float value)
     {
         /* Format: xxxxx.xxx Wh */
         cl010_show_units(CL010_UNIT_Wh);
-        valueInt = (uint32_t)(value * 1000);
+        valueInt = (int64_t)(value * 1000);
         sprintf((char *)buff1, "%5u%03u", (unsigned int)(valueInt/1000),
                  (unsigned int)(valueInt%1000));
         cl010_show_icon(CL010_ICON_DOT_1);
@@ -312,7 +312,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(float value)
     {
         /* Format: -xxxxxx.x kWh */
         cl010_show_units(CL010_UNIT_kWh);
-        valueInt = (uint32_t)(-value / 100);
+        valueInt = (int64_t)(-value / 100);
         sprintf((char *)buff1, "-%6u%01u", (unsigned int)(valueInt/10),
                  (unsigned int)(valueInt%10));
         cl010_show_icon(CL010_ICON_DOT_3);
@@ -321,7 +321,7 @@ static void APP_DISPLAY_ShowEnergyDataUnits(float value)
     {
         /* Format: -xxxxx.xx Wh */
         cl010_show_units(CL010_UNIT_Wh);
-        valueInt = (uint32_t)(-value * 100);
+        valueInt = (int64_t)(-value * 100);
         sprintf((char *)buff1, "-%5u%02u", (unsigned int)(valueInt/100),
                  (unsigned int)(valueInt%100));
         cl010_show_icon(CL010_ICON_DOT_2);

@@ -117,7 +117,7 @@ static void _APP_EVENTS_LoadEvenstDataFromMemory(void)
     appEventsDatalogQueueData.userId = APP_DATALOG_USER_EVENTS;
     appEventsDatalogQueueData.operation = APP_DATALOG_READ;
     appEventsDatalogQueueData.pData = (uint8_t *)&app_eventsData.events;
-    appEventsDatalogQueueData.dataLen = sizeof(APP_EVENTS_DATA);
+    appEventsDatalogQueueData.dataLen = sizeof(APP_EVENTS_EVENTS);
     appEventsDatalogQueueData.endCallback = _APP_EVENTS_GetDataLogCallback;
     appEventsDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEventsDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
@@ -130,7 +130,7 @@ static void _APP_EVENTS_StoreEventsDataInMemory(void)
     appEventsDatalogQueueData.userId = APP_DATALOG_USER_EVENTS;
     appEventsDatalogQueueData.operation = APP_DATALOG_WRITE;
     appEventsDatalogQueueData.pData = (uint8_t *)&app_eventsData.events;
-    appEventsDatalogQueueData.dataLen = sizeof(APP_EVENTS_DATA);
+    appEventsDatalogQueueData.dataLen = sizeof(APP_EVENTS_EVENTS);
     appEventsDatalogQueueData.endCallback = NULL;
     appEventsDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEventsDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;

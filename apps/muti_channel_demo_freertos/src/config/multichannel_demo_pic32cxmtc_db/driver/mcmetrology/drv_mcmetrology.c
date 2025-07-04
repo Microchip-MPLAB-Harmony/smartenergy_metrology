@@ -69,7 +69,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#define MAX_WAIT_LOOPS 100000
+#define MAX_WAIT_LOOPS 100000UL
 
 typedef enum {
     PENERGY = 0U,
@@ -78,6 +78,8 @@ typedef enum {
 
 /* This is the driver instance object array. */
 static DRV_MCMETROLOGY_OBJ gDrvMCMetObj;
+
+static CACHE_ALIGN uint32_t sCaptureBuffer[CACHE_ALIGNED_SIZE_GET(MET_CAPTURE_BUF_SIZE)];
 
 static const DRV_MCMETROLOGY_REGS_CONTROL gDrvMCMetControlDefault =
 {
@@ -115,7 +117,7 @@ static const DRV_MCMETROLOGY_REGS_CONTROL gDrvMCMetControlDefault =
     DRV_MCMETROLOGY_CONF_CAPTURE_CTRL,                     /* 202 CAPTURE_CTRL */
     DRV_MCMETROLOGY_CONF_CAPTURE_CH_SEL,                   /* 203 CAPTURE_CH_SEL */
     DRV_MCMETROLOGY_CAPTURE_BUF_SIZE,                      /* 204 CAPTURE_BUFF_SIZE */
-    0x00000000UL,                                          /* 205 CAPTURE_ADDR */
+    (uint32_t)sCaptureBuffer,                              /* 205 CAPTURE_ADDR */
     {0x00000000UL,                                         /* 206 RESERVED */
     0x00000000UL,                                          /* 207 RESERVED */
     0x00000000UL},                                         /* 208 RESERVED */
@@ -383,9 +385,9 @@ static float lDRV_Mcmetrology_GetAngle(int64_t p, int64_t q)
 
 static float lDRV_Mcmetrology_GetEnergy(DRV_MCMETROLOGY_ENERGY_TYPE id)
 {
-    double energy = 0;
+    double energy = 0.0;
     uint8_t index;
-    double offset = 0;
+    double offset = 0.0;
 
     for (index = 0; index < DRV_MCMETROLOGY_POWERS_NUMBER; index++)
     {
@@ -577,11 +579,15 @@ SYS_MODULE_OBJ DRV_MCMETROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t rese
         uint32_t *pSrc;
         uint32_t *pDst;
 
-        /* Assert reset of the coprocessor */
+        /* Assert reset of the coprocessor and its peripherals */
         RSTC_CoProcessorEnable(false);
+        RSTC_CoProcessorPeripheralEnable(false);
 
         /* Disable coprocessor Clocks */
         CLK_Core1ProcessorClkDisable();
+
+        /* De-assert reset of the coprocessor peripherals */
+        RSTC_CoProcessorPeripheralEnable(true);
 
         gDrvMCMetObj.binStartAddress = metInit->binStartAddress;
         gDrvMCMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;

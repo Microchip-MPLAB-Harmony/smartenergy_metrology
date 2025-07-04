@@ -64,6 +64,9 @@
                 <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/peripheral/flexcom/usart/plib_flexcom0_usart.h</itemPath>
               </logicalFolder>
             </logicalFolder>
+            <logicalFolder name="icm" displayName="icm" projectFiles="true">
+              <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/peripheral/icm/plib_icm.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="nvic" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/peripheral/nvic/plib_nvic.h</itemPath>
             </logicalFolder>
@@ -384,6 +387,9 @@
                 <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/peripheral/flexcom/usart/plib_flexcom0_usart.c</itemPath>
               </logicalFolder>
             </logicalFolder>
+            <logicalFolder name="icm" displayName="icm" projectFiles="true">
+              <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/peripheral/icm/plib_icm.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="nvic" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/multichannel_demo_pic32cxmtc_db/peripheral/nvic/plib_nvic.c</itemPath>
             </logicalFolder>
@@ -578,7 +584,7 @@
         <property key="oXC16gcc-sfr-warn" value="false"/>
         <property key="oXC16gcc-smar-io-lvl" value="1"/>
         <property key="oXC16gcc-smart-io-fmt" value=""/>
-        <property key="optimization-level" value="-O0"/>
+        <property key="optimization-level" value="-O1"/>
         <property key="place-data-into-section" value="true"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
