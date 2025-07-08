@@ -11,20 +11,20 @@ MPLAB® Harmony 3 is an extension of the MPLAB® ecosystem for creating embedded
 - [Microchip MPLAB® Harmony](https://www.microchip.com/mplab/mplab-harmony)
 - [Microchip MPLAB® Harmony Pages](https://microchip-mplab-harmony.github.io/)
 
-This repository contains the MPLAB® Harmony 3 Smart Energy Metrology package, which includes solutions for Metering/Metrology applications.
-Refer to the following link for more information about PLC.
+This repository contains the MPLAB® Harmony 3 Smart Energy Metrology package, which includes solutions for Metering/Metrology applications and its related peripherals: Integrity Check Monitor (ICM) and Energy Metering Analog Front End (EMAFE).
+Refer to the following link for more information about Microchip Metering Solutions.
 
 - [Microchip Smart Energy Metering](https://www.microchip.com/en-us/products/smart-energy-metering/metering)
 
-The Smart Energy package offers solutions to evaluate the features and to test the high accuracy that can be achieved with the Microchip Smart Metering library based on PIC32CX-MTSH and PIC32CX-MTC devices.
+The Smart Energy Metrology package offers solutions to evaluate the features and to test the high accuracy that can be achieved with the Microchip Smart Metering library based on PIC32CX-MTSH and PIC32CX-MTC devices.
 Refer to the following links for release notes, training materials, and interface reference information.
 
 - [Release Notes](./release_notes.md)
-- [Microchip SLA](Microchip_SLA001.md)
+- [License](License.md)
 
 # Documentation
 
-Click [here](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_smartenergy_metrology&redirect=true) to view the online documentation of MPLAB® Harmony 3 Smart Energy library repository.
+Click [here](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_smartenergy_metrology&redirect=true) to view the online documentation of MPLAB® Harmony 3 Smart Energy Metrology repository.
 
 To view the documentation offline, follow these steps:
  - Download the publication as a zip file from [here](https://onlinedocs.microchip.com/download/GUID-8854123F-301D-4995-A5C7-9D06868FA9FA?type=webhelp).
@@ -38,24 +38,15 @@ These collaterals can be found [here](https://github.com/MicrochipTech/smartener
 
 # Contents Summary
 
-| Folder  | Description                                      |
-| ------- | ------------------------------------------------ |
-| apps    | Metering demo applications                       |
-| config  | Smart Energy Metrology module configuration file |
-| drivers | Driver/Firmware files for metrology devices      |
-
-# Code Examples
-
-The following applications are provided to demonstrate the Metrology capabilities of the PIC32CX-MTSH/MTC platforms.
-
-| Name                                                                                                                         | Description                                                                                                |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| [Demo Meter Application](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=Demo_Meter_Application&redirect=true)    | This example is intended to show the Metering capabilities of both PIC32CX-MTSH and PIC32CX-MTC platforms. |
-| [Demo Multi-Channel Meter Application](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=Demo_Multichannel_Meter_Application&redirect=true)    | This example is intended to show the Multi-channel Metering capabilities of PIC32CX-MTC platform. |
+| Folder     | Description                                      |
+| ---------- | ------------------------------------------------ |
+| config     | Smart Energy Metrology module configuration file |
+| driver     | Driver/Firmware files for metrology devices      |
+| peripheral | Peripherals related to metrology devices         |
 
 ---
 
-[![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy_metrology/blob/master/Microchip_SLA001.md)
+[![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy_metrology/blob/master/License.md)
 [![Commit activity](https://img.shields.io/github/commit-activity/y/Microchip-MPLAB-Harmony/smartenergy_metrology.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy_metrology/graphs/commit-activity)
 [![Contributors](https://img.shields.io/github/contributors-anon/Microchip-MPLAB-Harmony/smartenergy_metrology.svg)]()
 
